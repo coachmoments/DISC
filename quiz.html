@@ -25,19 +25,22 @@
         /* 調整導航按鈕樣式 */
         .navigation-buttons {
             display: flex;
-            justify-content: space-between;
-            gap: 10px;
+            justify-content: center;
+            gap: 20px;
             margin-top: 20px;
             width: 100%;
             max-width: 400px;
             margin-left: auto;
             margin-right: auto;
+            position: relative;
+            padding: 0 10px;
         }
         
         .navigation-buttons .btn {
             padding: 0.6rem 1.2rem;
             font-size: 0.95rem;
             min-width: 100px;
+            transition: all 0.3s ease;
         }
         
         @media (max-width: 768px) {
@@ -49,13 +52,28 @@
             }
             
             .navigation-buttons {
-                max-width: 300px;
+                max-width: 100%;
+                justify-content: space-between !important;
+                padding: 0 15px;
+                gap: 0;
+                display: flex;
+                flex-direction: row;
+                width: 100%;
             }
             
             .navigation-buttons .btn {
-                padding: 0.5rem 1rem;
+                padding: 0.5rem 0.8rem;
                 font-size: 0.9rem;
-                min-width: 80px;
+                min-width: 60px;
+                max-width: 80px;
+                flex: 0 0 auto;
+            }
+            
+            /* 確保提交按鈕在手機版上居中顯示 */
+            #submit-btn {
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
             }
         }
     </style>

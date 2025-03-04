@@ -243,6 +243,17 @@ header h2 {
     justify-content: center;
     gap: 15px;
     margin-top: 20px;
+    width: 100%;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    padding: 0 10px;
+}
+
+.navigation-buttons button {
+    min-width: 100px;
+    transition: all 0.3s ease;
 }
 
 .navigation-buttons button:disabled {
@@ -856,5 +867,32 @@ header h2 {
     .score-card {
         padding: 12px !important;
         margin-bottom: 15px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .navigation-buttons {
+        max-width: 100%;
+        justify-content: space-between !important;
+        padding: 0 15px;
+        gap: 0;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .navigation-buttons button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+        min-width: 60px;
+        max-width: 80px;
+        flex: 0 0 auto;
+    }
+    
+    /* 確保提交按鈕在手機版上居中顯示 */
+    #submit-btn {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
     }
 }

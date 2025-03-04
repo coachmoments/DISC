@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 添加窗口大小變化時重新繪製雷達圖
     window.addEventListener('resize', debounce(renderRadarChart, 250));
+    
+    // 添加方向變化事件監聽器（處理手機旋轉）
+    window.addEventListener('orientationchange', () => {
+        setTimeout(renderRadarChart, 300);
+    });
 });
 
 // 防抖函數，避免頻繁觸發重繪
@@ -261,15 +266,21 @@ function renderRadarChart() {
     const containerWidth = container.clientWidth;
     
     // 設置合適的尺寸，確保在手機上也能正常顯示
-    let canvasSize = Math.min(containerWidth, 420);
+    let canvasSize;
     
-    // 在小屏幕上進一步縮小
+    // 在小屏幕上進一步調整尺寸
     if (window.innerWidth <= 768) {
-        canvasSize = Math.min(containerWidth, 320);
+        canvasSize = Math.min(containerWidth, 300);
+        // 確保Canvas足夠大以容納所有元素
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
+    } else {
+        canvasSize = Math.min(containerWidth, 420);
+        canvas.width = canvasSize;
+        canvas.height = canvasSize;
     }
-    
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
     
     // 繪製雷達圖
     drawRadarChart(ctx, external, internal, total, points);
@@ -285,7 +296,14 @@ function drawRadarChart(ctx, external, internal, total, points) {
     // 計算中心點和半徑
     const centerX = canvasWidth / 2;
     const centerY = canvasHeight / 2;
-    const maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 使用較小的尺寸的35%作為半徑
+    
+    // 在手機版上使用較小的半徑，確保圖表完全顯示
+    let maxRadius;
+    if (window.innerWidth <= 768) {
+        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.32; // 手機版使用較小的半徑
+    } else {
+        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 桌面版使用原來的半徑
+    }
     
     // 清除Canvas
     ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -540,14 +558,23 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
 function pointToCoordinates(x, y, centerX, centerY, maxRadius) {
     // 點位轉換為笛卡爾坐標
     // 將x和y限制在一個合理範圍內
-    const scale = 10; // 縮放因子，使得點位適合在雷達圖內顯示
-    x = Math.min(Math.max(x, -scale), scale) / scale; // 限制在-1到1之間
-    y = Math.min(Math.max(y, -scale), scale) / scale; // 限制在-1到1之間
+    const scale = 20; // 增加縮放因子，使點位在雷達圖內更合理顯示
+    
+    // 確保點位在合理範圍內，避免超出雷達圖
+    let normalizedX = Math.min(Math.max(x, -scale), scale) / scale; // 限制在-1到1之間
+    let normalizedY = Math.min(Math.max(y, -scale), scale) / scale; // 限制在-1到1之間
+    
+    // 計算點位到原點的距離，確保不會超出雷達圖
+    const distance = Math.sqrt(normalizedX * normalizedX + normalizedY * normalizedY);
+    if (distance > 1) {
+        normalizedX = normalizedX / distance * 0.9; // 縮小到雷達圖內90%範圍
+        normalizedY = normalizedY / distance * 0.9; // 縮小到雷達圖內90%範圍
+    }
     
     // 計算對應座標
     return {
-        x: centerX + x * maxRadius,
-        y: centerY - y * maxRadius // 注意Y軸方向相反
+        x: centerX + normalizedX * maxRadius,
+        y: centerY - normalizedY * maxRadius // 注意Y軸方向相反
     };
 }
 
