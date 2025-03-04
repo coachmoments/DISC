@@ -88,24 +88,7 @@ DISC_test/
 
 # 上傳到Git的必要資訊
 
-## 基本資訊準備
 
-1. **Git倉庫URL**: 
-   - 如果是新倉庫，您需要在GitHub/GitLab/Bitbucket等平台創建一個新的倉庫
-   - 如果是現有倉庫，則需要倉庫的HTTPS或SSH URL
-
-2. **帳號認證**:
-   - 您的Git用戶名和密碼
-   - 如使用SSH方式，需要已設置的SSH密鑰
-
-3. **提交資訊**:
-   - 準備一個清晰的提交訊息，描述此次更新的內容（例如："完成DISC測驗功能，優化頁面導航和使用者體驗"）
-
-## 上傳步驟
-
-如果您尚未初始化Git倉庫，請在專案根目錄執行以下命令：
-
-```bash
 # 初始化本地Git倉庫
 git init
 
@@ -132,27 +115,7 @@ git status
 git add .
 
 # 提交更改
-git commit -m "完整提交 - 包含所有文件"
+git commit -m "添加所有文件 - 完整的DISC測驗專案"
 
 # 推送到遠端倉庫
 git push
-```
-
-## 可能需要忽略的文件
-
-您可能想創建一個`.gitignore`文件來排除不需要同步的文件，例如：
-
-```
-# 系統文件
-.DS_Store
-Thumbs.db
-
-# 編輯器文件
-.vscode/
-.idea/
-
-# 依賴文件夾
-node_modules/
-
-# 用戶數據和日誌
-*.log
