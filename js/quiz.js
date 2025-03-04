@@ -516,7 +516,23 @@ function setupButtonEvents() {
         const missingAnswers = answers.filter(a => a === null).length;
         
         if (missingAnswers > 0) {
-            alert(`您還有 ${missingAnswers} 個問題未回答，請回到相應頁面完成所有問題。`);
+            // 找出第一個未回答的問題索引
+            const firstUnansweredIndex = answers.findIndex(a => a === null);
+            // 計算該問題在哪一頁
+            const pageWithUnanswered = Math.floor(firstUnansweredIndex / questionsPerPage);
+            
+            // 跳轉到包含未回答問題的頁面
+            if (currentPage !== pageWithUnanswered) {
+                currentPage = pageWithUnanswered;
+                showQuestions(currentPage);
+                updatePaginationActive();
+                updateNavigationButtons();
+            }
+            
+            // 高亮顯示當前頁面上的未回答問題
+            highlightUnansweredQuestions();
+            
+            alert(`您還有 ${missingAnswers} 個問題未回答，請完成所有問題。`);
             return;
         }
         
@@ -562,34 +578,35 @@ function updateNavigationButtons() {
     const submitBtn = document.getElementById('submit-btn');
     
     if (!prevBtn || !nextBtn || !submitBtn) {
-        console.error('導航按鈕未找到');
+        console.error('按鈕元素未找到');
         return;
     }
     
-    // 上一頁按鈕狀態
-    prevBtn.disabled = currentPage === 0;
-    
-    // 下一頁按鈕狀態
-    if (currentPage === totalPages - 1) {
-        nextBtn.style.display = 'none';
-    } else {
-        nextBtn.style.display = 'block';
+    // 確保按鈕容器有相對定位，以便絕對定位的按鈕能正確顯示
+    const navButtons = document.querySelector('.navigation-buttons');
+    if (navButtons) {
+        navButtons.style.position = 'relative';
     }
     
-    // 提交按鈕狀態
+    // 第一頁禁用上一頁按鈕
+    prevBtn.disabled = currentPage === 0;
+    
+    // 最後一頁顯示提交按鈕，隱藏下一頁按鈕
     if (currentPage === totalPages - 1) {
+        nextBtn.style.display = 'none';
         submitBtn.style.display = 'block';
         
         // 檢查是否所有問題都已回答
-        const allAnswered = answers.every(a => a !== null);
+        const allAnswered = answers.every(answer => answer !== null);
         
-        submitBtn.disabled = !allAnswered;
+        // 如果所有問題都已回答，添加脈動效果
         if (allAnswered) {
-            submitBtn.classList.remove('disabled');
+            submitBtn.classList.add('pulse-button');
         } else {
-            submitBtn.classList.add('disabled');
+            submitBtn.classList.remove('pulse-button');
         }
     } else {
+        nextBtn.style.display = 'block';
         submitBtn.style.display = 'none';
     }
 }

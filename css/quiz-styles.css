@@ -240,7 +240,7 @@ header h2 {
 
 .navigation-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 15px;
     margin-top: 20px;
     width: 100%;
@@ -249,11 +249,48 @@ header h2 {
     margin-right: auto;
     position: relative;
     padding: 0 10px;
+    min-height: 45px; /* 確保有足夠的高度 */
 }
 
 .navigation-buttons button {
     min-width: 100px;
     transition: all 0.3s ease;
+}
+
+/* 查看結果按鈕特殊樣式 */
+#submit-btn {
+    background-color: #28a745;
+    border-color: #28a745;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    right: 10px;
+    min-width: 120px;
+}
+
+#submit-btn:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 查看結果按鈕脈動效果 */
+.pulse-button {
+    animation: submit-pulse 2s infinite;
+    position: relative;
+}
+
+@keyframes submit-pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+    }
 }
 
 .navigation-buttons button:disabled {
@@ -436,6 +473,25 @@ header h2 {
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
+}
+
+/* PDF下載按鈕樣式 */
+#download-btn {
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#download-btn:hover {
+    background-color: #3a5a8c;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 /* 列印樣式 */
@@ -660,7 +716,7 @@ header h2 {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    padding: 15px;
+    padding: 20px;
     margin: 0 auto;
     max-width: 550px;
     border: 1px solid var(--border-color);
@@ -668,18 +724,18 @@ header h2 {
 
 .chart-card h3 {
     font-size: 1.2rem;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     text-align: center;
     color: var(--primary-color);
 }
 
-/* 調整雷達圖容器大小 - 降低高度以適應一頁PDF */
+/* 調整雷達圖容器大小 */
 .chart-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 380px;
-    margin: 10px auto;
+    margin: 10px auto 20px;
     max-width: 500px;
     position: relative;
 }
@@ -786,34 +842,184 @@ header h2 {
     gap: 10px;
 }
 
-/* PDF生成優化樣式 */
+/* 圖例樣式優化 */
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin: 0 auto;
+    background-color: #f9f9f9;
+    padding: 12px 15px;
+    border-radius: 6px;
+    max-width: 80%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.color-box {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* 自定義外顯和內在點的顏色 */
+.legend-item:first-child .color-box {
+    background-color: rgba(65, 105, 225, 0.8) !important; /* 更好看的藍色 */
+}
+
+.legend-item:nth-child(2) .color-box {
+    background-color: rgba(220, 20, 60, 0.8) !important; /* 更好看的紅色 */
+}
+
+.legend-item:nth-child(3) .color-box {
+    background-color: rgba(80, 80, 80, 0.8) !important; /* 灰色 */
+}
+
+/* 手機版樣式調整 */
+@media (max-width: 768px) {
+    .user-header {
+        flex-direction: column;
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .user-header-item {
+        width: 100%;
+    }
+    
+    .question-card {
+        padding: 15px;
+    }
+    
+    .option {
+        padding: 12px 15px;
+    }
+    
+    .option-label {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+        margin-right: 10px;
+    }
+    
+    .navigation-buttons {
+        max-width: 100%;
+        justify-content: space-between !important;
+        padding: 0 15px;
+        gap: 0;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+    }
+    
+    .navigation-buttons button {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.9rem;
+        min-width: 60px;
+        max-width: 80px;
+        flex: 0 0 auto;
+    }
+    
+    /* 將提交按鈕放在右側而非中間 */
+    #submit-btn {
+        position: absolute;
+        right: 15px;
+        left: auto;
+        transform: none;
+        min-width: 90px !important;
+        max-width: 120px !important;
+        padding: 0.6rem 1rem !important;
+        font-size: 0.95rem !important;
+        z-index: 10;
+        background-color: #28a745;
+        border-color: #28a745;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    
+    /* 脈動效果在手機版上更加明顯 */
+    .pulse-button {
+        animation: mobile-submit-pulse 2s infinite;
+    }
+    
+    @keyframes mobile-submit-pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(40, 167, 69, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        }
+    }
+    
+    /* 報告頁面在移動設備上的樣式 */
+    .report-content {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    /* 圖表卡片在移動設備上的樣式 */
+    .chart-card {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    /* 移動設備上的按鈕樣式 */
+    .action-buttons {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .action-buttons button {
+        width: 100%;
+        padding: 12px 0;
+    }
+    
+    /* 圖表容器在移動設備上的樣式 */
+    .chart-container {
+        height: 300px;
+    }
+    
+    /* 圖例在移動設備上的樣式 */
+    .legend {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+    }
+}
+
+/* 打印樣式 */
 @media print {
     .complete-report-container {
-        padding: 20px !important;
+        display: block !important;
     }
     
     .complete-report-container header {
         display: block !important;
-        background-color: transparent !important;
-        color: #4a6fa5 !important;
-        box-shadow: none !important;
-        padding: 10px 0 !important;
-        margin-bottom: 15px !important;
         text-align: center !important;
+        margin-bottom: 20px !important;
+        padding: 10px !important;
     }
     
     .complete-report-container header h1 {
         font-size: 24px !important;
         margin: 0 !important;
-        padding: 0 !important;
-        color: #4a6fa5 !important;
     }
     
     .chart-container {
-        page-break-inside: avoid !important;
-        height: 330px !important;
-        min-height: auto !important;
-        margin-bottom: 15px !important;
         display: block !important;
     }
     
@@ -858,6 +1064,9 @@ header h2 {
     
     .chart-card {
         padding: 10px !important;
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+        page-break-inside: avoid !important;
     }
     
     .disc-score-table {
@@ -868,31 +1077,12 @@ header h2 {
         padding: 12px !important;
         margin-bottom: 15px !important;
     }
-}
-
-@media (max-width: 768px) {
-    .navigation-buttons {
-        max-width: 100%;
-        justify-content: space-between !important;
-        padding: 0 15px;
-        gap: 0;
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-    }
     
-    .navigation-buttons button {
-        padding: 0.5rem 0.8rem;
-        font-size: 0.9rem;
-        min-width: 60px;
-        max-width: 80px;
-        flex: 0 0 auto;
-    }
-    
-    /* 確保提交按鈕在手機版上居中顯示 */
-    #submit-btn {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+    .legend {
+        background-color: #f9f9f9 !important;
+        border: 1px solid #eee !important;
+        box-shadow: none !important;
+        margin-top: 10px !important;
+        page-break-inside: avoid !important;
     }
 }

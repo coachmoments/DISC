@@ -115,7 +115,7 @@ git status
 git add .
 
 # 提交更改
-git commit -m "02.手機雷達圖更新"
+git commit -m "03.微調"
 
 # 推送到遠端倉庫
 git push

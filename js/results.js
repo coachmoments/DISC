@@ -682,21 +682,35 @@ function generatePDF() {
                         // 設置PDF頁面尺寸和邊距
                         const pageWidth = 210; // A4寬度 (mm)
                         const pageHeight = 297; // A4高度 (mm)
-                        const margin = 15; // 邊距 (mm)
+                        const margin = 10; // 減小邊距 (mm)，從15改為10
                         const contentWidth = pageWidth - (margin * 2);
                         
                         // 計算圖像尺寸，確保寬度適合頁面
                         const imgWidth = contentWidth;
+                        // 調整高度計算，確保內容不會被截斷
                         const imgHeight = (canvas.height * imgWidth) / canvas.width;
                         
-                        // 添加圖像到PDF
+                        // 檢查是否需要縮放以適應頁面高度
+                        const maxHeight = pageHeight - (margin * 2);
+                        let finalImgWidth = imgWidth;
+                        let finalImgHeight = imgHeight;
+                        
+                        // 如果內容高度超過頁面高度，進行縮放
+                        if (imgHeight > maxHeight) {
+                            const scale = maxHeight / imgHeight;
+                            finalImgWidth = imgWidth * scale;
+                            finalImgHeight = maxHeight;
+                        }
+                        
+                        // 添加圖像到PDF，調整位置使其居中
+                        const xOffset = (pageWidth - finalImgWidth) / 2;
                         pdf.addImage(
                             canvas.toDataURL('image/jpeg', 1.0),
                             'JPEG',
+                            xOffset,
                             margin,
-                            margin,
-                            imgWidth,
-                            imgHeight
+                            finalImgWidth,
+                            finalImgHeight
                         );
                         
                         // 保存PDF
@@ -767,38 +781,38 @@ function generatePDF() {
         // 創建用於PDF的容器
         const container = document.createElement('div');
         container.id = 'pdf-container';
-        container.style.cssText = 'position:absolute; left:-9999px; width:800px; background-color:white; padding:20px; font-family:Arial, sans-serif;';
+        container.style.cssText = 'position:absolute; left:-9999px; width:750px; background-color:white; padding:20px; font-family:Arial, sans-serif;';
         
         // 創建標題
         const title = document.createElement('h1');
         title.innerHTML = 'DISC 人格測驗 - 結果報告';
-        title.style.cssText = 'text-align:center; color:#4a6fa5; font-size:24px; margin-bottom:20px;';
+        title.style.cssText = 'text-align:center; color:#4a6fa5; font-size:22px; margin-bottom:15px;';
         container.appendChild(title);
         
         // 創建用户信息區
         const userInfo = document.querySelector('.user-info').cloneNode(true);
-        userInfo.style.cssText = 'margin:10px 0 25px; padding:10px; background-color:#f9f9f9; border-radius:5px; display:flex; justify-content:space-around;';
+        userInfo.style.cssText = 'margin:10px 0 20px; padding:10px; background-color:#f9f9f9; border-radius:5px; display:flex; justify-content:space-around;';
         container.appendChild(userInfo);
         
         // 創建表格區域
         const tableContainer = document.createElement('div');
-        tableContainer.style.cssText = 'margin-bottom:20px;';
+        tableContainer.style.cssText = 'margin-bottom:15px;';
         
         // 獲取原始表格並克隆
         const originalTable = document.querySelector('.disc-score-table');
         const tableClone = originalTable.cloneNode(true);
-        tableClone.style.cssText = 'width:100%; border-collapse:collapse; margin:0 auto;';
+        tableClone.style.cssText = 'width:100%; border-collapse:collapse; margin:0 auto; font-size:12px;';
         
         // 確保表格樣式正確
         const categoryTDs = tableClone.querySelectorAll('.category-cell');
         categoryTDs.forEach(td => {
-            td.style.cssText = 'background-color:#e6f0ff; font-weight:bold; padding:10px 2px; text-align:center; border-right:2px solid #ccc; writing-mode:vertical-lr; text-orientation:upright; letter-spacing:2px;';
+            td.style.cssText = 'background-color:#e6f0ff; font-weight:bold; padding:8px 2px; text-align:center; border-right:2px solid #ccc; writing-mode:vertical-lr; text-orientation:upright; letter-spacing:2px;';
         });
         
         // 修正表格單元格樣式
         const allTDs = tableClone.querySelectorAll('td:not(.category-cell)');
         allTDs.forEach(td => {
-            td.style.cssText = 'padding:8px 10px; border:1px solid #ccc; text-align:center;';
+            td.style.cssText = 'padding:6px 8px; border:1px solid #ccc; text-align:center;';
         });
         
         // 處理外在行為區塊
@@ -830,22 +844,22 @@ function generatePDF() {
         
         // 添加點位資訊
         const pointsRow = document.querySelector('.points-row').cloneNode(true);
-        pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:#f9f9f9; border-radius:5px; padding:10px; margin-bottom:20px; border:1px solid #eee;';
+        pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:#f9f9f9; border-radius:5px; padding:8px; margin-bottom:15px; border:1px solid #eee; font-size:12px;';
         container.appendChild(pointsRow);
         
         // 創建雷達圖區域
         const chartContainer = document.createElement('div');
-        chartContainer.style.cssText = 'margin-top:20px; text-align:center;';
+        chartContainer.style.cssText = 'margin-top:15px; text-align:center;';
         
         // 添加雷達圖標題
         const chartTitle = document.createElement('h3');
         chartTitle.innerHTML = 'DISC 雷達圖';
-        chartTitle.style.cssText = 'color:#333; margin-bottom:10px;';
+        chartTitle.style.cssText = 'color:#333; margin-bottom:8px; font-size:16px;';
         chartContainer.appendChild(chartTitle);
         
         // 創建雷達圖畫布的容器
         const radarContainer = document.createElement('div');
-        radarContainer.style.cssText = 'width:380px; height:380px; margin:0 auto; position:relative;';
+        radarContainer.style.cssText = 'width:350px; height:350px; margin:0 auto; position:relative;';
         
         // 獲取原始雷達圖的圖像數據
         const originalCanvas = document.getElementById('radar-chart');
@@ -858,14 +872,14 @@ function generatePDF() {
         
         // 添加圖例
         const legend = document.querySelector('.legend').cloneNode(true);
-        legend.style.cssText = 'display:flex; justify-content:center; gap:20px; margin-top:10px;';
+        legend.style.cssText = 'display:flex; justify-content:center; gap:15px; margin-top:8px; font-size:12px;';
         chartContainer.appendChild(legend);
         
         container.appendChild(chartContainer);
         
         // 添加頁腳
         const footer = document.createElement('div');
-        footer.style.cssText = 'margin-top:30px; text-align:center; font-size:12px; color:#777;';
+        footer.style.cssText = 'margin-top:20px; text-align:center; font-size:11px; color:#777;';
         footer.innerHTML = '<p>DISC 人格測驗 © 2025. 保留所有權利。</p>';
         container.appendChild(footer);
         
