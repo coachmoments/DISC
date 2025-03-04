@@ -115,7 +115,7 @@ git status
 git add .
 
 # 提交更改
-git commit -m "添加所有文件 - 完整的DISC測驗專案"
+git commit -m "git筆記"
 
 # 推送到遠端倉庫
 git push

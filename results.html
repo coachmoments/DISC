@@ -10,6 +10,29 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
+        /* 標題分行顯示 */
+        .site-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .title-en {
+            font-size: 2.2rem;
+            margin-bottom: 0.2rem;
+        }
+        .title-zh {
+            font-size: 1.8rem;
+        }
+        
+        @media (max-width: 768px) {
+            .title-en {
+                font-size: 1.8rem;
+            }
+            .title-zh {
+                font-size: 1.5rem;
+            }
+        }
+        
         /* 表格樣式優化 */
         .disc-score-table {
             width: 100%;
@@ -116,7 +139,7 @@
             font-size: 1.15rem;
         }
         
-        /* 點位行樣式 - 方案三 */
+        /* 點位行樣式 - 優化手機版 */
         .points-row-container {
             margin: 15px auto 30px;
             max-width: 650px;
@@ -174,8 +197,49 @@
         .total-points .points-value {
             color: #333;
         }
+        
+        /* 雷達圖容器優化 */
+        .chart-container {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        /* 按鈕區域優化 */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px auto;
+        }
+        
+        .action-buttons .btn {
+            min-width: 120px;
+        }
 
-        @media (max-width: 650px) {
+        @media (max-width: 768px) {
+            .disc-score-table {
+                font-size: 0.9rem;
+                margin-bottom: 20px;
+            }
+            
+            .disc-score-table th, 
+            .disc-score-table td {
+                padding: 8px 10px;
+            }
+            
+            .category-cell {
+                padding: 10px 2px;
+                font-size: 0.95rem;
+            }
+            
+            [id^="ext-"], [id^="int-"], [id^="total-"] {
+                font-size: 1rem;
+            }
+            
             .points-row {
                 flex-direction: column;
                 gap: 12px;
@@ -191,13 +255,26 @@
                 margin-bottom: 0;
                 margin-right: 10px;
             }
+            
+            .chart-container {
+                height: 300px;
+            }
+            
+            .action-buttons .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <h1>DISCovery 自我發現人格特質</h1>
+            <div class="site-title">
+                <span class="title-en">DISCovery</span>
+                <span class="title-zh">自我發現人格特質</span>
+            </div>
         </div>
     </header>
 

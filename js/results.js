@@ -20,7 +20,23 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 設置按鈕事件
     setupButtonEvents();
+    
+    // 添加窗口大小變化時重新繪製雷達圖
+    window.addEventListener('resize', debounce(renderRadarChart, 250));
 });
+
+// 防抖函數，避免頻繁觸發重繪
+function debounce(func, wait) {
+    let timeout;
+    return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            func.apply(context, args);
+        }, wait);
+    };
+}
 
 // 檢查測試資料完整性
 function checkTestDataIntegrity() {
@@ -240,9 +256,20 @@ function renderRadarChart() {
     
     const ctx = canvas.getContext('2d');
     
-    // 設置Canvas尺寸 - 調整為更小的尺寸以適應一頁PDF
-    canvas.width = 420;
-    canvas.height = 420;
+    // 設置Canvas尺寸 - 根據容器大小自適應
+    const container = canvas.parentElement;
+    const containerWidth = container.clientWidth;
+    
+    // 設置合適的尺寸，確保在手機上也能正常顯示
+    let canvasSize = Math.min(containerWidth, 420);
+    
+    // 在小屏幕上進一步縮小
+    if (window.innerWidth <= 768) {
+        canvasSize = Math.min(containerWidth, 320);
+    }
+    
+    canvas.width = canvasSize;
+    canvas.height = canvasSize;
     
     // 繪製雷達圖
     drawRadarChart(ctx, external, internal, total, points);
@@ -250,12 +277,18 @@ function renderRadarChart() {
 
 // 繪製雷達圖
 function drawRadarChart(ctx, external, internal, total, points) {
-    const centerX = 210;
-    const centerY = 210;
-    const maxRadius = 150;
+    // 獲取Canvas尺寸
+    const canvas = ctx.canvas;
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+    
+    // 計算中心點和半徑
+    const centerX = canvasWidth / 2;
+    const centerY = canvasHeight / 2;
+    const maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 使用較小的尺寸的35%作為半徑
     
     // 清除Canvas
-    ctx.clearRect(0, 0, 420, 420);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     
     // 繪製背景網格
     drawRadarGrid(ctx, centerX, centerY, maxRadius);
@@ -315,8 +348,13 @@ function drawRadarGrid(ctx, centerX, centerY, maxRadius) {
 
 // 繪製量尺
 function drawScale(ctx, centerX, centerY, maxRadius) {
+    // 根據畫布大小調整字體大小
+    const fontSize = Math.max(9, Math.min(11, maxRadius / 15));
+    const labelFontSize = Math.max(12, Math.min(14, maxRadius / 12));
+    const labelOffset = Math.max(15, maxRadius / 10);
+    
     ctx.fillStyle = '#555';
-    ctx.font = '11px Arial';
+    ctx.font = `${fontSize}px Arial`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     
@@ -327,22 +365,22 @@ function drawScale(ctx, centerX, centerY, maxRadius) {
     }
     
     // 繪製軸標籤
-    ctx.font = 'bold 14px Arial';
+    ctx.font = `bold ${labelFontSize}px Arial`;
     
     // DI 標籤 (上方)
-    ctx.fillText('D+I', centerX, centerY - maxRadius - 20);
+    ctx.fillText('D+I', centerX, centerY - maxRadius - labelOffset);
     
     // IS 標籤 (右方)
-    ctx.fillText('I+S', centerX + maxRadius + 20, centerY);
+    ctx.fillText('I+S', centerX + maxRadius + labelOffset, centerY);
     
     // SC 標籤 (下方)
-    ctx.fillText('S+C', centerX, centerY + maxRadius + 20);
+    ctx.fillText('S+C', centerX, centerY + maxRadius + labelOffset);
     
     // CD 標籤 (左方)
-    ctx.fillText('C+D', centerX - maxRadius - 20, centerY);
+    ctx.fillText('C+D', centerX - maxRadius - labelOffset, centerY);
 }
 
-// 繪製雷達圖數據 (續)
+// 繪製雷達圖數據
 function drawRadarData(ctx, centerX, centerY, maxRadius, data, fillColor, strokeColor) {
     // 計算組合值
     const diValue = data.D + data.I;
@@ -364,7 +402,7 @@ function drawRadarData(ctx, centerX, centerY, maxRadius, data, fillColor, stroke
     ctx.beginPath();
     ctx.fillStyle = fillColor;
     ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = Math.max(1.5, Math.min(2.5, maxRadius / 60)); // 根據畫布大小調整線寬
     
     for (let i = 0; i < 4; i++) {
         const angle = (Math.PI * 2 * i) / 4 - Math.PI / 2;
@@ -381,33 +419,24 @@ function drawRadarData(ctx, centerX, centerY, maxRadius, data, fillColor, stroke
     }
     
     ctx.closePath();
-    ctx.globalAlpha = 0.4;
+    ctx.globalAlpha = 0.4; // 設置透明度
     ctx.fill();
-    ctx.globalAlpha = 1.0;
+    ctx.globalAlpha = 1.0; // 恢復透明度
     ctx.stroke();
     
-    // 繪製數據點
+    // 繪製數值標籤
+    // 根據畫布大小調整字體大小
+    const fontSize = Math.max(10, Math.min(12, maxRadius / 15));
+    ctx.font = `bold ${fontSize}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
     for (let i = 0; i < 4; i++) {
         const angle = (Math.PI * 2 * i) / 4 - Math.PI / 2;
         const ratio = Math.min(values[i], 1);
         const radius = maxRadius * ratio;
-        const x = centerX + radius * Math.cos(angle);
-        const y = centerY + radius * Math.sin(angle);
         
-        ctx.beginPath();
-        ctx.arc(x, y, 6, 0, Math.PI * 2);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-        ctx.lineWidth = 2;
-        ctx.stroke();
-        
-        // 顯示組合值數字
-        ctx.fillStyle = '#333';
-        ctx.font = 'bold 12px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // 獲取要顯示的數值
+        // 選擇要顯示的值
         let valueToShow;
         if (i === 0) valueToShow = diValue;
         else if (i === 1) valueToShow = isValue;
@@ -415,7 +444,7 @@ function drawRadarData(ctx, centerX, centerY, maxRadius, data, fillColor, stroke
         else valueToShow = cdValue;
         
         // 數值文字顯示位置
-        const textRadius = radius + 15;
+        const textRadius = radius + Math.max(10, maxRadius / 15);
         const textX = centerX + textRadius * Math.cos(angle);
         const textY = centerY + textRadius * Math.sin(angle);
         
@@ -457,13 +486,17 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
     
     ctx.restore(); // 恢復之前的繪圖狀態
     
+    // 根據畫布大小調整點位大小
+    const pointRadius = Math.max(6, Math.min(8, maxRadius / 20));
+    const fontSize = Math.max(10, Math.min(12, maxRadius / 15));
+    
     // 繪製外顯點位（藍色）
     ctx.fillStyle = 'white';
     ctx.strokeStyle = 'rgba(65, 105, 225, 1)';
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 2;
     
     ctx.beginPath();
-    ctx.arc(externalPoint.x, externalPoint.y, 8, 0, Math.PI * 2);
+    ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     
@@ -472,7 +505,7 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
     ctx.strokeStyle = 'rgba(220, 20, 60, 1)';
     
     ctx.beginPath();
-    ctx.arc(internalPoint.x, internalPoint.y, 8, 0, Math.PI * 2);
+    ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     
@@ -481,12 +514,12 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
     ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
     
     ctx.beginPath();
-    ctx.arc(totalPoint.x, totalPoint.y, 8, 0, Math.PI * 2);
+    ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
     
     // 添加點位標記
-    ctx.font = 'bold 12px Arial';
+    ctx.font = `bold ${fontSize}px Arial`;
     
     // 外顯點標記
     ctx.fillStyle = 'rgba(65, 105, 225, 1)';
