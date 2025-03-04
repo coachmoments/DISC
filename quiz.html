@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISC 人格測驗</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/quiz-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DISCovery 自我發現人格特質</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="quiz-header">
+            <p class="user-greeting">歡迎 <span id="user-name-display"></span>！請根據您的第一直覺，選擇最符合您個性的選項</p>
+            
+            <div class="progress-container">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <div class="counter-info">
+                已回答: <span id="answered-count">0</span>/<span id="total-count">20</span>
+            </div>
+        </div>
+
+        <div class="quiz-content">
+            <!-- 問題區塊將在這裡動態載入 -->
+        </div>
+
+        <div class="pagination-indicators">
+            <!-- 分頁指示器將在這裡動態載入 -->
+        </div>
+
+        <div class="navigation-buttons">
+            <button id="prev-btn" class="btn btn-secondary" disabled>上一頁</button>
+            <button id="next-btn" class="btn btn-primary">下一頁</button>
+            <button id="submit-btn" class="btn btn-primary" style="display: none;">查看結果</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DISC 人格測驗</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DISC 人格測驗</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DISCovery 自我發現人格特質</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="welcome-card">
+            <div class="welcome-header">
+                <h2>請直覺選擇你的答案!</h2>
+                <p>本測驗共20題，預計耗時10-15分鐘</p>
+            </div>
+            
+            <div class="test-instructions">
+                <h3>測驗說明</h3>
+                <ul style="list-style-type: none; text-align: center;">
+                    <li>邀請您透過DISC，探索自我的人格特質</li>
+                    <li>探索自我的人格特質, 及清楚看見週遭的人和事！</li>
+                    <li>進而了解您的人際互動,及梳理您和工作間的關係！ </li>
+                    <li>請直覺選擇你的答案！</li>
+                </ul>
+                
+                <div class="personality-types">
+                    <div class="personality-type type-d">
+                        <span class="type-name">D</span>
+                    </div>
+                    <div class="personality-type type-i">
+                        <span class="type-name">I</span>
+                    </div>
+                    <div class="personality-type type-s">
+                        <span class="type-name">S</span>
+                    </div>
+                    <div class="personality-type type-c">
+                        <span class="type-name">C</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <label for="userName">您的姓名:</label>
+                <input type="text" id="userName" placeholder="請輸入姓名" maxlength="20">
+            </div>
+            
+            <div class="start-options">
+                <button id="startTest" class="btn">開始新測驗</button>
+            </div>
+            
+            <div id="testStatus" class="status-message" style="display: none;"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 DISC 人格測驗</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 開始新測驗按鈕
+            document.getElementById('startTest').addEventListener('click', function() {
+                const newUserName = document.getElementById('userName').value.trim();
+                
+                if (!newUserName) {
+                    document.getElementById('testStatus').textContent = '請輸入您的姓名以開始測驗';
+                    document.getElementById('testStatus').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('testStatus').style.display = 'none';
+                    }, 3000);
+                    return;
+                }
+                
+                // 初始化新測驗數據
+                clearLocalStorageData();
+                
+                // 設置用戶名和空答案
+                saveToLocalStorage('discUserName', newUserName);
+                saveToLocalStorage('discAnswers', Array(20).fill(null));
+                saveToLocalStorage('discTestStartTime', new Date().toISOString());
+                
+                // 重定向到測驗頁面
+                window.location.href = 'quiz.html';
+            });
+        });
+    </script>
+</body>
+</html> 

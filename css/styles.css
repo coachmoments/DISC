@@ -1,0 +1,1234 @@
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #6b8cbc;
+  --accent-color: #e63946;
+  --external-bg-color: #e6f0ff;
+  --internal-bg-color: #ffe6e6;
+  --total-bg-color: #f0f0f0;
+  --border-color: #495057;
+  --external-point-color: #305daf;
+  --internal-point-color: #d32f3d;
+  --total-point-color: #555555;
+  --light-color: #f9f9f9;
+  --dark-color: #1d3557;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --transition: all 0.3s ease;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+  line-height: 1.6;
+  color: var(--dark-color);
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem 0;
+  text-align: center;
+  box-shadow: var(--shadow);
+}
+
+h1, h2, h3, h4 {
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.btn {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: var(--transition);
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: var(--secondary-color);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  border: 1px solid var(--dark-color);
+}
+
+.btn-secondary:hover {
+  background-color: #e9ecef;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+footer {
+  background-color: var(--dark-color);
+  color: white;
+  text-align: center;
+  padding: 1rem 0;
+  margin-top: auto;
+}
+
+/* Index Page Specific Styles */
+.welcome-section {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.instructions {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Quiz Page Specific Styles */
+.quiz-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.progress-container {
+  margin: 1.5rem 0;
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: var(--primary-color);
+  transition: width 0.3s ease;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.pagination-item {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  margin: 0 5px;
+  border-radius: 50%;
+  cursor: pointer;
+  background-color: transparent;
+  transition: var(--transition);
+}
+
+.pagination-item.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.question {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.question:last-child {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.question.unanswered {
+  border-left: 4px solid var(--primary-color);
+  padding-left: 1.5rem;
+  background-color: rgba(74, 111, 165, 0.05);
+}
+
+.question.unanswered-highlight {
+  animation: highlight-pulse 2s ease-in-out;
+  border: 2px solid var(--primary-color);
+}
+
+@keyframes highlight-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0.7); }
+  70% { box-shadow: 0 0 0 15px rgba(74, 111, 165, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0); }
+}
+
+.question h3 {
+  margin-bottom: 1.2rem;
+  color: var(--dark-color);
+  font-size: 1.2rem;
+}
+
+.question.unanswered h3 {
+  color: var(--accent-color);
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.option {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.7rem 1rem;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background-color: #fff;
+}
+
+.option:hover {
+  background-color: #f1f3f5;
+  border-color: #adb5bd;
+}
+
+.option.selected {
+  background-color: rgba(74, 111, 165, 0.1);
+  border-color: var(--primary-color);
+  font-weight: 500;
+}
+
+.option input[type="radio"] {
+  margin-right: 10px;
+  margin-top: 3px;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+/* Results Page Specific Styles */
+.results-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.user-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.results-table th, .results-table td {
+  padding: 0.75rem;
+  text-align: center;
+  border: 1px solid #dee2e6;
+}
+
+.results-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.results-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 2rem auto;
+}
+
+.personality-description {
+  margin-bottom: 2rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* DISC Type Colors */
+.type-d {
+  color: #e63946;
+}
+
+.type-i {
+  color: #f9c74f;
+}
+
+.type-s {
+  color: #43aa8b;
+}
+
+.type-c {
+  color: #577590;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .user-info {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Radar Chart Styles */
+.radar-chart {
+  display: block;
+  margin: 0 auto;
+}
+
+/* 網絡狀態樣式 */
+#network-status {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  z-index: 1000;
+  border-radius: 0 0 0 5px;
+  transition: all 0.3s ease;
+}
+
+.status-online {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.status-offline {
+  background-color: #f44336;
+  color: white;
+}
+
+/* 自動保存狀態樣式 */
+.save-status {
+  display: none;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  z-index: 1000;
+}
+
+/* 測驗時間顯示樣式 */
+.test-duration {
+  text-align: right;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* 自動保存指示器 */
+#auto-save-indicator {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1000;
+}
+
+.auto-save-indicator.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.auto-save-indicator.warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.auto-save-indicator.error {
+  background-color: #f44336;
+  color: white;
+}
+
+/* 消息容器 */
+#message-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  width: 80%;
+  max-width: 400px;
+}
+
+.message {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s;
+}
+
+.message.info {
+  background-color: #2196F3;
+  color: white;
+}
+
+.message.success {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.message.warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.message.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.message.fadeOut {
+  animation: fadeOut 0.5s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
+/* 測驗時間顯示 */
+#test-duration-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 5px 10px;
+  background-color: #333;
+  color: white;
+  font-size: 0.8rem;
+  border-radius: 0 0 5px 0;
+  z-index: 1000;
+}
+
+/* 繼續測驗選項 */
+.start-options {
+  margin: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (min-width: 768px) {
+  .start-options {
+    flex-direction: row;
+    justify-content: center;
+  }
+}
+
+.session-info {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 5px;
+}
+
+/* 未回答問題高亮 */
+.unanswered-highlight {
+  animation: pulseHighlight 1.5s ease-in-out 2;
+}
+
+@keyframes pulseHighlight {
+  0% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0.4); }
+  70% { box-shadow: 0 0 0 15px rgba(74, 111, 165, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0); }
+}
+
+/* 状态消息 */
+.status-message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 4px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+  animation: fadeIn 0.5s;
+}
+
+/* 答題進度 */
+.progress-container {
+  margin: 20px 0;
+  width: 100%;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  height: 20px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #4CAF50;
+  width: 0;
+  transition: width 0.5s ease;
+}
+
+.progress-info {
+  margin-top: 5px;
+  font-size: 0.85rem;
+  color: #666;
+  text-align: right;
+}
+
+/* 按鈕狀態 */
+.btn.disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* 首頁歡迎卡片 */
+.welcome-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.welcome-header {
+    margin-bottom: 1.5rem;
+}
+
+.welcome-header h2 {
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-size: 1.8rem;
+}
+
+.welcome-header p {
+    color: #666;
+    font-size: 1rem;
+}
+
+/* 測驗說明樣式 */
+.test-instructions {
+    margin-bottom: 1rem;
+    background-color: #f9f9f9;
+    padding: 1.2rem;
+    border-radius: 6px;
+    text-align: left;
+}
+
+.test-instructions h3 {
+    margin-bottom: 1rem;
+    color: #444;
+    font-size: 1.3rem;
+    text-align: center;
+}
+
+.test-instructions ul {
+    padding-left: 1.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.test-instructions li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* 性格類型展示 */
+.personality-types {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.personality-type {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 1.2rem;
+    border-radius: 6px;
+    min-width: 100px;
+    height: 40px;
+}
+
+.type-name {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.type-d {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+}
+
+.type-i {
+    background-color: rgba(255, 193, 7, 0.1);
+    color: #e0a800;
+}
+
+.type-s {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+}
+
+.type-c {
+    background-color: rgba(0, 123, 255, 0.1);
+    color: #0069d9;
+}
+
+.input-section {
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.input-section label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.input-section input {
+    width: 100%;
+    max-width: 300px;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    margin: 0 auto;
+}
+
+.start-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+#continueTestContainer {
+    margin-top: 0.5rem;
+    text-align: center;
+}
+
+.session-info {
+    font-size: 0.85rem;
+    color: #666;
+    margin-top: 0.5rem;
+}
+
+.status-message {
+    text-align: center;
+    margin: 1rem auto;
+    max-width: 400px;
+}
+
+@media (max-width: 768px) {
+    .welcome-card {
+        margin: 1rem auto;
+        padding: 1.5rem;
+        max-width: 90%;
+    }
+    
+    .input-section input {
+        max-width: 100%;
+    }
+    
+    .personality-types {
+        gap: 0.5rem;
+    }
+    
+    .personality-type {
+        min-width: 80px;
+        padding: 0.6rem;
+        height: 35px;
+    }
+    
+    .type-name {
+        font-size: 0.85rem;
+    }
+}
+
+/* Quiz Content Styles */
+.quiz-content {
+  margin: 2rem 0;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Error message styles */
+.error-message {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #f5c6cb;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+.success-message {
+  background-color: #d4edda;
+  color: #155724;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #c3e6cb;
+  border-radius: 0.25rem;
+  text-align: center;
+}
+
+/* 未回答問題高亮樣式 */
+.question-card.unanswered {
+  border: 2px solid var(--primary-color);
+  box-shadow: 0 0 8px rgba(74, 111, 165, 0.5);
+  animation: pulse 1.5s infinite;
+}
+
+.question-card.unanswered-highlight {
+  border: 2px solid var(--accent-color) !important;
+  box-shadow: 0 0 10px rgba(230, 57, 70, 0.5) !important;
+  animation: highlight-pulse 2s ease-in-out infinite !important;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 8px rgba(74, 111, 165, 0.5); }
+  70% { box-shadow: 0 0 15px rgba(74, 111, 165, 0.2); }
+  100% { box-shadow: 0 0 8px rgba(74, 111, 165, 0.5); }
+}
+
+@keyframes highlight-pulse {
+  0% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
+  50% { box-shadow: 0 0 15px rgba(230, 57, 70, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
+}
+
+/* DISC結果報告樣式 */
+.score-title {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 1.9rem;
+  color: var(--dark-color);
+  font-weight: 600;
+}
+
+.user-info {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 35px;
+  gap: 60px;
+}
+
+.user-info-item {
+  display: flex;
+  align-items: center;
+  font-size: 1.1rem;
+}
+
+.user-info-item .label {
+  font-weight: bold;
+  margin-right: 10px;
+  color: var(--primary-color);
+}
+
+.user-info-item .value {
+  font-weight: 500;
+}
+
+.disc-table-container {
+  overflow-x: auto;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.disc-score-table {
+  width: 100%;
+  max-width: 650px;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 0 auto 35px;
+  text-align: center;
+  border: 2px solid var(--border-color);
+  box-shadow: var(--shadow);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.disc-score-table th, 
+.disc-score-table td {
+  padding: 10px 15px;
+  border: 1px solid var(--border-color);
+  font-weight: normal;
+  vertical-align: middle;
+  transition: background-color 0.2s ease;
+}
+
+
+/* 表頭樣式 */
+.disc-score-table thead th {
+  border-bottom: 2px solid var(--border-color);
+  font-weight: bold;
+  background-color: #f8f9fa;
+  font-size: 1.1rem;
+  padding: 12px 15px;
+}
+
+.disc-score-table thead th:first-child {
+  border-right: 2px solid var(--border-color);
+}
+
+/* 移除表格底部的多餘邊框 */
+.disc-score-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* 類別單元格樣式 */
+.category-cell {
+  font-weight: bold;
+  padding: 15px 2px;
+  text-align: center;
+  border-right: 2px solid var(--border-color) !important;
+  min-width: 45px;
+  font-size: 1.1rem;
+  background-color: rgba(74, 111, 165, 0.25) !important; /* 最深的背景色 */
+}
+/* 外在行為區塊樣式 */
+.external-section th,
+.external-section td {
+  background-color: rgba(74, 111, 165, 0.05); /* 淺藍色背景 */
+}
+
+/* 標題行稍深一點的背景色 */
+.external-section:nth-child(1) td,
+.external-section:nth-child(3) td,
+.internal-section:nth-child(5) td,
+.internal-section:nth-child(7) td,
+.total-section:nth-child(9) td {
+  background-color: rgba(74, 111, 165, 0.1); /* 標題行稍深的背景色 */
+}
+
+
+
+.external-section:hover td:not(.category-cell) {
+  background-color: rgba(74, 111, 165, 0.15);
+}
+
+
+.external-section:last-child td {
+  border-bottom: 2px solid var(--border-color);
+}
+
+.external-category {
+  background-color: rgba(74, 111, 165, 0.3) !important;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  letter-spacing: 2px;
+  color: #305daf;
+  font-weight: bold;
+}
+
+
+/* 內在動機區塊樣式 */
+.internal-section th,
+.internal-section td {
+  background-color: rgba(230, 57, 70, 0.05); /* 淺紅色背景 */
+}
+
+.internal-section:hover td:not(.category-cell) {
+  background-color: rgba(230, 57, 70, 0.15);
+}
+
+.internal-section:first-child td {
+  border-top: 2px solid var(--border-color);
+}
+
+.internal-section:last-child td {
+  border-bottom: 2px solid var(--border-color);
+}
+
+.internal-category {
+  background-color: rgba(230, 57, 70, 0.3) !important;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  letter-spacing: 2px;
+  color: #b71c1c;
+  font-weight: bold;
+}
+
+/* 合計區塊樣式 */
+.total-section th,
+.total-section td {
+  background-color: rgba(80, 80, 80, 0.05); /* 淺灰色背景 */
+}
+
+
+.total-section:hover td:not(.category-cell) {
+  background-color: rgba(80, 80, 80, 0.15);
+}
+
+.total-section:first-child td {
+  border-top: 2px solid var(--border-color);
+}
+
+.total-category {
+  background-color: rgba(80, 80, 80, 0.3) !important;
+  writing-mode: vertical-lr;
+  text-orientation: upright;
+  letter-spacing: 2px;
+  color: #333333;
+  font-weight: bold;
+}
+
+/* 數字顯示樣式 */
+[id^="ext-"], [id^="int-"], [id^="total-"] {
+  font-weight: 600;
+  font-size: 1.15rem;
+}
+
+/* 點位資訊樣式 - 橫向排列 */
+.points-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+.point-group {
+  flex: 1;
+  min-width: 180px;
+  max-width: 250px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.point-group.external-point {
+  border-left: 4px solid #305daf;
+  background-color: rgba(74, 111, 165, 0.05);
+}
+
+.point-group.internal-point {
+  border-left: 4px solid #b71c1c;
+  background-color: rgba(230, 57, 70, 0.05);
+}
+
+.point-group.total-point {
+  border-left: 4px solid #333333;
+  background-color: rgba(80, 80, 80, 0.05);
+}
+
+
+.point-label {
+  font-weight: bold;
+  white-space: nowrap;
+  font-size: 1rem;
+}
+
+.point-values {
+  display: flex;
+  gap: 12px;
+}
+
+.point-value {
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.external-label {
+  color: #305daf;
+}
+
+.internal-label {
+  color: #b71c1c;
+}
+
+.total-label {
+  color: #333333;
+}
+
+/* 圖表和按鈕樣式 */
+.chart-card {
+  margin-top: 40px;
+  padding: 25px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart-card h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.7rem;
+  color: var(--dark-color);
+  font-weight: 600;
+}
+
+.chart-container {
+  margin: 25px 0;
+  height: 350px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.legend {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.color-box {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.legend-item:nth-child(1) .color-box {
+  background-color: var(--external-bg-color);
+}
+
+.legend-item:nth-child(2) .color-box {
+  background-color: var(--internal-bg-color);
+}
+
+.legend-item:nth-child(3) .color-box {
+  background-color: var(--total-bg-color);
+}
+
+.action-section {
+  margin: 40px 0;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background-color: var(--secondary-color);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .user-info {
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 25px;
+  }
+  
+  .disc-score-table {
+    font-size: 0.9rem;
+    margin-bottom: 25px;
+  }
+
+  .disc-score-table th, 
+  .disc-score-table td {
+    padding: 8px 10px;
+  }
+
+  .category-cell {
+    padding: 10px 2px;
+    min-width: 35px;
+    font-size: 1rem;
+  }
+
+  [id^="ext-"], [id^="int-"], [id^="total-"] {
+    font-size: 1rem;
+  }
+  
+  .legend {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+  }
+
+  .chart-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .chart-container {
+    height: 300px;
+  }
+
+  .score-title {
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+  }
+
+  .points-info {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .point-group {
+    width: 100%;
+    max-width: 280px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .btn {
+    width: 100%;
+    max-width: 250px;
+  }
+}

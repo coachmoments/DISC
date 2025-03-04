@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>點位顯示方案預覽</title>
+    <style>
+        body {
+            font-family: 'Noto Sans TC', 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .preview-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            padding: 25px;
+            border-top: 5px solid #4a6fa5;
+        }
+        
+        h2 {
+            margin-top: 0;
+            color: #4a6fa5;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        /* 方案一：表格式點位 */
+        .points-table-container {
+            margin: 20px auto 30px;
+            max-width: 500px;
+        }
+
+        .points-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+        }
+
+        .points-table th,
+        .points-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .points-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .points-table td {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .points-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .points-table .point-label {
+            text-align: left;
+            font-weight: 600;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .points-table .point-label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+        }
+
+        .external-row .point-label {
+            color: #305daf;
+        }
+
+        .external-row .point-label::before {
+            background-color: #305daf;
+        }
+
+        .external-row td {
+            background-color: rgba(74, 111, 165, 0.05);
+        }
+
+        .internal-row .point-label {
+            color: #b71c1c;
+        }
+
+        .internal-row .point-label::before {
+            background-color: #b71c1c;
+        }
+
+        .internal-row td {
+            background-color: rgba(230, 57, 70, 0.05);
+        }
+
+        .total-row .point-label {
+            color: #333;
+        }
+
+        .total-row .point-label::before {
+            background-color: #333;
+        }
+
+        .total-row td {
+            background-color: rgba(80, 80, 80, 0.05);
+            font-weight: 600;
+        }
+        
+        /* 方案二：卡片式點位 */
+        .points-cards {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px auto;
+            max-width: 650px;
+        }
+
+        .point-card {
+            flex: 1;
+            min-width: 120px;
+            max-width: 200px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e0e0e0;
+        }
+
+        .point-card-header {
+            padding: 10px;
+            text-align: center;
+            font-weight: 600;
+            color: white;
+        }
+
+        .external-card .point-card-header {
+            background-color: #305daf;
+        }
+
+        .internal-card .point-card-header {
+            background-color: #b71c1c;
+        }
+
+        .total-card .point-card-header {
+            background-color: #333;
+        }
+
+        .point-card-body {
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            background-color: white;
+        }
+
+        .coord-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .external-card .coord-value {
+            color: #305daf;
+        }
+
+        .internal-card .coord-value {
+            color: #b71c1c;
+        }
+
+        .total-card .coord-value {
+            color: #333;
+        }
+
+        @media (max-width: 650px) {
+            .points-cards {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .point-card {
+                width: 100%;
+                max-width: 280px;
+            }
+        }
+        
+        /* 方案三：行式點位 */
+        .points-row-container {
+            margin: 15px auto 30px;
+            max-width: 650px;
+            padding: 0 10px;
+        }
+
+        .points-row {
+            display: flex;
+            justify-content: space-between;
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 12px 15px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .points-group {
+            display: flex;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 10px;
+        }
+
+        .points-title {
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .points-value {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .external-points .points-title {
+            color: #305daf;
+        }
+
+        .external-points .points-value {
+            color: #305daf;
+        }
+
+        .internal-points .points-title {
+            color: #b71c1c;
+        }
+
+        .internal-points .points-value {
+            color: #b71c1c;
+        }
+
+        .total-points .points-title {
+            color: #333;
+        }
+
+        .total-points .points-value {
+            color: #333;
+        }
+
+        @media (max-width: 650px) {
+            .points-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .points-group {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .points-title {
+                margin-bottom: 0;
+                margin-right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DISC點位顯示方案預覽</h1>
+        
+        <div class="preview-section">
+            <h2>方案一：表格式點位顯示</h2>
+            <div class="points-table-container">
+                <table class="points-table">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>X 點位</th>
+                            <th>Y 點位</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="external-row">
+                            <td class="point-label">外顯行為</td>
+                            <td>2</td>
+                            <td>2</td>
+                        </tr>
+                        <tr class="internal-row">
+                            <td class="point-label">內在動機</td>
+                            <td>9</td>
+                            <td>-3</td>
+                        </tr>
+                        <tr class="total-row">
+                            <td class="point-label">合計</td>
+                            <td>5.5</td>
+                            <td>-0.5</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <h2>方案二：卡片式點位顯示</h2>
+            <div class="points-cards">
+                <div class="point-card external-card">
+                    <div class="point-card-header">外顯行為</div>
+                    <div class="point-card-body">
+                        <div class="coord-value">X: 2</div>
+                        <div class="coord-value">Y: 2</div>
+                    </div>
+                </div>
+                <div class="point-card internal-card">
+                    <div class="point-card-header">內在動機</div>
+                    <div class="point-card-body">
+                        <div class="coord-value">X: 9</div>
+                        <div class="coord-value">Y: -3</div>
+                    </div>
+                </div>
+                <div class="point-card total-card">
+                    <div class="point-card-header">合計點位</div>
+                    <div class="point-card-body">
+                        <div class="coord-value">X: 5.5</div>
+                        <div class="coord-value">Y: -0.5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <h2>方案三：行式點位顯示</h2>
+            <div class="points-row-container">
+                <div class="points-row">
+                    <div class="points-group external-points">
+                        <span class="points-title">外顯點位</span>
+                        <span class="points-value">(2, 2)</span>
+                    </div>
+                    <div class="points-group internal-points">
+                        <span class="points-title">內在點位</span>
+                        <span class="points-value">(9, -3)</span>
+                    </div>
+                    <div class="points-group total-points">
+                        <span class="points-title">合計點位</span>
+                        <span class="points-value">(5.5, -0.5)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

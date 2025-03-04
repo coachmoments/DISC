@@ -1,0 +1,860 @@
+/* 測驗頁面和結果頁面專用樣式 */
+:root {
+    /* 使用與首頁相同的顏色系統 */
+    --primary-color: #4a6fa5;
+    --secondary-color: #6b8cbc;
+    --accent-color: #e63946;
+    --light-color: #f9f9f9;
+    --dark-color: #1d3557;
+    --background-color: #f8f9fa;
+    --card-background: #ffffff;
+    --border-color: #e1e4e8;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* 使用者標題樣式 */
+.user-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 25px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 25px;
+    font-size: 1.2rem;
+}
+
+.user-header-item {
+    display: flex;
+    align-items: center;
+}
+
+.user-header-item .label {
+    font-weight: bold;
+    margin-right: 12px;
+    color: var(--dark-color);
+}
+
+.user-header-item .value {
+    font-size: 1.25rem;
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+/* 頁頭樣式 - 與首頁保持一致 */
+header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+header h2 {
+    font-size: 2rem;
+    color: white;
+    margin-top: 5px;
+}
+
+/* 測驗頁面樣式 */
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 8px 0;
+}
+
+.user-greeting {
+    font-size: 18px;
+    margin: 20px 0;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.progress-container {
+    width: 100%;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    height: 8px;
+    margin: 15px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    width: 0;
+    transition: width 0.3s ease;
+}
+
+.quiz-content {
+    margin-bottom: 30px;
+}
+
+.question-card {
+    background-color: white;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.question-card.unanswered {
+    border: 2px solid var(--primary-color);
+    animation: pulse 1.5s infinite;
+}
+
+.question-card.unanswered-highlight {
+    border: 2px solid var(--accent-color) !important;
+    box-shadow: 0 0 10px rgba(230, 57, 70, 0.5) !important;
+    animation: highlight-pulse 2s ease-in-out infinite !important;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(74, 111, 165, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(74, 111, 165, 0); }
+}
+
+@keyframes highlight-pulse {
+    0% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
+    50% { box-shadow: 0 0 15px rgba(230, 57, 70, 0.8); }
+    100% { box-shadow: 0 0 5px rgba(230, 57, 70, 0.5); }
+}
+
+.question-header {
+    margin-bottom: 10px;
+}
+
+.question-header h3 {
+    font-size: 18px;
+    color: var(--primary-color);
+    text-align: left;
+}
+
+.question-text {
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background-color: white;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.option:hover {
+    background-color: #e9ecef;
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.option.selected {
+    background-color: rgba(74, 111, 165, 0.1);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.3);
+}
+
+.option-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    margin-right: 15px;
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+.option-text {
+    flex-grow: 1;
+    margin-left: 5px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.page-indicator {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: var(--dark-color);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.page-indicator.active {
+    background-color: var(--primary-color);
+    color: white;
+    transform: scale(1.1);
+}
+
+.page-indicator:hover:not(.active) {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.navigation-buttons button:disabled {
+    background-color: #6c757d;
+    opacity: 0.65;
+    cursor: not-allowed;
+}
+
+.counter-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    color: #6c757d;
+    font-size: 14px;
+}
+
+#auto-save-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1000;
+}
+
+#auto-save-indicator.show {
+    opacity: 1;
+}
+
+/* 隱藏 network status 和測試時間 */
+#network-status-container,
+#test-duration-container {
+    display: none;
+}
+
+/* 結果頁面樣式 */
+.report-content {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    padding: 30px;
+    margin-bottom: 30px;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.user-info-section,
+.score-section,
+.chart-section,
+.personality-section {
+    margin-bottom: 30px;
+}
+
+.info-card,
+.score-card,
+.chart-card,
+.personality-card {
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--light-color);
+}
+
+.info-card h3,
+.score-card h3,
+.chart-card h3,
+.personality-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    font-size: 22px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-info p {
+    font-size: 16px;
+}
+
+.table-container {
+    margin-bottom: 25px;
+}
+
+.table-container:last-child {
+    margin-bottom: 0;
+}
+
+.table-container h4 {
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+/* 表格並排顯示 */
+.table-row-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.table-column {
+    flex: 1;
+    min-width: 300px;
+}
+
+.score-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.score-table th,
+.score-table td {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+}
+
+.score-table th {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+}
+
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    margin: 0 auto;
+    max-width: 600px;
+}
+
+.description-container {
+    margin: 30px 0;
+}
+
+@media (min-width: 768px) {
+    .description-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+.description-item {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.description-item h4 {
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.action-section {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* 列印樣式 */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    header {
+        box-shadow: none;
+    }
+    
+    .report-content {
+        box-shadow: none;
+    }
+    
+    .action-section,
+    footer {
+        display: none;
+    }
+}
+
+.navigation-buttons {
+    margin-bottom: 20px;
+}
+
+/* 圖例樣式優化 */
+.legend {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 25px;
+    background-color: #f9f9f9;
+    padding: 12px 15px;
+    border-radius: 6px;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+
+.color-box {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+
+/* 自定義外顯和內在點的顏色 */
+.legend-item:first-child .color-box {
+    background-color: rgba(65, 105, 225, 0.8) !important; /* 更好看的藍色 */
+}
+
+.legend-item:nth-child(2) .color-box {
+    background-color: rgba(220, 20, 60, 0.8) !important; /* 更好看的紅色 */
+}
+
+.legend-item:nth-child(3) .color-box {
+    background-color: rgba(80, 80, 80, 0.8) !important; /* 灰色 */
+}
+
+/* DISC 分數表專用樣式 */
+.disc-table-container {
+    max-width: 650px;
+    margin: 0 auto;
+    padding: 15px 10px;
+}
+
+.disc-score-table {
+    width: 100%;
+    max-width: 550px;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0 auto 20px;
+    text-align: center;
+    border: 1px solid var(--border-color, #495057);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.95rem;
+}
+
+.disc-score-table th, 
+.disc-score-table td {
+    padding: 6px 10px;
+    border: 1px solid var(--border-color, #e1e4e8);
+    font-weight: normal;
+    vertical-align: middle;
+    transition: background-color 0.2s ease;
+}
+
+.disc-score-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    border-bottom: 2px solid #ccc;
+}
+
+.disc-score-table th:first-child {
+    width: 60px;
+    border-right: 2px solid #ccc;
+}
+
+/* 類別單元格樣式 */
+.category-cell {
+    font-weight: bold;
+    padding: 8px 1px;
+    text-align: center;
+    border-right: 1px solid var(--border-color, #495057) !important;
+    min-width: 30px;
+    font-size: 0.95rem;
+    background-color: rgba(74, 111, 165, 0.2) !important;
+}
+
+/* 外在行為樣式 */
+.external-category {
+    background-color: #e6f2ff;
+    color: #0066cc;
+    border-left: 4px solid #0066cc;
+}
+
+.external-row td {
+    color: #0066cc;
+    background-color: #f5f9ff;
+}
+
+/* 內在動機樣式 */
+.internal-category {
+    background-color: #ffe6e6;
+    color: #cc0000;
+    border-left: 4px solid #cc0000;
+}
+
+.internal-row td {
+    color: #cc0000;
+    background-color: #fff5f5;
+}
+
+/* 合計樣式 */
+.total-category {
+    background-color: #f2f2f2;
+    border-left: 4px solid #444;
+    color: #444;
+}
+
+.total-value-row td {
+    font-weight: bold;
+    background-color: #f9f9f9;
+}
+
+/* 組合行樣式 */
+.combination-row td {
+    font-weight: 500;
+    border-bottom: none;
+    padding-bottom: 3px;
+}
+
+.combination-value-row td {
+    font-size: 18px;
+    font-weight: 600;
+    padding-top: 3px;
+}
+
+/* 點位資訊樣式 */
+.points-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px;
+    background-color: var(--light-color);
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+.point-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.point-label {
+    font-weight: 600;
+    min-width: 80px;
+}
+
+.external-label {
+    color: rgba(65, 105, 225, 1);
+}
+
+.internal-label {
+    color: rgba(220, 20, 60, 1);
+}
+
+.total-label {
+    color: #555;
+}
+
+#external-x, #external-y, #internal-x, #internal-y, #total-x, #total-y {
+    font-weight: 600;
+}
+
+/* 圖表區域樣式 */
+.chart-section {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 5px 0;
+    position: relative;
+}
+
+/* 修改雷達圖卡片樣式 */
+.chart-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin: 0 auto;
+    max-width: 550px;
+    border: 1px solid var(--border-color);
+}
+
+.chart-card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+/* 調整雷達圖容器大小 - 降低高度以適應一頁PDF */
+.chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 380px;
+    margin: 10px auto;
+    max-width: 500px;
+    position: relative;
+}
+
+/* 雷達圖canvas樣式 */
+#radar-chart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+}
+
+/* 點位行樣式 - 更緊湊 */
+.points-row-container {
+    margin: 5px auto 15px;
+    max-width: 550px;
+    padding: 0;
+}
+
+.points-row {
+    display: flex;
+    justify-content: space-between;
+    background: #f9f9f9;
+    border-radius: 6px;
+    padding: 8px 10px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+}
+
+.points-group {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    padding: 0 5px;
+}
+
+.points-title {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+    font-weight: 600;
+}
+
+.points-value {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+/* 更緊湊的分數卡片 */
+.score-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.score-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.user-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 0 5px;
+}
+
+.user-info-item {
+    display: flex;
+    align-items: center;
+}
+
+.user-info-item .label {
+    font-weight: bold;
+    margin-right: 8px;
+    color: var(--dark-color);
+    font-size: 0.9rem;
+}
+
+.user-info-item .value {
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+/* 更緊湊的報告內容佈局 */
+.report-content {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+/* 按鈕區域 */
+.action-section {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* PDF生成優化樣式 */
+@media print {
+    .complete-report-container {
+        padding: 20px !important;
+    }
+    
+    .complete-report-container header {
+        display: block !important;
+        background-color: transparent !important;
+        color: #4a6fa5 !important;
+        box-shadow: none !important;
+        padding: 10px 0 !important;
+        margin-bottom: 15px !important;
+        text-align: center !important;
+    }
+    
+    .complete-report-container header h1 {
+        font-size: 24px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        color: #4a6fa5 !important;
+    }
+    
+    .chart-container {
+        page-break-inside: avoid !important;
+        height: 330px !important;
+        min-height: auto !important;
+        margin-bottom: 15px !important;
+        display: block !important;
+    }
+    
+    #radar-chart {
+        max-width: 100% !important;
+        height: auto !important;
+        display: block !important;
+        margin: 0 auto !important;
+    }
+    
+    .score-section {
+        page-break-inside: avoid !important;
+    }
+    
+    .chart-section {
+        page-break-inside: avoid !important;
+        margin-top: 10px !important;
+        margin-bottom: 10px !important;
+    }
+    
+    /* 只隱藏原始文檔中的行動按鈕和頁腳，保留標題 */
+    .action-section,
+    footer {
+        display: none !important;
+    }
+    
+    /* 不再隱藏標題，因為我們使用克隆的標題 */
+    header:not(.complete-report-container header) {
+        display: none !important;
+    }
+    
+    body {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .report-content {
+        padding: 5px !important;
+        transform: scale(0.9) !important;
+        transform-origin: top center !important;
+    }
+    
+    .chart-card {
+        padding: 10px !important;
+    }
+    
+    .disc-score-table {
+        margin-bottom: 12px !important;
+    }
+    
+    .score-card {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+    }
+}
