@@ -225,14 +225,6 @@ function calculatePoints(combinations) {
 
 // 繪製雷達圖
 function renderRadarChart() {
-    // 桌面版雷達圖
-    renderDesktopRadarChart();
-    // 設置手機版雷達圖事件
-    setupMobileChartEvents();
-}
-
-// 繪製桌面版雷達圖
-function renderDesktopRadarChart() {
     // 獲取保存的數據
     const external = getFromLocalStorage('discExternal');
     const internal = getFromLocalStorage('discInternal');
@@ -257,83 +249,29 @@ function renderDesktopRadarChart() {
     
     const ctx = canvas.getContext('2d');
     
-    // 設置Canvas尺寸 - 根據容器大小自適應
+    // 設置Canvas尺寸 - 根據容器大小和設備類型自適應
     const container = canvas.parentElement;
     const containerWidth = container.clientWidth;
     
-    // 設置合適的尺寸
-    const canvasSize = Math.min(containerWidth, 420);
+    let canvasSize;
+    
+    // 根據屏幕尺寸優化Canvas大小
+    if (window.innerWidth <= 768) {
+        // 手機版：使用更大的尺寸，充分利用可用空間
+        canvasSize = Math.min(containerWidth * 0.95, window.innerWidth * 0.9, 350);
+    } else if (window.innerWidth <= 1024) {
+        // 平板版：適中尺寸
+        canvasSize = Math.min(containerWidth * 0.9, 380);
+    } else {
+        // 桌面版：標準尺寸
+        canvasSize = Math.min(containerWidth, 420);
+    }
+    
     canvas.width = canvasSize;
     canvas.height = canvasSize;
     
     // 繪製雷達圖
     drawRadarChart(ctx, external, internal, total, points);
-}
-
-// 繪製手機版雷達圖
-function renderMobileRadarChart() {
-    // 獲取保存的數據
-    const external = getFromLocalStorage('discExternal');
-    const internal = getFromLocalStorage('discInternal');
-    const total = getFromLocalStorage('discTotal');
-    const points = {
-        external: getFromLocalStorage('discExternalPoints'),
-        internal: getFromLocalStorage('discInternalPoints'),
-        total: getFromLocalStorage('discTotalPoints')
-    };
-    
-    if (!external || !internal || !total || !points.external || !points.internal || !points.total) {
-        console.error('無法獲取雷達圖所需數據');
-        return;
-    }
-    
-    // 獲取手機版Canvas元素
-    const canvas = document.getElementById('radar-chart-mobile');
-    if (!canvas) {
-        console.error('無法獲取手機版Canvas元素');
-        return;
-    }
-    
-    const ctx = canvas.getContext('2d');
-    
-    // 設置較大的Canvas尺寸，不受外容器限制
-    const canvasSize = Math.min(window.innerWidth * 0.85, window.innerHeight * 0.4, 400);
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
-    canvas.style.width = canvasSize + 'px';
-    canvas.style.height = canvasSize + 'px';
-    
-    // 繪製雷達圖
-    drawRadarChart(ctx, external, internal, total, points);
-}
-
-// 設置手機版雷達圖事件
-function setupMobileChartEvents() {
-    const showBtn = document.getElementById('show-chart-btn');
-    const closeBtn = document.getElementById('close-chart-btn');
-    const overlay = document.getElementById('mobile-chart-overlay');
-    
-    if (showBtn) {
-        showBtn.addEventListener('click', () => {
-            overlay.classList.add('active');
-            renderMobileRadarChart();
-        });
-    }
-    
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            overlay.classList.remove('active');
-        });
-    }
-    
-    // 點擊背景關閉
-    if (overlay) {
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay) {
-                overlay.classList.remove('active');
-            }
-        });
-    }
 }
 
 // 繪製雷達圖
@@ -347,12 +285,14 @@ function drawRadarChart(ctx, external, internal, total, points) {
     const centerX = canvasWidth / 2;
     const centerY = canvasHeight / 2;
     
-    // 在手機版上使用較小的半徑，確保圖表完全顯示
+    // 根據設備優化半徑大小，充分利用畫布空間
     let maxRadius;
     if (window.innerWidth <= 768) {
-        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.32; // 手機版使用較小的半徑
+        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.38; // 手機版使用更大的半徑
+    } else if (window.innerWidth <= 1024) {
+        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.36; // 平板版半徑
     } else {
-        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 桌面版使用原來的半徑
+        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 桌面版半徑
     }
     
     // 清除Canvas
