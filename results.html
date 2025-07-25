@@ -564,6 +564,137 @@
          .chart-section-inline {
              margin: 25px 0;
          }
+
+         /* 電腦版和手機版雷達圖控制 */
+         .desktop-chart {
+             display: block;
+         }
+
+         .mobile-chart {
+             display: none;
+         }
+
+         /* 手機版雷達圖樣式 */
+         .mobile-chart-overlay {
+             position: fixed;
+             top: 0;
+             left: 0;
+             width: 100vw;
+             height: 100vh;
+             background: rgba(0, 0, 0, 0.8);
+             z-index: 9999;
+             display: none;
+             align-items: center;
+             justify-content: center;
+         }
+
+         .mobile-chart-overlay.active {
+             display: flex;
+         }
+
+         .mobile-chart-container {
+             background: white;
+             border-radius: 15px;
+             width: 95vw;
+             max-width: 500px;
+             max-height: 90vh;
+             overflow: hidden;
+             position: relative;
+         }
+
+         .mobile-chart-header {
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             padding: 20px 25px 15px;
+             border-bottom: 1px solid #e0e0e0;
+             background: var(--primary-color);
+             color: white;
+         }
+
+         .mobile-chart-header h3 {
+             margin: 0;
+             font-size: 1.4rem;
+         }
+
+         .close-chart-btn {
+             background: none;
+             border: none;
+             font-size: 2rem;
+             color: white;
+             cursor: pointer;
+             padding: 0;
+             width: 40px;
+             height: 40px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             border-radius: 50%;
+             transition: background-color 0.2s;
+         }
+
+         .close-chart-btn:hover {
+             background-color: rgba(255, 255, 255, 0.2);
+         }
+
+         .mobile-chart-content {
+             padding: 25px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             min-height: 350px;
+         }
+
+         #radar-chart-mobile {
+             max-width: 100%;
+             max-height: 100%;
+         }
+
+         .mobile-legend {
+             padding: 20px 25px;
+             border-top: 1px solid #e0e0e0;
+             background: #f8f9fa;
+             display: flex;
+             justify-content: space-around;
+             gap: 15px;
+         }
+
+         .mobile-legend .legend-item {
+             display: flex;
+             align-items: center;
+             gap: 8px;
+             font-size: 0.9rem;
+         }
+
+         .mobile-marker {
+             width: 12px;
+             height: 12px;
+             border-radius: 50%;
+             border: none !important;
+         }
+
+         .mobile-chart-trigger {
+             text-align: center;
+             margin: 20px 0;
+         }
+
+         .mobile-chart-trigger .btn {
+             min-width: 150px;
+             font-size: 1.1rem;
+             padding: 12px 25px;
+         }
+
+         /* 響應式控制 */
+         @media (max-width: 1024px) {
+             .desktop-chart {
+                 display: none;
+             }
+
+             .mobile-chart {
+                 display: block;
+             }
+         }
+
      </style>
 </head>
 <body>
@@ -688,8 +819,8 @@
                             </div>
                         </div>
 
-                        <!-- DISC 雷達圖 -->
-                        <section class="chart-section-inline">
+                        <!-- DISC 雷達圖 - 電腦版 -->
+                        <section class="chart-section-inline desktop-chart">
                             <div class="chart-card">
                                 <h3>DISC 雷達圖</h3>
                                 <div class="chart-container">
@@ -709,6 +840,38 @@
                                         <span>合計</span>
                                     </div>
                                 </div>
+                            </div>
+                        </section>
+
+                        <!-- DISC 雷達圖 - 手機版和平板版 -->
+                        <section class="chart-section-mobile mobile-chart">
+                            <div class="mobile-chart-overlay" id="mobile-chart-overlay">
+                                <div class="mobile-chart-container">
+                                    <div class="mobile-chart-header">
+                                        <h3>DISC 雷達圖</h3>
+                                        <button class="close-chart-btn" id="close-chart-btn">&times;</button>
+                                    </div>
+                                    <div class="mobile-chart-content">
+                                        <canvas id="radar-chart-mobile"></canvas>
+                                    </div>
+                                    <div class="mobile-legend">
+                                        <div class="legend-item">
+                                            <span class="point-marker mobile-marker" style="background-color: rgba(65, 105, 225, 1);"></span>
+                                            <span>外顯行為</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="point-marker mobile-marker" style="background-color: rgba(220, 20, 60, 1);"></span>
+                                            <span>內在動機</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="point-marker mobile-marker" style="background-color: rgba(80, 80, 80, 1);"></span>
+                                            <span>合計</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mobile-chart-trigger">
+                                <button class="btn btn-primary" id="show-chart-btn">查看雷達圖</button>
                             </div>
                         </section>
 
