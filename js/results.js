@@ -387,21 +387,32 @@ function drawScale(ctx, centerX, centerY, maxRadius) {
         ctx.fillText(i.toString(), centerX, centerY - radius - 5);
     }
     
-    // 繪製軸標籤 - 主要的4個DISC軸線
-    ctx.font = `bold ${labelFontSize}px Arial`;
+    // 在四個角落繪製DISC字母
+    ctx.font = `bold ${Math.max(16, Math.min(20, maxRadius / 8))}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     
-    // 計算主要軸線的角度（保持原來的4個方向）
-    const mainAxes = [
-        { label: 'D+I', angle: -Math.PI / 2 },      // 上方
-        { label: 'I+S', angle: 0 },                 // 右方  
-        { label: 'S+C', angle: Math.PI / 2 },       // 下方
-        { label: 'C+D', angle: Math.PI }            // 左方
+    // 計算角落位置的偏移量
+    const cornerOffset = maxRadius + Math.max(25, maxRadius / 6);
+    
+    // DISC字母在四個角落的位置
+    const discCorners = [
+        { letter: 'D', x: centerX + cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#28a745' },  // 右上角 - 掌控型 (綠色)
+        { letter: 'I', x: centerX + cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#dc3545' },  // 右下角 - 影響型 (紅色)
+        { letter: 'S', x: centerX - cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#007bff' },  // 左下角 - 沉穩型 (藍色)
+        { letter: 'C', x: centerX - cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#ffc107' }   // 左上角 - 嚴謹型 (黃色)
     ];
     
-    mainAxes.forEach(axis => {
-        const x = centerX + (maxRadius + labelOffset) * Math.cos(axis.angle);
-        const y = centerY + (maxRadius + labelOffset) * Math.sin(axis.angle);
-        ctx.fillText(axis.label, x, y);
+    discCorners.forEach(corner => {
+        // 繪製圓形背景
+        ctx.fillStyle = corner.color;
+        ctx.beginPath();
+        ctx.arc(corner.x, corner.y, Math.max(18, maxRadius / 12), 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 繪製字母
+        ctx.fillStyle = corner.letter === 'C' ? '#333' : 'white';  // 黃色背景用深色字
+        ctx.fillText(corner.letter, corner.x, corner.y);
     });
 }
 
