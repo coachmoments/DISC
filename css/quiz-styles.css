@@ -96,9 +96,7 @@ header h2 {
     transition: width 0.3s ease;
 }
 
-.quiz-content {
-    margin-bottom: 30px;
-}
+
 
 .question-card {
     background-color: white;
@@ -336,18 +334,11 @@ header h2 {
     background-color: white;
     border-radius: 10px;
     box-shadow: var(--shadow);
-    padding: 30px;
     margin-bottom: 30px;
     max-width: 900px;
     margin-left: auto;
     margin-right: auto;
-}
-
-.user-info-section,
-.score-section,
-.chart-section,
-.personality-section {
-    margin-bottom: 30px;
+    margin-top: 15px;
 }
 
 .info-card,
@@ -803,7 +794,6 @@ header h2 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 15px;
-    margin-bottom: 20px;
 }
 
 .score-title {
@@ -842,7 +832,6 @@ header h2 {
 .report-content {
     max-width: 750px;
     margin: 0 auto;
-    padding: 10px 0;
 }
 
 /* 按鈕區域 */
@@ -974,12 +963,6 @@ header h2 {
         100% {
             box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
         }
-    }
-    
-    /* 報告頁面在移動設備上的樣式 */
-    .report-content {
-        padding: 15px;
-        margin: 10px;
     }
     
     /* 圖表卡片在移動設備上的樣式 */
