@@ -785,181 +785,329 @@ function generatePDF() {
     
     // 創建PDF容器並填充內容
     function createPDFContainer() {
-        // 創建用於PDF的容器
+        // 創建用於PDF的容器 - A4尺寸優化
         const container = document.createElement('div');
         container.id = 'pdf-container';
-        container.style.cssText = 'position:absolute; left:-9999px; width:750px; background-color:white; padding:20px; font-family:Arial, sans-serif;';
+        container.style.cssText = 'position:absolute; left:-9999px; width:780px; background-color:white; padding:30px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.6; color:#333;';
         
-        // 創建標題
-        const title = document.createElement('h1');
-        title.innerHTML = 'DISC 人格測驗 - 結果報告';
-        title.style.cssText = 'text-align:center; color:#4a6fa5; font-size:22px; margin-bottom:15px;';
-        container.appendChild(title);
+        // 創建頁眉區域
+        const header = document.createElement('div');
+        header.style.cssText = 'text-align:center; margin-bottom:30px; padding-bottom:20px; border-bottom:3px solid #4a6fa5;';
+        
+        // 主標題
+        const mainTitle = document.createElement('div');
+        mainTitle.innerHTML = 'DISCovery';
+        mainTitle.style.cssText = 'font-size:28px; font-weight:bold; color:#4a6fa5; margin-bottom:5px; letter-spacing:2px;';
+        header.appendChild(mainTitle);
+        
+        // 副標題
+        const subTitle = document.createElement('div');
+        subTitle.innerHTML = '自我發現人格特質 - 測驗報告';
+        subTitle.style.cssText = 'font-size:16px; color:#666; margin-bottom:10px;';
+        header.appendChild(subTitle);
+        
+        container.appendChild(header);
         
         // 創建用户信息區
+        const userInfoContainer = document.createElement('div');
+        userInfoContainer.style.cssText = 'background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; padding:20px; margin-bottom:25px; border:1px solid #dee2e6;';
+        
+        const userInfoTitle = document.createElement('h3');
+        userInfoTitle.innerHTML = '測驗資訊';
+        userInfoTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 15px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
+        userInfoContainer.appendChild(userInfoTitle);
+        
         const userInfo = document.querySelector('.user-info').cloneNode(true);
-        userInfo.style.cssText = 'margin:10px 0 20px; padding:10px; background-color:#f9f9f9; border-radius:5px; display:flex; justify-content:space-around;';
-        container.appendChild(userInfo);
+        userInfo.style.cssText = 'display:flex; justify-content:space-around; background:white; border-radius:8px; padding:15px; box-shadow:0 2px 4px rgba(0,0,0,0.1);';
+        
+        // 調整用戶信息項目樣式
+        const userInfoItems = userInfo.querySelectorAll('.user-info-item');
+        userInfoItems.forEach(item => {
+            item.style.cssText = 'display:flex; align-items:center; font-size:14px;';
+            const label = item.querySelector('.label');
+            const value = item.querySelector('.value');
+            if (label) label.style.cssText = 'font-weight:bold; margin-right:8px; color:#4a6fa5;';
+            if (value) value.style.cssText = 'font-weight:500; color:#333;';
+        });
+        
+        userInfoContainer.appendChild(userInfo);
+        container.appendChild(userInfoContainer);
 
         // 添加DISC維度說明
         const explanationSection = document.querySelector('.explanation-section');
         if (explanationSection) {
-            const explanationClone = explanationSection.cloneNode(true);
-            explanationClone.style.cssText = 'margin:15px 0; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #dee2e6;';
+            const explanationContainer = document.createElement('div');
+            explanationContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; border:1px solid #dee2e6;';
             
-            // 調整標題樣式
-            const h4 = explanationClone.querySelector('h4');
-            if (h4) {
-                h4.style.cssText = 'text-align:center; color:#4a6fa5; margin-bottom:15px; font-size:14px; font-weight:600;';
-            }
+            const explanationTitle = document.createElement('h3');
+            explanationTitle.innerHTML = 'DISC 人格特質說明';
+            explanationTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; text-align:center; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block; width:100%; box-sizing:border-box;';
+            explanationContainer.appendChild(explanationTitle);
             
-            // 調整網格佈局
-            const grid = explanationClone.querySelector('.explanation-grid');
-            if (grid) {
-                grid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;';
-            }
+            const explanationGrid = document.createElement('div');
+            explanationGrid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:15px;';
             
-            // 調整說明項目樣式
-            const items = explanationClone.querySelectorAll('.explanation-item');
-            items.forEach(item => {
-                item.style.cssText = 'display:flex; align-items:center; background:white; padding:10px; border-radius:5px; box-shadow:0 1px 2px rgba(0,0,0,0.05);';
+            // 手動創建DISC維度說明項目，確保樣式正確
+            const dimensions = [
+                { label: 'D', title: '掌控型 (Dominance)', desc: '直接、果斷、結果導向、喜歡挑戰', color: '#28a745' },
+                { label: 'I', title: '影響型 (Influence)', desc: '外向、樂觀、善於溝通、注重人際關係', color: '#dc3545' },
+                { label: 'S', title: '沉穩型 (Steadiness)', desc: '穩重、耐心、合作性強、追求和諧', color: '#007bff' },
+                { label: 'C', title: '嚴謹型 (Conscientiousness)', desc: '善於分析、有條理、注重細節、矜持的', color: '#ffc107' }
+            ];
+            
+            dimensions.forEach(dim => {
+                const item = document.createElement('div');
+                item.style.cssText = 'display:flex; align-items:center; background:white; padding:15px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1); border-left:4px solid ' + dim.color + ';';
                 
-                const label = item.querySelector('.dimension-label');
-                if (label) {
-                    label.style.cssText = 'width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color:white; margin-right:10px; flex-shrink:0;';
-                }
+                const label = document.createElement('div');
+                label.innerHTML = dim.label;
+                label.style.cssText = `width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:16px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:15px; flex-shrink:0; background-color:${dim.color};`;
+                item.appendChild(label);
                 
-                const info = item.querySelector('.dimension-info');
-                if (info) {
-                    const strong = info.querySelector('strong');
-                    if (strong) strong.style.cssText = 'display:block; margin-bottom:3px; font-size:11px; color:#333;';
-                    
-                    const p = info.querySelector('p');
-                    if (p) p.style.cssText = 'margin:0; font-size:9px; color:#666; line-height:1.3;';
-                }
+                const info = document.createElement('div');
+                info.style.cssText = 'flex:1;';
+                
+                const title = document.createElement('div');
+                title.innerHTML = dim.title;
+                title.style.cssText = 'font-weight:bold; font-size:13px; color:#333; margin-bottom:5px;';
+                info.appendChild(title);
+                
+                const desc = document.createElement('div');
+                desc.innerHTML = dim.desc;
+                desc.style.cssText = 'font-size:11px; color:#666; line-height:1.4;';
+                info.appendChild(desc);
+                
+                item.appendChild(info);
+                explanationGrid.appendChild(item);
             });
             
-            container.appendChild(explanationClone);
+            explanationContainer.appendChild(explanationGrid);
+            container.appendChild(explanationContainer);
         }
         
-        // 創建表格區域
-        const tableContainer = document.createElement('div');
-        tableContainer.style.cssText = 'margin-bottom:15px;';
+        // 創建分數表格區域
+        const scoreContainer = document.createElement('div');
+        scoreContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
         
-        // 獲取原始表格並克隆
+        const scoreTitle = document.createElement('h3');
+        scoreTitle.innerHTML = 'DISC 分數統計';
+        scoreTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
+        scoreContainer.appendChild(scoreTitle);
+        
+        // 獲取原始表格並重新設計
         const originalTable = document.querySelector('.disc-score-table');
         const tableClone = originalTable.cloneNode(true);
-        tableClone.style.cssText = 'width:100%; border-collapse:collapse; margin:0 auto; font-size:12px;';
+        tableClone.style.cssText = 'width:100%; border-collapse:separate; border-spacing:0; margin:0 auto; font-size:13px; border-radius:10px; overflow:hidden; box-shadow:0 2px 4px rgba(0,0,0,0.1);';
         
-        // 確保表格樣式正確
-        const categoryTDs = tableClone.querySelectorAll('.category-cell');
-        categoryTDs.forEach(td => {
-            td.style.cssText = 'background-color:#e6f0ff; font-weight:bold; padding:8px 12px; text-align:center; border-right:2px solid #ccc;';
-        });
-        
-        // 修正表格單元格樣式
-        const allTDs = tableClone.querySelectorAll('td:not(.category-cell)');
-        allTDs.forEach(td => {
-            td.style.cssText = 'padding:6px 8px; border:1px solid #ccc; text-align:center;';
-        });
-        
-        // 處理外在行為區塊
-        const externalRows = tableClone.querySelectorAll('.external-section');
-        externalRows.forEach(row => {
-            row.querySelectorAll('td:not(.category-cell)').forEach(td => {
-                td.style.backgroundColor = 'rgba(74, 111, 165, 0.1)';
+        // 設計表頭樣式
+        const thead = tableClone.querySelector('thead');
+        if (thead) {
+            const headerCells = thead.querySelectorAll('th');
+            headerCells.forEach((th, index) => {
+                if (index === 0) {
+                    th.style.cssText = 'background:#4a6fa5; color:white; font-weight:bold; padding:12px 15px; text-align:center; font-size:14px;';
+                } else {
+                    th.style.cssText = 'background:#4a6fa5; color:white; font-weight:bold; padding:12px 8px; text-align:center; font-size:14px;';
+                }
             });
-        });
+        }
         
-        // 處理內在動機區塊
-        const internalRows = tableClone.querySelectorAll('.internal-section');
-        internalRows.forEach(row => {
-            row.querySelectorAll('td:not(.category-cell)').forEach(td => {
-                td.style.backgroundColor = 'rgba(230, 57, 70, 0.1)';
+        // 處理表格行樣式
+        const tbody = tableClone.querySelector('tbody');
+        if (tbody) {
+            const rows = tbody.querySelectorAll('tr');
+            rows.forEach((row, rowIndex) => {
+                const cells = row.querySelectorAll('td');
+                cells.forEach((td, colIndex) => {
+                    if (colIndex === 0) {
+                        // 類別單元格
+                        let bgColor = '#f8f9fa';
+                        let textColor = '#333';
+                        if (row.classList.contains('external-section')) {
+                            bgColor = 'rgba(65, 105, 225, 0.1)';
+                            textColor = 'rgba(65, 105, 225, 1)';
+                        } else if (row.classList.contains('internal-section')) {
+                            bgColor = 'rgba(220, 20, 60, 0.1)';
+                            textColor = 'rgba(220, 20, 60, 1)';
+                        } else if (row.classList.contains('total-section')) {
+                            bgColor = 'rgba(80, 80, 80, 0.1)';
+                            textColor = 'rgba(80, 80, 80, 1)';
+                        }
+                        td.style.cssText = `background:${bgColor}; color:${textColor}; font-weight:bold; padding:12px 15px; text-align:center; border-right:2px solid #dee2e6; font-size:14px;`;
+                    } else {
+                        // 數據單元格
+                        let bgColor = 'white';
+                        if (row.classList.contains('external-section')) {
+                            bgColor = 'rgba(65, 105, 225, 0.05)';
+                        } else if (row.classList.contains('internal-section')) {
+                            bgColor = 'rgba(220, 20, 60, 0.05)';
+                        } else if (row.classList.contains('total-section')) {
+                            bgColor = 'rgba(80, 80, 80, 0.05)';
+                        }
+                        td.style.cssText = `background:${bgColor}; padding:12px 8px; text-align:center; border-bottom:1px solid #f0f0f0; font-size:16px; font-weight:bold; color:#333;`;
+                    }
+                });
             });
-        });
+        }
         
-        // 處理合計區塊
-        const totalRows = tableClone.querySelectorAll('.total-section');
-        totalRows.forEach(row => {
-            row.querySelectorAll('td:not(.category-cell)').forEach(td => {
-                td.style.backgroundColor = 'rgba(80, 80, 80, 0.1)';
-            });
-        });
-        
-        tableContainer.appendChild(tableClone);
-        container.appendChild(tableContainer);
+        scoreContainer.appendChild(tableClone);
+        container.appendChild(scoreContainer);
         
         // 添加點位資訊
+        const pointsContainer = document.createElement('div');
+        pointsContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; border:1px solid #dee2e6;';
+        
+        const pointsTitle = document.createElement('h3');
+        pointsTitle.innerHTML = '點位座標';
+        pointsTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
+        pointsContainer.appendChild(pointsTitle);
+        
         const pointsRow = document.querySelector('.points-row').cloneNode(true);
-        pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:#f9f9f9; border-radius:5px; padding:8px; margin-bottom:15px; border:1px solid #eee; font-size:12px;';
-        container.appendChild(pointsRow);
+        pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:white; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.1);';
+        
+        // 優化點位組樣式
+        const pointGroups = pointsRow.querySelectorAll('.points-group');
+        pointGroups.forEach(group => {
+            group.style.cssText = 'display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; position:relative;';
+            
+            const title = group.querySelector('.points-title');
+            if (title) {
+                title.style.cssText = 'font-size:12px; font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;';
+            }
+            
+            const value = group.querySelector('.points-value');
+            if (value) {
+                value.style.cssText = 'font-size:18px; font-weight:bold; color:#333; background:linear-gradient(135deg, #f8f9fa, #ffffff); padding:10px 15px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:2px solid transparent;';
+                
+                // 根據類型設置邊框顏色
+                if (group.classList.contains('external-points')) {
+                    value.style.borderColor = 'rgba(65, 105, 225, 0.3)';
+                    title.style.color = 'rgba(65, 105, 225, 1)';
+                } else if (group.classList.contains('internal-points')) {
+                    value.style.borderColor = 'rgba(220, 20, 60, 0.3)';
+                    title.style.color = 'rgba(220, 20, 60, 1)';
+                } else if (group.classList.contains('total-points')) {
+                    value.style.borderColor = 'rgba(80, 80, 80, 0.3)';
+                    title.style.color = 'rgba(80, 80, 80, 1)';
+                }
+            }
+        });
+        
+        pointsContainer.appendChild(pointsRow);
+        container.appendChild(pointsContainer);
 
         // 添加結果解讀說明
         const interpretationSection = document.querySelector('.interpretation-section');
         if (interpretationSection) {
-            const interpretationClone = interpretationSection.cloneNode(true);
-            interpretationClone.style.cssText = 'margin:15px 0; padding:15px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05); border:1px solid #e1e4e8;';
+            const interpretationContainer = document.createElement('div');
+            interpretationContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
             
-            // 調整標題樣式
-            const h4 = interpretationClone.querySelector('h4');
-            if (h4) {
-                h4.style.cssText = 'color:#4a6fa5; margin-bottom:15px; font-size:14px; font-weight:600;';
-            }
+            const interpretationTitle = document.createElement('h3');
+            interpretationTitle.innerHTML = '結果解讀';
+            interpretationTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
+            interpretationContainer.appendChild(interpretationTitle);
             
-            // 調整行為說明項目樣式
-            const behaviorItems = interpretationClone.querySelectorAll('.behavior-item');
-            behaviorItems.forEach(item => {
-                item.style.cssText = 'display:flex; align-items:flex-start; margin-bottom:10px; padding:10px; background:#f8f9fa; border-radius:5px;';
+            // 手動創建解讀項目
+            const interpretations = [
+                { label: '外在行為', desc: '代表在工作環境或壓力下展現的行為模式，也就是別人看到的您。', color: 'rgba(65, 105, 225, 1)' },
+                { label: '內在動機', desc: '代表您的內在驅動力和自然傾向，也就是真實的您。', color: 'rgba(220, 20, 60, 1)' },
+                { label: '合計點位', desc: '代表您整體的人格特質傾向，外在行為與內在動機的平衡點。', color: 'rgba(80, 80, 80, 1)' }
+            ];
+            
+            interpretations.forEach(item => {
+                const behaviorItem = document.createElement('div');
+                behaviorItem.style.cssText = 'display:flex; align-items:flex-start; margin-bottom:15px; padding:15px; background:#f8f9fa; border-radius:10px; border-left:4px solid ' + item.color + ';';
                 
-                const label = item.querySelector('.behavior-label');
-                if (label) {
-                    label.style.cssText = 'font-weight:bold; padding:3px 8px; border-radius:10px; color:white; font-size:9px; margin-right:10px; flex-shrink:0;';
-                }
+                const label = document.createElement('div');
+                label.innerHTML = item.label;
+                label.style.cssText = `font-weight:bold; padding:6px 12px; border-radius:15px; color:white; font-size:11px; margin-right:15px; flex-shrink:0; background-color:${item.color};`;
+                behaviorItem.appendChild(label);
                 
-                const p = item.querySelector('p');
-                if (p) {
-                    p.style.cssText = 'margin:0; line-height:1.4; font-size:10px; color:#333;';
-                }
+                const desc = document.createElement('div');
+                desc.innerHTML = item.desc;
+                desc.style.cssText = 'margin:0; line-height:1.5; font-size:12px; color:#333; flex:1; padding-top:2px;';
+                behaviorItem.appendChild(desc);
+                
+                interpretationContainer.appendChild(behaviorItem);
             });
             
-            container.appendChild(interpretationClone);
+            container.appendChild(interpretationContainer);
         }
         
         // 創建雷達圖區域
         const chartContainer = document.createElement('div');
-        chartContainer.style.cssText = 'margin-top:15px; text-align:center;';
+        chartContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
         
         // 添加雷達圖標題
         const chartTitle = document.createElement('h3');
         chartTitle.innerHTML = 'DISC 雷達圖';
-        chartTitle.style.cssText = 'color:#333; margin-bottom:8px; font-size:16px;';
+        chartTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
         chartContainer.appendChild(chartTitle);
         
         // 創建雷達圖畫布的容器
         const radarContainer = document.createElement('div');
-        radarContainer.style.cssText = 'width:350px; height:350px; margin:0 auto; position:relative;';
+        radarContainer.style.cssText = 'width:400px; height:400px; margin:0 auto 20px auto; position:relative; background:#fafafa; border-radius:10px; padding:20px; box-sizing:border-box;';
         
         // 獲取原始雷達圖的圖像數據
         const originalCanvas = document.getElementById('radar-chart');
         const radarImg = document.createElement('img');
         radarImg.src = originalCanvas.toDataURL('image/png');
-        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain;';
+        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:8px;';
         
         radarContainer.appendChild(radarImg);
         chartContainer.appendChild(radarContainer);
         
         // 添加圖例
-        const legend = document.querySelector('.legend').cloneNode(true);
-        legend.style.cssText = 'display:flex; justify-content:center; gap:15px; margin-top:8px; font-size:12px;';
-        chartContainer.appendChild(legend);
+        const legendContainer = document.createElement('div');
+        legendContainer.style.cssText = 'background:#f8f9fa; border-radius:8px; padding:15px; border:1px solid #dee2e6;';
         
+        const legendTitle = document.createElement('div');
+        legendTitle.innerHTML = '圖例說明';
+        legendTitle.style.cssText = 'font-weight:bold; font-size:12px; color:#4a6fa5; margin-bottom:10px; text-align:center;';
+        legendContainer.appendChild(legendTitle);
+        
+        const legend = document.querySelector('.legend').cloneNode(true);
+        legend.style.cssText = 'display:flex; justify-content:center; gap:20px; font-size:11px;';
+        
+        // 優化圖例項目樣式
+        const legendItems = legend.querySelectorAll('.legend-item');
+        legendItems.forEach(item => {
+            item.style.cssText = 'display:flex; align-items:center; background:white; padding:8px 12px; border-radius:20px; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
+            
+            const marker = item.querySelector('.point-marker');
+            if (marker) {
+                marker.style.cssText = marker.style.cssText + '; width:16px; height:16px; font-size:10px; margin-right:8px;';
+            }
+            
+            const text = item.querySelector('span:last-child');
+            if (text) {
+                text.style.cssText = 'font-weight:500; color:#333;';
+            }
+        });
+        
+        legendContainer.appendChild(legend);
+        chartContainer.appendChild(legendContainer);
         container.appendChild(chartContainer);
         
-        // 添加頁腳
+        // 添加專業頁腳
         const footer = document.createElement('div');
-        footer.style.cssText = 'margin-top:20px; text-align:center; font-size:11px; color:#777;';
-        footer.innerHTML = '<p>&copy; coachmonents DISC人格測驗. 保留所有權利。</p>';
+        footer.style.cssText = 'margin-top:30px; padding-top:20px; border-top:2px solid #4a6fa5; text-align:center; color:#666;';
+        
+        const footerContent = document.createElement('div');
+        footerContent.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:11px;';
+        
+        const copyright = document.createElement('div');
+        copyright.innerHTML = '&copy; coachmonents DISC人格測驗. 保留所有權利。';
+        copyright.style.cssText = 'font-weight:500;';
+        
+        const reportInfo = document.createElement('div');
+        reportInfo.innerHTML = `報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
+        reportInfo.style.cssText = 'font-style:italic;';
+        
+        footerContent.appendChild(copyright);
+        footerContent.appendChild(reportInfo);
+        footer.appendChild(footerContent);
+        
         container.appendChild(footer);
         
         return container;
