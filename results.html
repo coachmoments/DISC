@@ -330,6 +330,67 @@
             flex-shrink: 0;
         }
 
+        /* 手機版優化：簡化人格特質說明區域 */
+        @media (max-width: 768px) {
+            .explanation-section {
+                margin: 15px 0;
+                padding: 15px;
+                background: transparent;
+                border: none;
+                border-radius: 0;
+            }
+
+            .explanation-section h4 {
+                font-size: 1.1rem;
+                margin-bottom: 15px;
+                text-align: left;
+            }
+
+            .explanation-grid {
+                display: block;
+                gap: 0;
+            }
+
+            .explanation-item {
+                display: block;
+                background: transparent;
+                padding: 8px 0;
+                border-radius: 0;
+                box-shadow: none;
+                border-bottom: 1px solid #eee;
+            }
+
+            .explanation-item:last-child {
+                border-bottom: none;
+            }
+
+            .dimension-label {
+                width: 24px;
+                height: 24px;
+                font-size: 0.9rem;
+                margin-right: 10px;
+                display: inline-flex;
+                vertical-align: top;
+            }
+
+            .dimension-info {
+                display: inline-block;
+                vertical-align: top;
+                width: calc(100% - 34px);
+            }
+
+            .dimension-info strong {
+                font-size: 0.95rem;
+                margin-bottom: 2px;
+            }
+
+            .dimension-info p {
+                font-size: 0.85rem;
+                line-height: 1.3;
+                margin: 0;
+            }
+        }
+
         .d-label { background-color: #28a745; }
         .i-label { background-color: #dc3545; }
         .s-label { background-color: #007bff; }
@@ -644,7 +705,7 @@
                                     </div>
                                     <div class="legend-item">
                                         <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
-                                        <span>合計</span>
+                                        <span>綜合點位</span>
                                     </div>
                                 </div>
                             </div>
