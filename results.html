@@ -434,7 +434,101 @@
                 font-size: 0.75rem;
             }
 
-            .dimension-info p {
+                         .dimension-info p {
+                font-size: 0.7rem;
+                line-height: 1.15;
+            }
+
+            /* 結果解讀區域手機版優化 */
+            .interpretation-section {
+                margin: 10px 0;
+                padding: 8px 12px;
+                background: #f9f9f9;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
+                box-shadow: none;
+            }
+
+            .interpretation-section h4 {
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+                text-align: center;
+                color: #333;
+                font-weight: 600;
+            }
+
+            .behavior-explanation {
+                margin-bottom: 8px;
+            }
+
+            .behavior-item {
+                display: flex;
+                align-items: flex-start;
+                margin-bottom: 4px;
+                padding: 4px 0;
+                background: transparent;
+                border-radius: 0;
+                font-size: 0.8rem;
+            }
+
+            .behavior-item:not(:last-child) {
+                border-bottom: 1px solid #f0f0f0;
+                padding-bottom: 6px;
+                margin-bottom: 2px;
+            }
+
+            .behavior-label {
+                font-weight: 600;
+                padding: 2px 6px;
+                border-radius: 10px;
+                color: white;
+                font-size: 0.7rem;
+                margin-right: 8px;
+                flex-shrink: 0;
+                margin-top: 1px;
+                min-width: 48px;
+                text-align: center;
+            }
+
+            .behavior-item p {
+                margin: 0;
+                line-height: 1.2;
+                color: #666;
+                font-size: 0.75rem;
+                word-wrap: break-word;
+                flex: 1;
+                min-width: 0;
+            }
+        }
+
+        /* 極小尺寸設備結果解讀進一步優化 */
+        @media (max-width: 480px) {
+            .interpretation-section {
+                margin: 8px 0;
+                padding: 6px 10px;
+            }
+
+            .interpretation-section h4 {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+
+            .behavior-item {
+                padding: 3px 0;
+            }
+
+            .behavior-item:not(:last-child) {
+                padding-bottom: 5px;
+            }
+
+            .behavior-label {
+                font-size: 0.65rem;
+                padding: 1px 4px;
+                margin-right: 6px;
+                min-width: 42px;
+            }
+
+            .behavior-item p {
                 font-size: 0.7rem;
                 line-height: 1.15;
             }
