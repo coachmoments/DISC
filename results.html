@@ -282,68 +282,6 @@
                 font-size: 0.9rem;
                 min-width: 100px;
             }
-            
-            /* 手機版點位資訊優化 */
-            .points-row-container {
-                margin-top: 20px;
-                padding: 0 5px;
-            }
-            
-            .points-row {
-                padding: 15px 10px;
-                border-radius: 10px;
-            }
-            
-            .points-value {
-                font-size: 1.1rem;
-                padding: 6px 12px;
-            }
-            
-            /* 手機版表格標題優化 */
-            .score-title {
-                font-size: 1.6rem;
-                margin-bottom: 20px;
-            }
-            
-            /* 手機版用戶信息優化 */
-            .user-info {
-                flex-direction: column;
-                gap: 10px;
-                margin-bottom: 20px;
-            }
-            
-            .user-info-item {
-                font-size: 0.95rem;
-            }
-            
-            /* 手機版雷達圖圖例優化 */
-            .legend {
-                flex-direction: column;
-                gap: 10px;
-                padding: 15px 10px;
-                margin-top: 15px;
-            }
-            
-            .legend-item {
-                justify-content: center;
-                padding: 8px 15px;
-            }
-            
-            /* 手機版按鈕區域優化 */
-            .action-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 12px;
-                margin: 20px auto;
-                max-width: 280px;
-            }
-            
-            .action-buttons .btn {
-                width: 100%;
-                max-width: 250px;
-                padding: 0.8rem 1.2rem;
-                font-size: 1rem;
-            }
         }
 
         /* DISC維度說明樣式 */
@@ -560,110 +498,10 @@
              }
          }
 
-         /* 雷達圖區域樣式 */
+         /* 內嵌雷達圖區域樣式 */
          .chart-section-inline {
-             margin: 20px 0;
+             margin: 25px 0;
          }
-         
-         .chart-card {
-             padding: 20px;
-         }
-         
-         .chart-card h3 {
-             text-align: center;
-             margin-bottom: 15px;
-             font-size: 1.4rem;
-         }
-
-         /* 雷達圖容器優化 - 減少間距，增加顯示空間 */
-         .chart-container {
-             width: 100%;
-             max-width: 500px;
-             height: 400px;
-             margin: 0 auto 15px;
-             position: relative;
-             overflow: visible;
-         }
-
-         /* 手機版雷達圖優化 */
-         @media (max-width: 1024px) {
-             .chart-section-inline {
-                 margin: 15px -10px; /* 減少左右邊距 */
-             }
-             
-             .chart-card {
-                 padding: 15px 5px; /* 減少左右內距 */
-             }
-             
-             .chart-card h3 {
-                 font-size: 1.3rem;
-                 margin-bottom: 10px;
-             }
-             
-             .chart-container {
-                 width: calc(100% + 10px); /* 擴展寬度 */
-                 max-width: none;
-                 height: 350px;
-                 margin: 0 -5px 10px; /* 負邊距擴展顯示區域 */
-             }
-             
-             .legend {
-                 padding: 10px 15px;
-                 margin-top: 10px;
-             }
-         }
-
-                   @media (max-width: 768px) {
-              .chart-section-inline {
-                  margin: 10px -15px; /* 進一步減少邊距 */
-              }
-              
-              .chart-card {
-                  padding: 12px 0; /* 最小化內距 */
-              }
-              
-              .chart-container {
-                  width: calc(100vw - 10px); /* 使用視窗寬度 */
-                  height: 320px;
-                  margin: 0 -5px 8px;
-              }
-              
-              .legend {
-                  flex-direction: column;
-                  gap: 8px;
-                  padding: 12px 20px;
-                  margin: 8px 10px 0;
-              }
-              
-              .legend-item {
-                  justify-content: center;
-                  font-size: 0.9rem;
-              }
-          }
-
-          /* 響應式圖例標記控制 */
-          .desktop-marker {
-              display: inline-flex;
-          }
-
-          .mobile-marker {
-              display: none;
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              margin-right: 8px;
-          }
-
-          @media (max-width: 1024px) {
-              .desktop-marker {
-                  display: none;
-              }
-
-              .mobile-marker {
-                  display: inline-block;
-              }
-          }
-
      </style>
 </head>
 <body>
@@ -797,18 +635,15 @@
                                 </div>
                                 <div class="legend">
                                     <div class="legend-item">
-                                        <span class="point-marker desktop-marker" style="background-color: white; color: rgba(65, 105, 225, 1); border: 2px solid rgba(65, 105, 225, 1);">E</span>
-                                        <span class="point-marker mobile-marker" style="background-color: rgba(65, 105, 225, 1);"></span>
+                                        <span class="point-marker" style="background-color: white; color: rgba(65, 105, 225, 1); border: 2px solid rgba(65, 105, 225, 1);">E</span>
                                         <span>外顯行為</span>
                                     </div>
                                     <div class="legend-item">
-                                        <span class="point-marker desktop-marker" style="background-color: white; color: rgba(220, 20, 60, 1); border: 2px solid rgba(220, 20, 60, 1);">I</span>
-                                        <span class="point-marker mobile-marker" style="background-color: rgba(220, 20, 60, 1);"></span>
+                                        <span class="point-marker" style="background-color: white; color: rgba(220, 20, 60, 1); border: 2px solid rgba(220, 20, 60, 1);">I</span>
                                         <span>內在動機</span>
                                     </div>
                                     <div class="legend-item">
-                                        <span class="point-marker desktop-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
-                                        <span class="point-marker mobile-marker" style="background-color: rgba(80, 80, 80, 1);"></span>
+                                        <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
                                         <span>合計</span>
                                     </div>
                                 </div>

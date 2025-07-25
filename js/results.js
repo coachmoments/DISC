@@ -249,54 +249,54 @@ function renderRadarChart() {
     
     const ctx = canvas.getContext('2d');
     
-    // 設置Canvas尺寸 - 根據容器大小和設備類型自適應
+    // 設置Canvas尺寸 - 支援高DPI屏幕，根據容器大小自適應
     const container = canvas.parentElement;
     const containerWidth = container.clientWidth;
     
-    let canvasSize;
+    // 獲取設備像素比，支援高解析度屏幕
+    const devicePixelRatio = window.devicePixelRatio || 1;
     
-    // 根據屏幕尺寸優化Canvas大小
+    // 設置顯示尺寸
+    let displaySize;
     if (window.innerWidth <= 768) {
-        // 手機版：使用更大的尺寸，充分利用可用空間
-        canvasSize = Math.min(containerWidth * 0.95, window.innerWidth * 0.9, 350);
-    } else if (window.innerWidth <= 1024) {
-        // 平板版：適中尺寸
-        canvasSize = Math.min(containerWidth * 0.9, 380);
+        // 手機版：提高最大尺寸限制，確保足夠的顯示空間
+        displaySize = Math.min(containerWidth, 350);
     } else {
-        // 桌面版：標準尺寸
-        canvasSize = Math.min(containerWidth, 420);
+        displaySize = Math.min(containerWidth, 420);
     }
     
-    canvas.width = canvasSize;
-    canvas.height = canvasSize;
+    // 設置CSS顯示尺寸
+    canvas.style.width = displaySize + 'px';
+    canvas.style.height = displaySize + 'px';
+    
+    // 設置實際Canvas繪製尺寸（考慮設備像素比）
+    const actualSize = displaySize * devicePixelRatio;
+    canvas.width = actualSize;
+    canvas.height = actualSize;
+    
+    // 縮放繪製上下文以適應高DPI
+    ctx.scale(devicePixelRatio, devicePixelRatio);
     
     // 繪製雷達圖
-    drawRadarChart(ctx, external, internal, total, points);
+    drawRadarChart(ctx, external, internal, total, points, displaySize);
 }
 
 // 繪製雷達圖
-function drawRadarChart(ctx, external, internal, total, points) {
-    // 獲取Canvas尺寸
-    const canvas = ctx.canvas;
-    const canvasWidth = canvas.width;
-    const canvasHeight = canvas.height;
+function drawRadarChart(ctx, external, internal, total, points, displaySize) {
+    // 使用顯示尺寸而非實際Canvas尺寸來計算佈局
+    const centerX = displaySize / 2;
+    const centerY = displaySize / 2;
     
-    // 計算中心點和半徑
-    const centerX = canvasWidth / 2;
-    const centerY = canvasHeight / 2;
-    
-    // 根據設備優化半徑大小，充分利用畫布空間
+    // 計算最大半徑，確保圖表完全顯示
     let maxRadius;
     if (window.innerWidth <= 768) {
-        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.38; // 手機版使用更大的半徑
-    } else if (window.innerWidth <= 1024) {
-        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.36; // 平板版半徑
+        maxRadius = displaySize * 0.32; // 手機版使用較小的半徑
     } else {
-        maxRadius = Math.min(canvasWidth, canvasHeight) * 0.35; // 桌面版半徑
+        maxRadius = displaySize * 0.35; // 桌面版使用原來的半徑
     }
     
     // 清除Canvas
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+    ctx.clearRect(0, 0, displaySize, displaySize);
     
     // 繪製背景網格
     drawRadarGrid(ctx, centerX, centerY, maxRadius);
@@ -524,79 +524,54 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
     
     ctx.restore(); // 恢復之前的繪圖狀態
     
-    // 根據畫布大小和設備類型調整點位大小
-    const isMobile = window.innerWidth <= 768;
-    const pointRadius = isMobile ? Math.max(4, maxRadius / 30) : Math.max(6, Math.min(8, maxRadius / 20));
+    // 根據畫布大小調整點位大小
+    const pointRadius = Math.max(6, Math.min(8, maxRadius / 20));
     const fontSize = Math.max(10, Math.min(12, maxRadius / 15));
     
-    if (isMobile) {
-        // 手機版：純色點，不顯示字母
-        
-        // 繪製外顯點位（純藍色）
-        ctx.fillStyle = 'rgba(65, 105, 225, 1)';
-        ctx.beginPath();
-        ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // 繪製內在點位（純紅色）
-        ctx.fillStyle = 'rgba(220, 20, 60, 1)';
-        ctx.beginPath();
-        ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-        
-        // 繪製合計點位（純灰色）
-        ctx.fillStyle = 'rgba(80, 80, 80, 1)';
-        ctx.beginPath();
-        ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-    } else {
-        // 桌面版：白色圓圈 + 彩色邊框 + 字母標記
-        
-        // 繪製外顯點位（藍色）
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'rgba(65, 105, 225, 1)';
-        ctx.lineWidth = 2;
-        
-        ctx.beginPath();
-        ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        
-        // 繪製內在點位（紅色）
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'rgba(220, 20, 60, 1)';
-        
-        ctx.beginPath();
-        ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        
-        // 繪製合計點位（灰色）
-        ctx.fillStyle = 'white';
-        ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
-        
-        ctx.beginPath();
-        ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        
-        // 添加點位標記字母
-        ctx.font = `bold ${fontSize}px Arial`;
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        
-        // 外顯點標記
-        ctx.fillStyle = 'rgba(65, 105, 225, 1)';
-        ctx.fillText('E', externalPoint.x, externalPoint.y);
-        
-        // 內顯點標記
-        ctx.fillStyle = 'rgba(220, 20, 60, 1)';
-        ctx.fillText('I', internalPoint.x, internalPoint.y);
-        
-        // 合計點標記
-        ctx.fillStyle = 'rgba(80, 80, 80, 1)';
-        ctx.fillText('T', totalPoint.x, totalPoint.y);
-    }
+    // 繪製外顯點位（藍色）
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'rgba(65, 105, 225, 1)';
+    ctx.lineWidth = 2;
+    
+    ctx.beginPath();
+    ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    // 繪製內在點位（紅色）
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'rgba(220, 20, 60, 1)';
+    
+    ctx.beginPath();
+    ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    // 繪製合計點位（灰色）
+    ctx.fillStyle = 'white';
+    ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
+    
+    ctx.beginPath();
+    ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    
+    // 添加點位標記
+    ctx.font = `bold ${fontSize}px Arial`;
+    
+    // 外顯點標記
+    ctx.fillStyle = 'rgba(65, 105, 225, 1)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('E', externalPoint.x, externalPoint.y);
+    
+    // 內顯點標記
+    ctx.fillStyle = 'rgba(220, 20, 60, 1)';
+    ctx.fillText('I', internalPoint.x, internalPoint.y);
+    
+    // 合計點標記
+    ctx.fillStyle = 'rgba(80, 80, 80, 1)';
+    ctx.fillText('T', totalPoint.x, totalPoint.y);
 }
 
 // 將點位轉換為坐標
@@ -701,11 +676,11 @@ function generatePDF() {
         
         // 給雷達圖足夠時間渲染
         setTimeout(() => {
-                            try {
+            try {
                     // 創建兩頁PDF容器
                     const { page1Container, page2Container } = createTwoPagePDFContainers();
-                    
-                    // 將容器添加到DOM中
+                
+                // 將容器添加到DOM中
                     document.body.appendChild(page1Container);
                     document.body.appendChild(page2Container);
                     
@@ -713,10 +688,10 @@ function generatePDF() {
                     Promise.all([
                         html2canvas(page1Container, {
                             scale: 2,
-                            useCORS: true,
-                            allowTaint: true,
-                            logging: false,
-                            backgroundColor: '#ffffff'
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
                         }),
                         html2canvas(page2Container, {
                             scale: 2,
@@ -726,20 +701,20 @@ function generatePDF() {
                             backgroundColor: '#ffffff'
                         })
                     ]).then(([canvas1, canvas2]) => {
-                        try {
-                            // 移除臨時PDF容器
+                    try {
+                        // 移除臨時PDF容器
                             document.body.removeChild(page1Container);
                             document.body.removeChild(page2Container);
-                            
-                            // 創建PDF文檔
-                            const { jsPDF } = window.jspdf;
-                            const pdf = new jsPDF('p', 'mm', 'a4');
-                            
-                            // 設置PDF頁面尺寸和邊距
+                        
+                        // 創建PDF文檔
+                        const { jsPDF } = window.jspdf;
+                        const pdf = new jsPDF('p', 'mm', 'a4');
+                        
+                        // 設置PDF頁面尺寸和邊距
                             const pageWidth = 210;
                             const pageHeight = 297;
                             const margin = 15;
-                            const contentWidth = pageWidth - (margin * 2);
+                        const contentWidth = pageWidth - (margin * 2);
                             const maxHeight = pageHeight - (margin * 2);
                             
                             // 添加第一頁
@@ -762,14 +737,14 @@ function generatePDF() {
                             const img2Height = Math.min((canvas2.height * img2Width) / canvas2.width, maxHeight);
                             const x2Offset = (pageWidth - img2Width) / 2;
                             
-                            pdf.addImage(
+                        pdf.addImage(
                                 canvas2.toDataURL('image/jpeg', 1.0),
-                                'JPEG',
+                            'JPEG',
                                 x2Offset,
-                                margin,
+                            margin,
                                 img2Width,
                                 img2Height
-                            );
+                        );
                         
                         // 保存PDF
                         const userName = getFromLocalStorage('discUserName') || 'User';
@@ -1002,8 +977,8 @@ function generatePDF() {
                         }
                         td.style.cssText = `background:${bgColor}; padding:12px 8px; text-align:center; border-bottom:1px solid #f0f0f0; font-size:16px; font-weight:bold; color:#333;`;
                     }
-                });
             });
+        });
         }
         
         scoreContainer.appendChild(tableClone);
