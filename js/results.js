@@ -522,54 +522,79 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
     
     ctx.restore(); // 恢復之前的繪圖狀態
     
-    // 根據畫布大小調整點位大小
-    const pointRadius = Math.max(6, Math.min(8, maxRadius / 20));
+    // 根據畫布大小和設備類型調整點位大小
+    const isMobile = window.innerWidth <= 768;
+    const pointRadius = isMobile ? Math.max(4, maxRadius / 30) : Math.max(6, Math.min(8, maxRadius / 20));
     const fontSize = Math.max(10, Math.min(12, maxRadius / 15));
     
-    // 繪製外顯點位（藍色）
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'rgba(65, 105, 225, 1)';
-    ctx.lineWidth = 2;
-    
-    ctx.beginPath();
-    ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    
-    // 繪製內在點位（紅色）
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'rgba(220, 20, 60, 1)';
-    
-    ctx.beginPath();
-    ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    
-    // 繪製合計點位（灰色）
-    ctx.fillStyle = 'white';
-    ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
-    
-    ctx.beginPath();
-    ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.stroke();
-    
-    // 添加點位標記
-    ctx.font = `bold ${fontSize}px Arial`;
-    
-    // 外顯點標記
-    ctx.fillStyle = 'rgba(65, 105, 225, 1)';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('E', externalPoint.x, externalPoint.y);
-    
-    // 內顯點標記
-    ctx.fillStyle = 'rgba(220, 20, 60, 1)';
-    ctx.fillText('I', internalPoint.x, internalPoint.y);
-    
-    // 合計點標記
-    ctx.fillStyle = 'rgba(80, 80, 80, 1)';
-    ctx.fillText('T', totalPoint.x, totalPoint.y);
+    if (isMobile) {
+        // 手機版：純色點，不顯示字母
+        
+        // 繪製外顯點位（純藍色）
+        ctx.fillStyle = 'rgba(65, 105, 225, 1)';
+        ctx.beginPath();
+        ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 繪製內在點位（純紅色）
+        ctx.fillStyle = 'rgba(220, 20, 60, 1)';
+        ctx.beginPath();
+        ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // 繪製合計點位（純灰色）
+        ctx.fillStyle = 'rgba(80, 80, 80, 1)';
+        ctx.beginPath();
+        ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+    } else {
+        // 桌面版：白色圓圈 + 彩色邊框 + 字母標記
+        
+        // 繪製外顯點位（藍色）
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'rgba(65, 105, 225, 1)';
+        ctx.lineWidth = 2;
+        
+        ctx.beginPath();
+        ctx.arc(externalPoint.x, externalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // 繪製內在點位（紅色）
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'rgba(220, 20, 60, 1)';
+        
+        ctx.beginPath();
+        ctx.arc(internalPoint.x, internalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // 繪製合計點位（灰色）
+        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
+        
+        ctx.beginPath();
+        ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        
+        // 添加點位標記字母
+        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // 外顯點標記
+        ctx.fillStyle = 'rgba(65, 105, 225, 1)';
+        ctx.fillText('E', externalPoint.x, externalPoint.y);
+        
+        // 內顯點標記
+        ctx.fillStyle = 'rgba(220, 20, 60, 1)';
+        ctx.fillText('I', internalPoint.x, internalPoint.y);
+        
+        // 合計點標記
+        ctx.fillStyle = 'rgba(80, 80, 80, 1)';
+        ctx.fillText('T', totalPoint.x, totalPoint.y);
+    }
 }
 
 // 將點位轉換為坐標
