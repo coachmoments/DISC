@@ -138,65 +138,7 @@
             font-weight: 600;
             font-size: 1.15rem;
         }
-        
-        /* 點位行樣式 - 優化手機版 */
-        .points-row-container {
-            margin: 15px auto 30px;
-            max-width: 650px;
-            padding: 0 10px;
-        }
 
-        .points-row {
-            display: flex;
-            justify-content: space-between;
-            background: #f9f9f9;
-            border-radius: 8px;
-            padding: 12px 15px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border: 1px solid #e0e0e0;
-        }
-
-        .points-group {
-            display: flex;
-            flex-direction: column;
-            text-align: center;
-            padding: 0 10px;
-        }
-
-        .points-title {
-            font-size: 0.9rem;
-            margin-bottom: 5px;
-            font-weight: 600;
-        }
-
-        .points-value {
-            font-size: 1.1rem;
-            font-weight: 500;
-        }
-
-        .external-points .points-title {
-            color: #305daf;
-        }
-
-        .external-points .points-value {
-            color: #305daf;
-        }
-
-        .internal-points .points-title {
-            color: #b71c1c;
-        }
-
-        .internal-points .points-value {
-            color: #b71c1c;
-        }
-
-        .total-points .points-title {
-            color: #333;
-        }
-
-        .total-points .points-value {
-            color: #333;
-        }
         
         /* 雷達圖容器優化 */
         .chart-container {
@@ -258,22 +200,6 @@
                 font-size: 0.85rem !important;
                 padding: 8px 4px !important;
                 line-height: 1.2 !important;
-            }
-            
-            .points-row {
-                flex-direction: column;
-                gap: 12px;
-            }
-            
-            .points-group {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-            }
-            
-            .points-title {
-                margin-bottom: 0;
-                margin-right: 10px;
             }
             
             .chart-container {
@@ -817,30 +743,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                        
-                        <!-- 點位資訊 - 行式顯示 -->
-                        <div class="points-row-container">
-                            <div class="points-row">
-                                <div class="points-group external-points">
-                                    <span class="points-title">外顯點位</span>
-                                    <span class="points-value">
-                                        (<span id="external-y">2</span>, <span id="external-x">2</span>)
-                                    </span>
-                                </div>
-                                <div class="points-group internal-points">
-                                    <span class="points-title">內在點位</span>
-                                    <span class="points-value">
-                                        (<span id="internal-y">-3</span>, <span id="internal-x">9</span>)
-                                    </span>
-                                </div>
-                                <div class="points-group total-points">
-                                    <span class="points-title">合計點位</span>
-                                    <span class="points-value">
-                                        (<span id="total-y">-0.5</span>, <span id="total-x">5.5</span>)
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
 
                         <!-- DISC 雷達圖 -->
                         <section class="chart-section-inline">
@@ -852,15 +754,24 @@
                                 <div class="legend">
                                     <div class="legend-item">
                                         <span class="point-marker" style="background-color: white; color: rgba(65, 105, 225, 1); border: 2px solid rgba(65, 105, 225, 1);">E</span>
-                                        <span>外顯行為</span>
+                                        <span class="legend-text">外顯行為</span>
+                                        <span class="points-value">
+                                            (<span id="external-y">2</span>, <span id="external-x">2</span>)
+                                        </span>
                                     </div>
                                     <div class="legend-item">
                                         <span class="point-marker" style="background-color: white; color: rgba(220, 20, 60, 1); border: 2px solid rgba(220, 20, 60, 1);">I</span>
-                                        <span>內在動機</span>
+                                        <span class="legend-text">內在動機</span>
+                                        <span class="points-value">
+                                            (<span id="internal-y">-3</span>, <span id="internal-x">9</span>)
+                                        </span>
                                     </div>
                                     <div class="legend-item">
                                         <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
-                                        <span>綜合點位</span>
+                                        <span class="legend-text">合計點位</span>
+                                        <span class="points-value">
+                                            (<span id="total-y">-0.5</span>, <span id="total-x">5.5</span>)
+                                        </span>
                                     </div>
                                 </div>
                             </div>
