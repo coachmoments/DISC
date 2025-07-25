@@ -283,7 +283,226 @@
                 min-width: 100px;
             }
         }
-    </style>
+
+        /* DISC維度說明樣式 */
+        .explanation-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .explanation-section h4 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .explanation-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .explanation-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dimension-label {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .d-label { background-color: #28a745; }
+        .i-label { background-color: #dc3545; }
+        .s-label { background-color: #007bff; }
+        .c-label { background-color: #ffc107; color: #333; }
+
+        .dimension-info strong {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        .dimension-info p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        /* 結果解讀說明樣式 */
+        .interpretation-section {
+            margin: 25px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+            border: 1px solid #e1e4e8;
+        }
+
+        .interpretation-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .behavior-explanation {
+            margin-bottom: 20px;
+        }
+
+        .behavior-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .behavior-label {
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 15px;
+            color: white;
+            font-size: 0.85rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .external-label { background-color: rgba(65, 105, 225, 1); }
+        .internal-label { background-color: rgba(220, 20, 60, 1); }
+        .total-label { background-color: rgba(80, 80, 80, 1); }
+
+        .behavior-item p {
+            margin: 0;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .score-tips {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .score-tips h5 {
+            margin: 0 0 10px 0;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .score-tips ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .score-tips li {
+            margin-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        /* 雷達圖解讀說明樣式 */
+        .chart-explanation {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 1px solid #dee2e6;
+        }
+
+        .chart-explanation h4 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .chart-guide {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .guide-item {
+            display: flex;
+            align-items: flex-start;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .guide-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+
+        .guide-text {
+            line-height: 1.5;
+        }
+
+        .guide-text strong {
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .explanation-grid,
+            .chart-guide {
+                grid-template-columns: 1fr;
+            }
+
+            .explanation-item,
+            .guide-item {
+                padding: 12px;
+            }
+
+            .dimension-label {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+                margin-right: 12px;
+            }
+
+            .behavior-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+                         .behavior-label {
+                 margin-bottom: 10px;
+                 margin-right: 0;
+             }
+         }
+
+         /* 內嵌雷達圖區域樣式 */
+         .chart-section-inline {
+             margin: 25px 0;
+         }
+     </style>
 </head>
 <body>
     <header>
@@ -309,6 +528,41 @@
                         <div class="user-info-item">
                             <span class="label">日期：</span>
                             <span id="test-date" class="value">2025-01-01</span>
+                        </div>
+                    </div>
+
+                    <!-- DISC 維度說明 -->
+                    <div class="explanation-section">
+                        <h4>DISC 人格特質說明</h4>
+                        <div class="explanation-grid">
+                            <div class="explanation-item">
+                                <span class="dimension-label d-label">D</span>
+                                <div class="dimension-info">
+                                    <strong>掌控型 (Dominance)</strong>
+                                    <p>直接、果斷、結果導向、喜歡挑戰</p>
+                                </div>
+                            </div>
+                            <div class="explanation-item">
+                                <span class="dimension-label i-label">I</span>
+                                <div class="dimension-info">
+                                    <strong>影響型 (Influence)</strong>
+                                    <p>外向、樂觀、善於溝通、注重人際關係</p>
+                                </div>
+                            </div>
+                            <div class="explanation-item">
+                                <span class="dimension-label s-label">S</span>
+                                <div class="dimension-info">
+                                    <strong>沉穩型 (Steadiness)</strong>
+                                    <p>穩重、耐心、合作性強、追求和諧</p>
+                                </div>
+                            </div>
+                            <div class="explanation-item">
+                                <span class="dimension-label c-label">C</span>
+                                <div class="dimension-info">
+                                    <strong>嚴謹型 (Conscientiousness)</strong>
+                                    <p>善於分析、有條理、注重細節、矜持的</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     
@@ -371,28 +625,58 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </section>
 
-            <section class="chart-section">
-                <div class="chart-card">
-                    <h3>DISC 雷達圖</h3>
-                    <div class="chart-container">
-                        <canvas id="radar-chart"></canvas>
-                    </div>
-                    <div class="legend">
-                        <div class="legend-item">
-                            <span class="point-marker" style="background-color: white; color: rgba(65, 105, 225, 1); border: 2px solid rgba(65, 105, 225, 1);">E</span>
-                            <span>外顯行為</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="point-marker" style="background-color: white; color: rgba(220, 20, 60, 1); border: 2px solid rgba(220, 20, 60, 1);">I</span>
-                            <span>內在動機</span>
-                        </div>
-                        <div class="legend-item">
-                            <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
-                            <span>合計</span>
+                        <!-- DISC 雷達圖 -->
+                        <section class="chart-section-inline">
+                            <div class="chart-card">
+                                <h3>DISC 雷達圖</h3>
+                                <div class="chart-container">
+                                    <canvas id="radar-chart"></canvas>
+                                </div>
+                                <div class="legend">
+                                    <div class="legend-item">
+                                        <span class="point-marker" style="background-color: white; color: rgba(65, 105, 225, 1); border: 2px solid rgba(65, 105, 225, 1);">E</span>
+                                        <span>外顯行為</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="point-marker" style="background-color: white; color: rgba(220, 20, 60, 1); border: 2px solid rgba(220, 20, 60, 1);">I</span>
+                                        <span>內在動機</span>
+                                    </div>
+                                    <div class="legend-item">
+                                        <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
+                                        <span>合計</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- 結果解讀說明 -->
+                        <div class="interpretation-section">
+                            <h4>結果解讀</h4>
+                            <div class="interpretation-content">
+                                <div class="behavior-explanation">
+                                    <div class="behavior-item">
+                                        <span class="behavior-label external-label">外在行為</span>
+                                        <p>代表在工作環境或壓力下展現的行為模式，也就是別人看到的您。</p>
+                                    </div>
+                                    <div class="behavior-item">
+                                        <span class="behavior-label internal-label">內在動機</span>
+                                        <p>代表您的內在驅動力和自然傾向，也就是真實的您。</p>
+                                    </div>
+                                    <div class="behavior-item">
+                                        <span class="behavior-label total-label">合計點位</span>
+                                        <p>代表您整體的人格特質傾向，外在行為與內在動機的平衡點。</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- <div class="score-tips">
+                                    <ul>
+                                        <li><strong>高分 (7-10分)</strong>：該特質在您身上表現明顯</li>
+                                        <li><strong>中分 (4-6分)</strong>：該特質在您身上中等程度表現</li>
+                                        <li><strong>低分 (0-3分)</strong>：該特質在您身上較少表現</li>
+                                    </ul>
+                                </div> -->
+                            </div>
                         </div>
                     </div>
                 </div>

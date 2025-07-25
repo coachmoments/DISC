@@ -800,6 +800,47 @@ function generatePDF() {
         const userInfo = document.querySelector('.user-info').cloneNode(true);
         userInfo.style.cssText = 'margin:10px 0 20px; padding:10px; background-color:#f9f9f9; border-radius:5px; display:flex; justify-content:space-around;';
         container.appendChild(userInfo);
+
+        // 添加DISC維度說明
+        const explanationSection = document.querySelector('.explanation-section');
+        if (explanationSection) {
+            const explanationClone = explanationSection.cloneNode(true);
+            explanationClone.style.cssText = 'margin:15px 0; padding:15px; background:#f8f9fa; border-radius:8px; border:1px solid #dee2e6;';
+            
+            // 調整標題樣式
+            const h4 = explanationClone.querySelector('h4');
+            if (h4) {
+                h4.style.cssText = 'text-align:center; color:#4a6fa5; margin-bottom:15px; font-size:14px; font-weight:600;';
+            }
+            
+            // 調整網格佈局
+            const grid = explanationClone.querySelector('.explanation-grid');
+            if (grid) {
+                grid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:10px;';
+            }
+            
+            // 調整說明項目樣式
+            const items = explanationClone.querySelectorAll('.explanation-item');
+            items.forEach(item => {
+                item.style.cssText = 'display:flex; align-items:center; background:white; padding:10px; border-radius:5px; box-shadow:0 1px 2px rgba(0,0,0,0.05);';
+                
+                const label = item.querySelector('.dimension-label');
+                if (label) {
+                    label.style.cssText = 'width:25px; height:25px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color:white; margin-right:10px; flex-shrink:0;';
+                }
+                
+                const info = item.querySelector('.dimension-info');
+                if (info) {
+                    const strong = info.querySelector('strong');
+                    if (strong) strong.style.cssText = 'display:block; margin-bottom:3px; font-size:11px; color:#333;';
+                    
+                    const p = info.querySelector('p');
+                    if (p) p.style.cssText = 'margin:0; font-size:9px; color:#666; line-height:1.3;';
+                }
+            });
+            
+            container.appendChild(explanationClone);
+        }
         
         // 創建表格區域
         const tableContainer = document.createElement('div');
@@ -853,6 +894,37 @@ function generatePDF() {
         const pointsRow = document.querySelector('.points-row').cloneNode(true);
         pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:#f9f9f9; border-radius:5px; padding:8px; margin-bottom:15px; border:1px solid #eee; font-size:12px;';
         container.appendChild(pointsRow);
+
+        // 添加結果解讀說明
+        const interpretationSection = document.querySelector('.interpretation-section');
+        if (interpretationSection) {
+            const interpretationClone = interpretationSection.cloneNode(true);
+            interpretationClone.style.cssText = 'margin:15px 0; padding:15px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.05); border:1px solid #e1e4e8;';
+            
+            // 調整標題樣式
+            const h4 = interpretationClone.querySelector('h4');
+            if (h4) {
+                h4.style.cssText = 'color:#4a6fa5; margin-bottom:15px; font-size:14px; font-weight:600;';
+            }
+            
+            // 調整行為說明項目樣式
+            const behaviorItems = interpretationClone.querySelectorAll('.behavior-item');
+            behaviorItems.forEach(item => {
+                item.style.cssText = 'display:flex; align-items:flex-start; margin-bottom:10px; padding:10px; background:#f8f9fa; border-radius:5px;';
+                
+                const label = item.querySelector('.behavior-label');
+                if (label) {
+                    label.style.cssText = 'font-weight:bold; padding:3px 8px; border-radius:10px; color:white; font-size:9px; margin-right:10px; flex-shrink:0;';
+                }
+                
+                const p = item.querySelector('p');
+                if (p) {
+                    p.style.cssText = 'margin:0; line-height:1.4; font-size:10px; color:#333;';
+                }
+            });
+            
+            container.appendChild(interpretationClone);
+        }
         
         // 創建雷達圖區域
         const chartContainer = document.createElement('div');
