@@ -148,7 +148,7 @@ function calculateAndDisplayScores() {
     document.getElementById('total-s').textContent = total.S;
     document.getElementById('total-c').textContent = total.C;
     
-    // 計算組合分數
+    // 計算組合分數（用於點位計算）
     const externalCombinations = calculateCombinationScores(external);
     const internalCombinations = calculateCombinationScores(internal);
     
@@ -159,19 +159,6 @@ function calculateAndDisplayScores() {
         sc: externalCombinations.sc + internalCombinations.sc,
         cd: externalCombinations.cd + internalCombinations.cd
     };
-    
-    // 顯示組合分數
-    // 外在行為組合
-    document.getElementById('ext-di').textContent = externalCombinations.di;
-    document.getElementById('ext-is').textContent = externalCombinations.is;
-    document.getElementById('ext-sc').textContent = externalCombinations.sc;
-    document.getElementById('ext-cd').textContent = externalCombinations.cd;
-    
-    // 內在動機組合
-    document.getElementById('int-di').textContent = internalCombinations.di;
-    document.getElementById('int-is').textContent = internalCombinations.is;
-    document.getElementById('int-sc').textContent = internalCombinations.sc;
-    document.getElementById('int-cd').textContent = internalCombinations.cd;
     
     // 計算點位
     const externalPoints = calculatePoints(externalCombinations);
@@ -225,13 +212,14 @@ function calculateCombinationScores(scores) {
 
 // 計算點位
 function calculatePoints(combinations) {
-    // X=(D+I)-(S+C)，Y=(I+S)-(C+D)
-    const x = combinations.di - combinations.sc;
-    const y = combinations.is - combinations.cd;
+    // 原來的計算：X=(D+I)-(S+C)，Y=(I+S)-(C+D)
+    const originalX = combinations.di - combinations.sc;
+    const originalY = combinations.is - combinations.cd;
     
+    // 交換X和Y的定義，讓數字A變成Y，數字B變成X
     return {
-        x: x,
-        y: y
+        x: originalY,  // 新的X是原來的Y
+        y: originalX   // 新的Y是原來的X
     };
 }
 
@@ -348,10 +336,12 @@ function drawRadarGrid(ctx, centerX, centerY, maxRadius) {
     }
     
     // 繪製軸線
-    const axisCount = 4; // D+I, I+S, S+C, C+D
+    const axisCount = 12; // 12等分
     ctx.save();
-    ctx.strokeStyle = '#c0c0c0';
-    ctx.lineWidth = 1.5;
+    
+    // 先繪製輔助分割線（較細的灰色線）
+    ctx.strokeStyle = '#e0e0e0';
+    ctx.lineWidth = 1;
     ctx.beginPath();
     for (let i = 0; i < axisCount; i++) {
         const angle = (Math.PI * 2 * i) / axisCount - Math.PI / 2;
@@ -361,6 +351,21 @@ function drawRadarGrid(ctx, centerX, centerY, maxRadius) {
         ctx.lineTo(x, y);
     }
     ctx.stroke();
+    
+    // 再繪製主要的4條DISC軸線（較粗的深色線）
+    ctx.strokeStyle = '#c0c0c0';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    const mainAxes = [0, 3, 6, 9]; // 對應 0°, 90°, 180°, 270° (調整為對應D+I, I+S, S+C, C+D的位置)
+    mainAxes.forEach(i => {
+        const angle = (Math.PI * 2 * i) / axisCount - Math.PI / 2;
+        const x = centerX + maxRadius * Math.cos(angle);
+        const y = centerY + maxRadius * Math.sin(angle);
+        ctx.moveTo(centerX, centerY);
+        ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    
     ctx.restore();
 }
 
@@ -382,20 +387,22 @@ function drawScale(ctx, centerX, centerY, maxRadius) {
         ctx.fillText(i.toString(), centerX, centerY - radius - 5);
     }
     
-    // 繪製軸標籤
+    // 繪製軸標籤 - 主要的4個DISC軸線
     ctx.font = `bold ${labelFontSize}px Arial`;
     
-    // DI 標籤 (上方)
-    ctx.fillText('D+I', centerX, centerY - maxRadius - labelOffset);
+    // 計算主要軸線的角度（保持原來的4個方向）
+    const mainAxes = [
+        { label: 'D+I', angle: -Math.PI / 2 },      // 上方
+        { label: 'I+S', angle: 0 },                 // 右方  
+        { label: 'S+C', angle: Math.PI / 2 },       // 下方
+        { label: 'C+D', angle: Math.PI }            // 左方
+    ];
     
-    // IS 標籤 (右方)
-    ctx.fillText('I+S', centerX + maxRadius + labelOffset, centerY);
-    
-    // SC 標籤 (下方)
-    ctx.fillText('S+C', centerX, centerY + maxRadius + labelOffset);
-    
-    // CD 標籤 (左方)
-    ctx.fillText('C+D', centerX - maxRadius - labelOffset, centerY);
+    mainAxes.forEach(axis => {
+        const x = centerX + (maxRadius + labelOffset) * Math.cos(axis.angle);
+        const y = centerY + (maxRadius + labelOffset) * Math.sin(axis.angle);
+        ctx.fillText(axis.label, x, y);
+    });
 }
 
 // 繪製雷達圖數據
@@ -580,9 +587,9 @@ function pointToCoordinates(x, y, centerX, centerY, maxRadius) {
 
 // 設置按鈕事件
 function setupButtonEvents() {
-    // 列印報告按鈕
-    document.getElementById('print-btn').addEventListener('click', () => {
-        window.print();
+    // 報告分析按鈕
+    document.getElementById('analysis-btn').addEventListener('click', () => {
+        window.open('https://lin.ee/RaehHxl', '_blank');
     });
     
     // 下載報告按鈕
@@ -806,7 +813,7 @@ function generatePDF() {
         // 確保表格樣式正確
         const categoryTDs = tableClone.querySelectorAll('.category-cell');
         categoryTDs.forEach(td => {
-            td.style.cssText = 'background-color:#e6f0ff; font-weight:bold; padding:8px 2px; text-align:center; border-right:2px solid #ccc; writing-mode:vertical-lr; text-orientation:upright; letter-spacing:2px;';
+            td.style.cssText = 'background-color:#e6f0ff; font-weight:bold; padding:8px 12px; text-align:center; border-right:2px solid #ccc;';
         });
         
         // 修正表格單元格樣式
@@ -880,7 +887,7 @@ function generatePDF() {
         // 添加頁腳
         const footer = document.createElement('div');
         footer.style.cssText = 'margin-top:20px; text-align:center; font-size:11px; color:#777;';
-        footer.innerHTML = '<p>DISC 人格測驗 © 2025. 保留所有權利。</p>';
+        footer.innerHTML = '<p>&copy; coachmonents DISC人格測驗. 保留所有權利。</p>';
         container.appendChild(footer);
         
         return container;

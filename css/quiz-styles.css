@@ -559,6 +559,20 @@ header h2 {
     background-color: rgba(80, 80, 80, 0.8) !important; /* 灰色 */
 }
 
+/* 點位標記樣式 */
+.point-marker {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 12px;
+    text-align: center;
+}
+
 /* DISC 分數表專用樣式 */
 .disc-table-container {
     max-width: 650px;
@@ -590,7 +604,8 @@ header h2 {
 }
 
 .disc-score-table th {
-    background-color: #f5f5f5;
+    background-color: var(--primary-color);
+    color: white;
     font-weight: bold;
     border-bottom: 2px solid #ccc;
 }
