@@ -247,6 +247,18 @@
             [id^="ext-"], [id^="int-"], [id^="total-"] {
                 font-size: 1rem;
             }
+
+            /* 修正手機版表格中文字倒轉問題 */
+            .external-category,
+            .internal-category,
+            .total-category {
+                writing-mode: horizontal-tb !important;
+                text-orientation: mixed !important;
+                letter-spacing: normal !important;
+                font-size: 0.85rem !important;
+                padding: 8px 4px !important;
+                line-height: 1.2 !important;
+            }
             
             .points-row {
                 flex-direction: column;
