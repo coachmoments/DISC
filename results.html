@@ -330,64 +330,113 @@
             flex-shrink: 0;
         }
 
-        /* 手機版優化：簡化人格特質說明區域 */
+        /* 手機版優化：簡化人格特質說明區域，適合小尺寸閱讀 */
         @media (max-width: 768px) {
             .explanation-section {
-                margin: 15px 0;
-                padding: 15px;
-                background: transparent;
-                border: none;
-                border-radius: 0;
+                margin: 10px 0;
+                padding: 8px 12px;
+                background: #f9f9f9;
+                border: 1px solid #e0e0e0;
+                border-radius: 6px;
             }
 
             .explanation-section h4 {
-                font-size: 1.1rem;
-                margin-bottom: 15px;
-                text-align: left;
+                font-size: 0.95rem;
+                margin-bottom: 8px;
+                text-align: center;
+                color: #333;
+                font-weight: 600;
             }
 
             .explanation-grid {
-                display: block;
-                gap: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
             }
 
             .explanation-item {
-                display: block;
+                display: flex;
+                align-items: flex-start;
                 background: transparent;
-                padding: 8px 0;
+                padding: 4px 0;
                 border-radius: 0;
                 box-shadow: none;
-                border-bottom: 1px solid #eee;
+                border: none;
+                font-size: 0.8rem;
             }
 
-            .explanation-item:last-child {
-                border-bottom: none;
-            }
-
-            .dimension-label {
-                width: 24px;
-                height: 24px;
-                font-size: 0.9rem;
-                margin-right: 10px;
-                display: inline-flex;
-                vertical-align: top;
-            }
-
-            .dimension-info {
-                display: inline-block;
-                vertical-align: top;
-                width: calc(100% - 34px);
-            }
-
-            .dimension-info strong {
-                font-size: 0.95rem;
+            .explanation-item:not(:last-child) {
+                border-bottom: 1px solid #f0f0f0;
+                padding-bottom: 6px;
                 margin-bottom: 2px;
             }
 
+            .dimension-label {
+                width: 18px;
+                height: 18px;
+                font-size: 0.7rem;
+                margin-right: 8px;
+                display: flex;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .dimension-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .dimension-info strong {
+                font-size: 0.8rem;
+                margin-bottom: 1px;
+                display: block;
+                font-weight: 600;
+                color: #333;
+            }
+
             .dimension-info p {
-                font-size: 0.85rem;
-                line-height: 1.3;
+                font-size: 0.75rem;
+                line-height: 1.2;
                 margin: 0;
+                color: #666;
+                word-wrap: break-word;
+            }
+        }
+
+        /* 極小尺寸設備進一步優化 */
+        @media (max-width: 480px) {
+            .explanation-section {
+                margin: 8px 0;
+                padding: 6px 10px;
+            }
+
+            .explanation-section h4 {
+                font-size: 0.9rem;
+                margin-bottom: 6px;
+            }
+
+            .explanation-item {
+                padding: 3px 0;
+            }
+
+            .explanation-item:not(:last-child) {
+                padding-bottom: 5px;
+            }
+
+            .dimension-label {
+                width: 16px;
+                height: 16px;
+                font-size: 0.65rem;
+                margin-right: 6px;
+            }
+
+            .dimension-info strong {
+                font-size: 0.75rem;
+            }
+
+            .dimension-info p {
+                font-size: 0.7rem;
+                line-height: 1.15;
             }
         }
 
