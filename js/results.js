@@ -1043,35 +1043,52 @@ function generatePDF() {
         pointsTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
         pointsContainer.appendChild(pointsTitle);
         
-        const pointsRow = document.querySelector('.points-row').cloneNode(true);
+        // 手動創建點位行，因為原始元素已被移除
+        const pointsRow = document.createElement('div');
         pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:white; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.1);';
         
-        // 優化點位組樣式
-        const pointGroups = pointsRow.querySelectorAll('.points-group');
-        pointGroups.forEach(group => {
+        // 創建三個點位組
+        const pointsData = [
+            { 
+                title: '外顯點位', 
+                yId: 'external-y', 
+                xId: 'external-x', 
+                titleColor: 'rgba(65, 105, 225, 1)', 
+                borderColor: 'rgba(65, 105, 225, 0.3)' 
+            },
+            { 
+                title: '內在點位', 
+                yId: 'internal-y', 
+                xId: 'internal-x', 
+                titleColor: 'rgba(220, 20, 60, 1)', 
+                borderColor: 'rgba(220, 20, 60, 0.3)' 
+            },
+            { 
+                title: '合計點位', 
+                yId: 'total-y', 
+                xId: 'total-x', 
+                titleColor: 'rgba(80, 80, 80, 1)', 
+                borderColor: 'rgba(80, 80, 80, 0.3)' 
+            }
+        ];
+        
+        pointsData.forEach(data => {
+            const group = document.createElement('div');
             group.style.cssText = 'display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; position:relative;';
             
-            const title = group.querySelector('.points-title');
-            if (title) {
-                title.style.cssText = 'font-size:12px; font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px;';
-            }
+            const title = document.createElement('div');
+            title.innerHTML = data.title;
+            title.style.cssText = `font-size:12px; font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; color:${data.titleColor};`;
+            group.appendChild(title);
             
-            const value = group.querySelector('.points-value');
-            if (value) {
-                value.style.cssText = 'font-size:18px; font-weight:bold; color:#333; background:linear-gradient(135deg, #f8f9fa, #ffffff); padding:10px 15px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:2px solid transparent;';
-                
-                // 根據類型設置邊框顏色
-                if (group.classList.contains('external-points')) {
-                    value.style.borderColor = 'rgba(65, 105, 225, 0.3)';
-                    title.style.color = 'rgba(65, 105, 225, 1)';
-                } else if (group.classList.contains('internal-points')) {
-                    value.style.borderColor = 'rgba(220, 20, 60, 0.3)';
-                    title.style.color = 'rgba(220, 20, 60, 1)';
-                } else if (group.classList.contains('total-points')) {
-                    value.style.borderColor = 'rgba(80, 80, 80, 0.3)';
-                    title.style.color = 'rgba(80, 80, 80, 1)';
-                }
-            }
+            const value = document.createElement('div');
+            const yValue = document.getElementById(data.yId)?.textContent || '0';
+            const xValue = document.getElementById(data.xId)?.textContent || '0';
+            value.innerHTML = `(${yValue}, ${xValue})`;
+            value.style.cssText = `font-size:18px; font-weight:bold; color:#333; background:linear-gradient(135deg, #f8f9fa, #ffffff); padding:10px 15px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:2px solid ${data.borderColor};`;
+            group.appendChild(value);
+            
+            pointsRow.appendChild(group);
         });
         
         pointsContainer.appendChild(pointsRow);
@@ -1087,44 +1104,6 @@ function generatePDF() {
         page2Header.appendChild(page2Title);
         
         page2Container.appendChild(page2Header);
-
-        // 添加結果解讀說明
-        const interpretationSection = document.querySelector('.interpretation-section');
-        if (interpretationSection) {
-            const interpretationContainer = document.createElement('div');
-            interpretationContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
-            
-            const interpretationTitle = document.createElement('h3');
-            interpretationTitle.innerHTML = '結果解讀';
-            interpretationTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
-            interpretationContainer.appendChild(interpretationTitle);
-            
-            // 手動創建解讀項目
-            const interpretations = [
-                { label: '外在行為', desc: '代表在工作環境或壓力下展現的行為模式，也就是別人看到的您。', color: 'rgba(65, 105, 225, 1)' },
-                { label: '內在動機', desc: '代表您的內在驅動力和自然傾向，也就是真實的您。', color: 'rgba(220, 20, 60, 1)' },
-                { label: '合計點位', desc: '代表您整體的人格特質傾向，外在行為與內在動機的平衡點。', color: 'rgba(80, 80, 80, 1)' }
-            ];
-            
-            interpretations.forEach(item => {
-                const behaviorItem = document.createElement('div');
-                behaviorItem.style.cssText = 'display:flex; align-items:flex-start; margin-bottom:15px; padding:15px; background:#f8f9fa; border-radius:10px; border-left:4px solid ' + item.color + ';';
-                
-                const label = document.createElement('div');
-                label.innerHTML = item.label;
-                label.style.cssText = `font-weight:bold; padding:6px 12px; border-radius:15px; color:white; font-size:11px; margin-right:15px; flex-shrink:0; background-color:${item.color};`;
-                behaviorItem.appendChild(label);
-                
-                const desc = document.createElement('div');
-                desc.innerHTML = item.desc;
-                desc.style.cssText = 'margin:0; line-height:1.5; font-size:12px; color:#333; flex:1; padding-top:2px;';
-                behaviorItem.appendChild(desc);
-                
-                interpretationContainer.appendChild(behaviorItem);
-            });
-            
-                         page2Container.appendChild(interpretationContainer);
-        }
         
         // 創建雷達圖區域 - 第二頁專用，更大尺寸
         const chartContainer = document.createElement('div');
@@ -1164,22 +1143,65 @@ function generatePDF() {
         // 優化圖例項目樣式 - 第二頁更大更清晰
         const legendItems = legend.querySelectorAll('.legend-item');
         legendItems.forEach(item => {
-            item.style.cssText = 'display:flex; align-items:center; background:white; padding:12px 18px; border-radius:25px; box-shadow:0 3px 6px rgba(0,0,0,0.15); border:1px solid #e1e4e8;';
+            item.style.cssText = 'display:flex; align-items:center; gap:8px; background:white; padding:12px 18px; border-radius:25px; box-shadow:0 3px 6px rgba(0,0,0,0.15); border:1px solid #e1e4e8;';
             
             const marker = item.querySelector('.point-marker');
             if (marker) {
-                marker.style.cssText = marker.style.cssText + '; width:20px; height:20px; font-size:12px; margin-right:12px; font-weight:bold;';
+                marker.style.cssText = marker.style.cssText + '; width:20px; height:20px; font-size:12px; margin-right:0; font-weight:bold;';
             }
             
-            const text = item.querySelector('span:last-child');
-            if (text) {
-                text.style.cssText = 'font-weight:600; color:#333; font-size:13px;';
+            const legendText = item.querySelector('.legend-text');
+            if (legendText) {
+                legendText.style.cssText = 'font-weight:600; color:#333; font-size:13px;';
+            }
+            
+            const pointsValue = item.querySelector('.points-value');
+            if (pointsValue) {
+                pointsValue.style.cssText = 'color:#666; font-size:12px; font-weight:500; margin-left:auto;';
             }
         });
         
         legendContainer.appendChild(legend);
         chartContainer.appendChild(legendContainer);
         page2Container.appendChild(chartContainer);
+        
+        // 添加結果解讀說明 - 移到最後位置
+        const interpretationSection = document.querySelector('.interpretation-section');
+        if (interpretationSection) {
+            const interpretationContainer = document.createElement('div');
+            interpretationContainer.style.cssText = 'margin-bottom:25px; padding:20px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
+            
+            const interpretationTitle = document.createElement('h3');
+            interpretationTitle.innerHTML = '結果解讀';
+            interpretationTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
+            interpretationContainer.appendChild(interpretationTitle);
+            
+            // 手動創建解讀項目
+            const interpretations = [
+                { label: '外在行為', desc: '代表在工作環境或壓力下展現的行為模式，也就是別人看到的您。', color: 'rgba(65, 105, 225, 1)' },
+                { label: '內在動機', desc: '代表您的內在驅動力和自然傾向，也就是真實的您。', color: 'rgba(220, 20, 60, 1)' },
+                { label: '合計點位', desc: '代表您整體的人格特質傾向，外在行為與內在動機的平衡點。', color: 'rgba(80, 80, 80, 1)' }
+            ];
+            
+            interpretations.forEach(item => {
+                const behaviorItem = document.createElement('div');
+                behaviorItem.style.cssText = 'display:flex; align-items:flex-start; margin-bottom:15px; padding:15px; background:#f8f9fa; border-radius:10px; border-left:4px solid ' + item.color + ';';
+                
+                const label = document.createElement('div');
+                label.innerHTML = item.label;
+                label.style.cssText = `font-weight:bold; padding:6px 12px; border-radius:15px; color:white; font-size:11px; margin-right:15px; flex-shrink:0; background-color:${item.color};`;
+                behaviorItem.appendChild(label);
+                
+                const desc = document.createElement('div');
+                desc.innerHTML = item.desc;
+                desc.style.cssText = 'margin:0; line-height:1.5; font-size:12px; color:#333; flex:1; padding-top:2px;';
+                behaviorItem.appendChild(desc);
+                
+                interpretationContainer.appendChild(behaviorItem);
+            });
+            
+            page2Container.appendChild(interpretationContainer);
+        }
         
         // 添加專業頁腳 - 第二頁底部
         const footer = document.createElement('div');
