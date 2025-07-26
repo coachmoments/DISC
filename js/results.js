@@ -397,12 +397,12 @@ function drawScale(ctx, centerX, centerY, maxRadius) {
     // 計算角落位置的偏移量
     const cornerOffset = maxRadius + Math.max(25, maxRadius / 6);
     
-    // DISC字母在四個角落的位置
+    // DISC字母在四個角落的位置（逆時針退一格後）
     const discCorners = [
-        { letter: 'D', x: centerX + cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#28a745' },  // 右上角 - 掌控型 (綠色)
-        { letter: 'I', x: centerX + cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#dc3545' },  // 右下角 - 影響型 (紅色)
-        { letter: 'S', x: centerX - cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#007bff' },  // 左下角 - 沉穩型 (藍色)
-        { letter: 'C', x: centerX - cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#ffc107' }   // 左上角 - 嚴謹型 (黃色)
+        { letter: 'D', x: centerX - cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#28a745' },  // 左上角 - 掌控型 (綠色)
+        { letter: 'I', x: centerX + cornerOffset * 0.7, y: centerY - cornerOffset * 0.7, color: '#dc3545' },  // 右上角 - 影響型 (紅色)
+        { letter: 'S', x: centerX + cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#007bff' },  // 右下角 - 沉穩型 (藍色)
+        { letter: 'C', x: centerX - cornerOffset * 0.7, y: centerY + cornerOffset * 0.7, color: '#ffc107' }   // 左下角 - 嚴謹型 (黃色)
     ];
     
     discCorners.forEach(corner => {
