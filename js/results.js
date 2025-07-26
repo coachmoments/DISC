@@ -928,12 +928,12 @@ function generatePDF() {
             const explanationGrid = document.createElement('div');
             explanationGrid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:15px;';
             
-            // 手動創建DISC維度說明項目，確保樣式正確
+            // 手動創建DISC維度說明項目，按照雷達圖視覺位置順序：D(左上)、I(右上)、C(左下)、S(右下)
             const dimensions = [
                 { label: 'D', title: '掌控型 (Dominance)', desc: '直接、果斷、結果導向、喜歡挑戰', color: '#28a745' },
                 { label: 'I', title: '影響型 (Influence)', desc: '外向、樂觀、善於溝通、注重人際關係', color: '#dc3545' },
-                { label: 'S', title: '沉穩型 (Steadiness)', desc: '穩重、耐心、合作性強、追求和諧', color: '#007bff' },
-                { label: 'C', title: '嚴謹型 (Conscientiousness)', desc: '善於分析、有條理、注重細節、矜持的', color: '#ffc107' }
+                { label: 'C', title: '嚴謹型 (Conscientiousness)', desc: '善於分析、有條理、注重細節、矜持的', color: '#ffc107' },
+                { label: 'S', title: '沉穩型 (Steadiness)', desc: '穩重、耐心、合作性強、追求和諧', color: '#007bff' }
             ];
             
             dimensions.forEach(dim => {
