@@ -62,13 +62,20 @@ header {
     cursor: default;
 }
 
-.title-text {
+/* 標題文字樣式 */
+.title-en, .title-zh {
     font-size: 2.2rem;
     font-weight: 700;
     color: white;
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
+}
+
+/* 電腦版：一行顯示，中間加空格 */
+.title-en::after {
+    content: " ";
+    white-space: pre;
 }
 
 /* 平板響應式設計 */
@@ -91,7 +98,7 @@ header {
         color: white;
     }
     
-    .title-text {
+    .title-en, .title-zh {
         font-size: 1.8rem;
     }
 }
@@ -118,10 +125,17 @@ header {
     .site-title {
         order: 2;
         text-align: center;
+        flex-direction: column;
+        gap: 4px;
     }
     
     .header-spacer {
         display: none;
+    }
+    
+    /* 手機版：移除英文後的空格，分兩行顯示 */
+    .title-en::after {
+        content: "";
     }
     
     .site-logo {
@@ -134,7 +148,7 @@ header {
         color: white;
     }
     
-    .title-text {
+    .title-en, .title-zh {
         font-size: 1.4rem;
         line-height: 1.3;
     }
@@ -145,11 +159,11 @@ header {
     opacity: 0.8;
 }
 
-.title-text {
+.title-en, .title-zh {
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.title-text:hover {
+.title-en:hover, .title-zh:hover {
     color: #e8f2ff;
     text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 } 
