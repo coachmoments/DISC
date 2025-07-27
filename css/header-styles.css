@@ -37,6 +37,9 @@ header {
     justify-content: center;
     text-align: center;
     flex: 1;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 /* 右側空白區域，用於平衡佈局 */
@@ -70,6 +73,7 @@ header {
     line-height: 1.2;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
     letter-spacing: 1px;
+    white-space: nowrap;
 }
 
 /* 電腦版：一行顯示，中間加空格 */
@@ -86,6 +90,13 @@ header {
     
     .header-content {
         padding: 0 15px;
+    }
+    
+    /* 確保平板版也是一行顯示 */
+    .site-title {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        white-space: nowrap;
     }
     
     .site-logo {
@@ -151,6 +162,7 @@ header {
     .title-en, .title-zh {
         font-size: 1.4rem;
         line-height: 1.3;
+        white-space: normal;
     }
 }
 
