@@ -1,13 +1,14 @@
 /* 統一的Header樣式 - 適用於所有頁面 */
 
-/* Header基本樣式 */
+/* Header基本樣式 - 藍底白字 */
 header {
     padding: 15px 0;
-    background-color: white;
-    border-bottom: 1px solid #e1e4e8;
+    background: linear-gradient(135deg, #4a6fa5 0%, #3a5a91 100%);
+    border-bottom: 2px solid #2c4a78;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* LOGO和標題的容器 */
@@ -38,35 +39,29 @@ header {
 .logo-fallback {
     font-size: 1.4rem;
     font-weight: bold;
-    color: var(--primary-color);
+    color: white;
     display: none;
     line-height: 70px;
     cursor: default;
 }
 
-/* 標題在右側 */
+/* 標題在右側 - 單行白字 */
 .site-title {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
     flex: 1;
     text-align: center;
     order: 2;
 }
 
-.title-en {
+.title-text {
     font-size: 2.2rem;
-    margin-bottom: 0.2rem;
     font-weight: 700;
-    color: var(--primary-color);
-    line-height: 1.1;
-}
-
-.title-zh {
-    font-size: 1.8rem;
-    color: var(--primary-color);
+    color: white;
     line-height: 1.2;
-    font-weight: 500;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    letter-spacing: 1px;
 }
 
 /* 平板響應式設計 */
@@ -86,14 +81,11 @@ header {
     .logo-fallback {
         font-size: 1.2rem;
         line-height: 60px;
+        color: white;
     }
     
-    .title-en {
+    .title-text {
         font-size: 1.8rem;
-    }
-    
-    .title-zh {
-        font-size: 1.5rem;
     }
 }
 
@@ -117,18 +109,15 @@ header {
     .logo-fallback {
         font-size: 1.1rem;
         line-height: 50px;
+        color: white;
     }
     
     .site-title {
         text-align: center;
     }
     
-    .title-en {
+    .title-text {
         font-size: 1.5rem;
-    }
-    
-    .title-zh {
-        font-size: 1.3rem;
     }
 }
 
@@ -137,10 +126,11 @@ header {
     opacity: 0.8;
 }
 
-.title-en, .title-zh {
-    transition: color 0.3s ease;
+.title-text {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.title-en:hover, .title-zh:hover {
-    color: var(--secondary-color, #007bff);
+.title-text:hover {
+    color: #e8f2ff;
+    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
 } 
