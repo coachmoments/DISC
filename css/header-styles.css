@@ -1,0 +1,146 @@
+/* 統一的Header樣式 - 適用於所有頁面 */
+
+/* Header基本樣式 */
+header {
+    padding: 15px 0;
+    background-color: white;
+    border-bottom: 1px solid #e1e4e8;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* LOGO和標題的容器 */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* LOGO保持在左上角 */
+.logo-container {
+    flex-shrink: 0;
+    order: 1;
+}
+
+.site-logo {
+    height: 70px;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+}
+
+/* LOGO fallback文字樣式 */
+.logo-fallback {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: none;
+    line-height: 70px;
+    cursor: default;
+}
+
+/* 標題在右側 */
+.site-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+    order: 2;
+}
+
+.title-en {
+    font-size: 2.2rem;
+    margin-bottom: 0.2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1.1;
+}
+
+.title-zh {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    line-height: 1.2;
+    font-weight: 500;
+}
+
+/* 平板響應式設計 */
+@media (max-width: 768px) {
+    header {
+        padding: 10px 0;
+    }
+    
+    .header-content {
+        padding: 0 15px;
+    }
+    
+    .site-logo {
+        height: 60px;
+    }
+    
+    .logo-fallback {
+        font-size: 1.2rem;
+        line-height: 60px;
+    }
+    
+    .title-en {
+        font-size: 1.8rem;
+    }
+    
+    .title-zh {
+        font-size: 1.5rem;
+    }
+}
+
+/* 手機響應式設計 */
+@media (max-width: 480px) {
+    header {
+        padding: 8px 0;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 0 10px;
+    }
+    
+    .site-logo {
+        height: 50px;
+    }
+    
+    .logo-fallback {
+        font-size: 1.1rem;
+        line-height: 50px;
+    }
+    
+    .site-title {
+        text-align: center;
+    }
+    
+    .title-en {
+        font-size: 1.5rem;
+    }
+    
+    .title-zh {
+        font-size: 1.3rem;
+    }
+}
+
+/* Header動畫效果 */
+.site-logo:hover {
+    opacity: 0.8;
+}
+
+.title-en, .title-zh {
+    transition: color 0.3s ease;
+}
+
+.title-en:hover, .title-zh:hover {
+    color: var(--secondary-color, #007bff);
+} 

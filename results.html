@@ -6,114 +6,12 @@
     <title>DISC 人格測驗</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/quiz-styles.css">
+    <link rel="stylesheet" href="css/header-styles.css">
     <!-- 引入 jsPDF 和 html2canvas 用於生成PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        /* LOGO和標題的容器 */
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-            padding: 0 20px;
-        }
-        
-        /* LOGO保持在左上角 */
-        .logo-container {
-            flex-shrink: 0;
-            order: 1;
-        }
-        
-        .site-logo {
-            height: 70px;
-            width: auto;
-            object-fit: contain;
-        }
-        
-        /* LOGO fallback文字樣式 */
-        .logo-fallback {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            display: none;
-            line-height: 70px;
-        }
-        
-        /* 標題在右側 */
-        .site-title {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            flex: 1;
-            text-align: center;
-            order: 2;
-        }
-        
-        .title-en {
-            font-size: 2.2rem;
-            margin-bottom: 0.2rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
-        .title-zh {
-            font-size: 1.8rem;
-            color: var(--primary-color);
-        }
-        
-        @media (max-width: 768px) {
-            .header-content {
-                padding: 0 15px;
-            }
-            
-            .site-logo {
-                height: 60px;
-            }
-            
-            .logo-fallback {
-                font-size: 1.2rem;
-                line-height: 60px;
-            }
-            
-            .title-en {
-                font-size: 1.8rem;
-            }
-            
-            .title-zh {
-                font-size: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .header-content {
-                flex-direction: column;
-                align-items: center;
-                gap: 10px;
-                padding: 0 10px;
-            }
-            
-            .site-logo {
-                height: 50px;
-            }
-            
-            .logo-fallback {
-                font-size: 1.1rem;
-                line-height: 50px;
-            }
-            
-            .site-title {
-                text-align: center;
-            }
-            
-            .title-en {
-                font-size: 1.5rem;
-            }
-            
-            .title-zh {
-                font-size: 1.3rem;
-            }
-        }
+        /* Results頁面特有樣式 */
         
         /* 表格樣式優化 */
         .disc-score-table {
