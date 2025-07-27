@@ -15,17 +15,21 @@ header {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     padding: 0 20px;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
-/* LOGO保持在左上角 */
+/* LOGO保持在左上角 - 絕對定位 */
 .logo-container {
-    flex-shrink: 0;
-    order: 1;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
 }
 
 .site-logo {
@@ -45,14 +49,13 @@ header {
     cursor: default;
 }
 
-/* 標題在右側 - 單行白字 */
+/* 標題在正中間 - 單行白字 */
 .site-title {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1;
     text-align: center;
-    order: 2;
+    width: 100%;
 }
 
 .title-text {
@@ -74,6 +77,10 @@ header {
         padding: 0 15px;
     }
     
+    .logo-container {
+        left: 15px;
+    }
+    
     .site-logo {
         height: 60px;
     }
@@ -92,14 +99,22 @@ header {
 /* 手機響應式設計 */
 @media (max-width: 480px) {
     header {
-        padding: 8px 0;
+        padding: 10px 0;
     }
     
     .header-content {
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        gap: 12px;
         padding: 0 10px;
+        position: static;
+    }
+    
+    .logo-container {
+        position: static;
+        transform: none;
+        order: 1;
     }
     
     .site-logo {
@@ -114,10 +129,12 @@ header {
     
     .site-title {
         text-align: center;
+        order: 2;
     }
     
     .title-text {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+        line-height: 1.3;
     }
 }
 
