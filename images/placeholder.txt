@@ -1,0 +1,6 @@
+請將您的 CoachMoments LOGO 圖片重命名為 "logo.png" 並放置在此 images/ 目錄中。
+
+支持的格式：PNG、JPG、JPEG、SVG
+建議尺寸：至少 200x200 像素，建議使用透明背景的 PNG 格式。
+
+放置LOGO後，請刪除此文件。 

@@ -13,24 +13,35 @@
             align-items: center;
             justify-content: space-between;
             width: 100%;
+            padding: 0 20px;
         }
         
+        /* LOGO保持在左上角 */
         .logo-container {
             flex-shrink: 0;
-            order: 2;
+            order: 1;
         }
         
         .site-logo {
-            height: 60px;
+            height: 70px;
             width: auto;
             object-fit: contain;
         }
         
-        /* 標題一行顯示 */
+        /* LOGO fallback文字樣式 */
+        .logo-fallback {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            display: none;
+            line-height: 70px;
+        }
+        
+        /* 標題在右側 */
         .site-title {
             flex: 1;
-            text-align: left;
-            order: 1;
+            text-align: center;
+            order: 2;
         }
         
         .site-title-text {
@@ -40,8 +51,17 @@
         }
         
         @media (max-width: 768px) {
+            .header-content {
+                padding: 0 15px;
+            }
+            
             .site-logo {
-                height: 50px;
+                height: 60px;
+            }
+            
+            .logo-fallback {
+                font-size: 1.2rem;
+                line-height: 60px;
             }
             
             .site-title-text {
@@ -50,12 +70,28 @@
         }
         
         @media (max-width: 480px) {
-            .site-title-text {
-                font-size: 1.5rem;
+            .header-content {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 0 10px;
             }
             
             .site-logo {
-                height: 40px;
+                height: 50px;
+            }
+            
+            .logo-fallback {
+                font-size: 1.1rem;
+                line-height: 50px;
+            }
+            
+            .site-title {
+                text-align: center;
+            }
+            
+            .site-title-text {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -65,7 +101,9 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-container">
-                    <img src="images/logo.png" alt="CoachMoments Logo" class="site-logo">
+                    <img src="images/logo.png" alt="CoachMoments Logo" class="site-logo" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="logo-fallback">CoachMoments</div>
                 </div>
                 <div class="site-title">
                     <span class="site-title-text">DISCovery 自我發現人格特質</span>
