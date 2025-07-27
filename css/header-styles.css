@@ -15,21 +15,34 @@ header {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     width: 100%;
     padding: 0 20px;
     max-width: 1200px;
     margin: 0 auto;
-    position: relative;
 }
 
-/* LOGO保持在左上角 - 絕對定位 */
+/* LOGO在左上角 */
 .logo-container {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/* 標題在正中間 - 單行白字 */
+.site-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex: 1;
+}
+
+/* 右側空白區域，用於平衡佈局 */
+.header-spacer {
+    flex: 1;
+    display: flex;
 }
 
 .site-logo {
@@ -49,15 +62,6 @@ header {
     cursor: default;
 }
 
-/* 標題在正中間 - 單行白字 */
-.site-title {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
-
 .title-text {
     font-size: 2.2rem;
     font-weight: 700;
@@ -75,10 +79,6 @@ header {
     
     .header-content {
         padding: 0 15px;
-    }
-    
-    .logo-container {
-        left: 15px;
     }
     
     .site-logo {
@@ -108,13 +108,20 @@ header {
         justify-content: center;
         gap: 12px;
         padding: 0 10px;
-        position: static;
     }
     
     .logo-container {
-        position: static;
-        transform: none;
         order: 1;
+        justify-content: center;
+    }
+    
+    .site-title {
+        order: 2;
+        text-align: center;
+    }
+    
+    .header-spacer {
+        display: none;
     }
     
     .site-logo {
@@ -125,11 +132,6 @@ header {
         font-size: 1.1rem;
         line-height: 50px;
         color: white;
-    }
-    
-    .site-title {
-        text-align: center;
-        order: 2;
     }
     
     .title-text {
