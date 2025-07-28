@@ -1084,12 +1084,7 @@ function generatePDF() {
             title.style.cssText = `font-size:12px; font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; color:${data.titleColor};`;
             group.appendChild(title);
             
-            const value = document.createElement('div');
-            const yValue = data.points.y;
-            const xValue = data.points.x;
-            value.innerHTML = `(${yValue}, ${xValue})`;
-            value.style.cssText = `font-size:18px; font-weight:bold; color:#333; background:linear-gradient(135deg, #f8f9fa, #ffffff); padding:10px 15px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:2px solid ${data.borderColor};`;
-            group.appendChild(value);
+            // 不再顯示具體點位數據，只保留標題
             
             pointsRow.appendChild(group);
         });
