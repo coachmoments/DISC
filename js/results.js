@@ -1,5 +1,12 @@
 // 結果頁面的主要腳本
 
+// 全局變量存儲點位數據，用於PDF生成
+let globalPointsData = {
+    external: { x: 0, y: 0 },
+    internal: { x: 0, y: 0 },
+    total: { x: 0, y: 0 }
+};
+
 // 在文檔加載完成後執行
 document.addEventListener('DOMContentLoaded', () => {
     // 檢查測試資料完整性
@@ -97,7 +104,7 @@ function calculateAndDisplayScores() {
         C: 0
     };
     
-    // 計算分數 (題目1-10為外在行為，11-20為內在動機)
+    // 計算分數 (題目1-10為外在行為，11-20為內在思維)
     for (let i = 0; i < answers.length; i++) {
         const answer = answers[i];
         if (answer !== null) {
@@ -110,7 +117,7 @@ function calculateAndDisplayScores() {
                     case 3: external.C++; break;
                 }
             } else {
-                // 內在動機
+                // 內在思維
                 switch (answer) {
                     case 0: internal.D++; break;
                     case 1: internal.I++; break;
@@ -136,13 +143,13 @@ function calculateAndDisplayScores() {
     document.getElementById('ext-s').textContent = external.S;
     document.getElementById('ext-c').textContent = external.C;
     
-    // 內在動機
+    // 內在思維
     document.getElementById('int-d').textContent = internal.D;
     document.getElementById('int-i').textContent = internal.I;
     document.getElementById('int-s').textContent = internal.S;
     document.getElementById('int-c').textContent = internal.C;
     
-    // 合計分數
+    // 綜合分數
     document.getElementById('total-d').textContent = total.D;
     document.getElementById('total-i').textContent = total.I;
     document.getElementById('total-s').textContent = total.S;
@@ -165,13 +172,12 @@ function calculateAndDisplayScores() {
     const internalPoints = calculatePoints(internalCombinations);
     const totalPoints = calculatePoints(totalCombinations);
     
-    // 顯示點位
-    document.getElementById('external-x').textContent = externalPoints.x;
-    document.getElementById('external-y').textContent = externalPoints.y;
-    document.getElementById('internal-x').textContent = internalPoints.x;
-    document.getElementById('internal-y').textContent = internalPoints.y;
-    document.getElementById('total-x').textContent = totalPoints.x;
-    document.getElementById('total-y').textContent = totalPoints.y;
+    // 保存點位數據到全局變量，用於PDF生成
+    globalPointsData.external = externalPoints;
+    globalPointsData.internal = internalPoints;
+    globalPointsData.total = totalPoints;
+    
+    // 點位數據已移除顯示，但保留計算用於雷達圖繪製
     
     // 保存分數到 LocalStorage
     saveToLocalStorage('discExternal', external);
@@ -567,13 +573,13 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
         ctx.fillStyle = 'white';
         ctx.fillText('I', internalPoint.x, internalPoint.y);
         
-        // 繪製合計點位（灰色純色）
+        // 繪製綜合點位（灰色純色）
         ctx.fillStyle = 'rgba(80, 80, 80, 1)';
         ctx.beginPath();
         ctx.arc(totalPoint.x, totalPoint.y, pointRadius, 0, Math.PI * 2);
         ctx.fill();
         
-        // 合計點標記（白色字）
+        // 綜合點標記（白色字）
         ctx.fillStyle = 'white';
         ctx.fillText('T', totalPoint.x, totalPoint.y);
         
@@ -599,7 +605,7 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
         ctx.fill();
         ctx.stroke();
         
-        // 繪製合計點位（灰色空心圓）
+        // 繪製綜合點位（灰色空心圓）
         ctx.fillStyle = 'white';
         ctx.strokeStyle = 'rgba(80, 80, 80, 1)';
         
@@ -618,7 +624,7 @@ function drawPoints(ctx, centerX, centerY, maxRadius, points) {
         ctx.fillStyle = 'rgba(220, 20, 60, 1)';
         ctx.fillText('I', internalPoint.x, internalPoint.y);
         
-        // 合計點標記
+        // 綜合點標記
         ctx.fillStyle = 'rgba(80, 80, 80, 1)';
         ctx.fillText('T', totalPoint.x, totalPoint.y);
     }
@@ -1050,23 +1056,20 @@ function generatePDF() {
         // 創建三個點位組
         const pointsData = [
             { 
-                title: '外顯點位', 
-                yId: 'external-y', 
-                xId: 'external-x', 
+                title: '外在行為', 
+                points: globalPointsData.external,
                 titleColor: 'rgba(65, 105, 225, 1)', 
                 borderColor: 'rgba(65, 105, 225, 0.3)' 
             },
             { 
-                title: '內在點位', 
-                yId: 'internal-y', 
-                xId: 'internal-x', 
+                title: '內在思維', 
+                points: globalPointsData.internal,
                 titleColor: 'rgba(220, 20, 60, 1)', 
                 borderColor: 'rgba(220, 20, 60, 0.3)' 
             },
             { 
-                title: '合計點位', 
-                yId: 'total-y', 
-                xId: 'total-x', 
+                title: '綜合點位', 
+                points: globalPointsData.total,
                 titleColor: 'rgba(80, 80, 80, 1)', 
                 borderColor: 'rgba(80, 80, 80, 0.3)' 
             }
@@ -1082,8 +1085,8 @@ function generatePDF() {
             group.appendChild(title);
             
             const value = document.createElement('div');
-            const yValue = document.getElementById(data.yId)?.textContent || '0';
-            const xValue = document.getElementById(data.xId)?.textContent || '0';
+            const yValue = data.points.y;
+            const xValue = data.points.x;
             value.innerHTML = `(${yValue}, ${xValue})`;
             value.style.cssText = `font-size:18px; font-weight:bold; color:#333; background:linear-gradient(135deg, #f8f9fa, #ffffff); padding:10px 15px; border-radius:20px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:2px solid ${data.borderColor};`;
             group.appendChild(value);
@@ -1179,8 +1182,8 @@ function generatePDF() {
             // 手動創建解讀項目
             const interpretations = [
                 { label: '外在行為', desc: '代表在工作環境或壓力下展現的行為模式，也就是別人看到的您。', color: 'rgba(65, 105, 225, 1)' },
-                { label: '內在動機', desc: '代表您的內在驅動力和自然傾向，也就是真實的您。', color: 'rgba(220, 20, 60, 1)' },
-                { label: '合計點位', desc: '代表您整體的人格特質傾向，外在行為與內在動機的平衡點。', color: 'rgba(80, 80, 80, 1)' }
+                            { label: '內在思維', desc: '代表您的內在驅動力和自然傾向，也就是真實的您。', color: 'rgba(220, 20, 60, 1)' },
+            { label: '綜合點位', desc: '代表您整體的人格特質傾向，外在行為與內在思維的平衡點。', color: 'rgba(80, 80, 80, 1)' }
             ];
             
             interpretations.forEach(item => {
