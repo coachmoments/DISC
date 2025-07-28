@@ -29,6 +29,18 @@ header {
     margin-left: 5px; /* 讓LOGO更貼近左邊 */
 }
 
+/* LOGO連結樣式 */
+.logo-container a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: opacity 0.3s ease;
+}
+
+.logo-container a:hover {
+    opacity: 0.8;
+}
+
 /* 標題在正中間 - 單行白字 */
 .site-title {
     display: flex;
