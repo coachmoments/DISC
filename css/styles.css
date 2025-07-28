@@ -113,6 +113,19 @@ input, textarea, select {
   padding: 3rem 0;
 }
 
+/* 首頁歡迎LOGO */
+.welcome-logo {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.intro-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  max-width: 200px;
+}
+
 .instructions {
   max-width: 800px;
   margin: 0 auto;
@@ -327,6 +340,16 @@ input, textarea, select {
     padding: 1.5rem;
   }
   
+  /* 首頁LOGO響應式 */
+  .intro-logo {
+    height: 60px;
+    max-width: 150px;
+  }
+  
+  .welcome-logo {
+    margin-bottom: 15px;
+  }
+  
   .user-info {
     flex-direction: column;
     gap: 15px;
@@ -346,6 +369,18 @@ input, textarea, select {
   
   .action-buttons {
     flex-direction: column;
+  }
+}
+
+/* 手機響應式設計 - 更小螢幕 */
+@media (max-width: 480px) {
+  .intro-logo {
+    height: 50px;
+    max-width: 120px;
+  }
+  
+  .welcome-logo {
+    margin-bottom: 12px;
   }
 }
 
