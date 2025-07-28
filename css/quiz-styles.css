@@ -499,10 +499,11 @@ header h2 {
         box-shadow: none;
     }
     
-    .action-section,
-    footer {
+    .action-section {
         display: none;
     }
+    
+    /* Footer隱藏樣式已移至 footer-styles.css */
 }
 
 .navigation-buttons {
@@ -1068,11 +1069,12 @@ header h2 {
         margin-bottom: 10px !important;
     }
     
-    /* 只隱藏原始文檔中的行動按鈕和頁腳，保留標題 */
-    .action-section,
-    footer {
+    /* 只隱藏原始文檔中的行動按鈕，保留標題 */
+    .action-section {
         display: none !important;
     }
+    
+    /* Footer隱藏樣式已移至 footer-styles.css */
     
     /* 不再隱藏標題，因為我們使用克隆的標題 */
     header:not(.complete-report-container header) {

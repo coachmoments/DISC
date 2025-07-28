@@ -1,0 +1,71 @@
+/* 統一的Footer樣式 - 適用於所有頁面 */
+
+/* Footer基本樣式 */
+footer {
+    background-color: var(--dark-color);
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: auto;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Footer容器 */
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Footer文字樣式 */
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.9;
+}
+
+/* 響應式設計 - 平板 */
+@media (max-width: 768px) {
+    footer {
+        padding: 0.8rem 0;
+    }
+    
+    footer .container {
+        padding: 0 15px;
+    }
+    
+    footer p {
+        font-size: 0.85rem;
+    }
+}
+
+/* 響應式設計 - 手機 */
+@media (max-width: 480px) {
+    footer {
+        padding: 0.7rem 0;
+    }
+    
+    footer .container {
+        padding: 0 10px;
+    }
+    
+    footer p {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
+
+/* PDF生成時隱藏footer */
+@media print {
+    footer {
+        display: none !important;
+    }
+}
+
+/* 專門用於PDF生成的隱藏規則 */
+.action-section,
+.pdf-generate footer {
+    display: none !important;
+} 
