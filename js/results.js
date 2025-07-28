@@ -1126,12 +1126,12 @@ function generatePDF() {
         
         // 添加LINE詢問區域 - 在footer之前
         const lineInquirySection = document.createElement('div');
-        lineInquirySection.style.cssText = 'margin-top:30px; margin-bottom:20px; padding:20px; background:linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); border-radius:12px; border:2px solid #28a745; text-align:center;';
+        lineInquirySection.style.cssText = 'margin-top:30px; margin-bottom:20px; padding:20px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:12px; border:2px solid #4a6fa5; text-align:center;';
         
         // LINE詢問標題
         const inquiryTitle = document.createElement('div');
         inquiryTitle.innerHTML = '想要更加詳細的個人報告？';
-        inquiryTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#28a745; margin-bottom:10px;';
+        inquiryTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:10px;';
         lineInquirySection.appendChild(inquiryTitle);
         
         // LINE詢問說明文字
@@ -1150,14 +1150,14 @@ function generatePDF() {
         qrCode.style.cssText = 'width:80px; height:80px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);';
         qrCode.onerror = function() {
             // 如果QR code載入失敗，顯示文字提示
-            qrContainer.innerHTML = '<div style="width:80px; height:80px; border:2px dashed #28a745; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#28a745; text-align:center;">QR Code<br/>載入中</div>';
+            qrContainer.innerHTML = '<div style="width:80px; height:80px; border:2px dashed #4a6fa5; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#4a6fa5; text-align:center;">QR Code<br/>載入中</div>';
         };
         qrContainer.appendChild(qrCode);
         lineInquirySection.appendChild(qrContainer);
         
         // LINE ID提示
         const lineIdText = document.createElement('div');
-        lineIdText.innerHTML = 'LINE ID: @raehHxl';
+        lineIdText.innerHTML = 'LINE ID: @840dltmw';
         lineIdText.style.cssText = 'font-size:12px; color:#666; font-style:italic;';
         lineInquirySection.appendChild(lineIdText);
         
