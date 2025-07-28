@@ -1049,57 +1049,7 @@ function generatePDF() {
         scoreContainer.appendChild(tableClone);
         page1Container.appendChild(scoreContainer);
         
-        // 添加點位資訊
-        const pointsContainer = document.createElement('div');
-        pointsContainer.style.cssText = 'margin-bottom:15px; padding:15px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; border:1px solid #dee2e6;';
-        
-        const pointsTitle = document.createElement('h3');
-        pointsTitle.innerHTML = '點位座標';
-        pointsTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
-        pointsContainer.appendChild(pointsTitle);
-        
-        // 手動創建點位行，因為原始元素已被移除
-        const pointsRow = document.createElement('div');
-        pointsRow.style.cssText = 'display:flex; justify-content:space-between; background:white; border-radius:10px; padding:20px; box-shadow:0 3px 6px rgba(0,0,0,0.1);';
-        
-        // 創建三個點位組
-        const pointsData = [
-            { 
-                title: '外在行為', 
-                points: globalPointsData.external,
-                titleColor: 'rgba(65, 105, 225, 1)', 
-                borderColor: 'rgba(65, 105, 225, 0.3)' 
-            },
-            { 
-                title: '內在思維', 
-                points: globalPointsData.internal,
-                titleColor: 'rgba(220, 20, 60, 1)', 
-                borderColor: 'rgba(220, 20, 60, 0.3)' 
-            },
-            { 
-                title: '綜合點位', 
-                points: globalPointsData.total,
-                titleColor: 'rgba(80, 80, 80, 1)', 
-                borderColor: 'rgba(80, 80, 80, 0.3)' 
-            }
-        ];
-        
-        pointsData.forEach(data => {
-            const group = document.createElement('div');
-            group.style.cssText = 'display:flex; flex-direction:column; align-items:center; text-align:center; flex:1; position:relative;';
-            
-            const title = document.createElement('div');
-            title.innerHTML = data.title;
-            title.style.cssText = `font-size:12px; font-weight:600; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.5px; color:${data.titleColor};`;
-            group.appendChild(title);
-            
-            // 不再顯示具體點位數據，只保留標題
-            
-            pointsRow.appendChild(group);
-        });
-        
-        pointsContainer.appendChild(pointsRow);
-        page1Container.appendChild(pointsContainer);
+        // 點位座標欄位已移除 - PDF第一頁表格下方保持空白
         
         // 創建第二頁頁眉 (簡化版)
         const page2Header = document.createElement('div');
