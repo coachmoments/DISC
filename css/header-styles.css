@@ -15,19 +15,23 @@ header {
 .header-content {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     padding: 0 20px;
     max-width: 1200px;
     margin: 0 auto;
+    position: relative;
 }
 
-/* LOGO在左上角 */
+/* LOGO在左上角 - 絕對定位，不受container限制 */
 .logo-container {
-    flex: 1;
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
     display: flex;
-    justify-content: flex-start;
     align-items: center;
+    z-index: 10;
 }
 
 /* 標題在正中間 - 單行白字 */
@@ -36,16 +40,15 @@ header {
     align-items: center;
     justify-content: center;
     text-align: center;
-    flex: 1;
     flex-direction: row;
     flex-wrap: nowrap;
     white-space: nowrap;
+    width: 100%;
 }
 
 /* 右側空白區域，用於平衡佈局 */
 .header-spacer {
-    flex: 1;
-    display: flex;
+    display: none;
 }
 
 .site-logo {
@@ -82,6 +85,17 @@ header {
     white-space: pre;
 }
 
+/* 中型螢幕：970px斷點，字體縮小 */
+@media (max-width: 970px) {
+    .title-en, .title-zh {
+        font-size: 1.9rem;
+    }
+    
+    .logo-container {
+        left: 8px;
+    }
+}
+
 /* 平板響應式設計 */
 @media (max-width: 768px) {
     header {
@@ -97,6 +111,10 @@ header {
         flex-direction: row;
         flex-wrap: nowrap;
         white-space: nowrap;
+    }
+    
+    .logo-container {
+        left: 6px;
     }
     
     .site-logo {
@@ -126,9 +144,12 @@ header {
         justify-content: center;
         gap: 12px;
         padding: 0 10px;
+        position: static;
     }
     
     .logo-container {
+        position: static;
+        transform: none;
         order: 1;
         justify-content: center;
     }
