@@ -102,27 +102,6 @@ header {
     }
 }
 
-/* 735px斷點 - LOGO和字都再縮小一點 */
-@media (max-width: 735px) {
-    .title-en, .title-zh {
-        font-size: 1.3rem; /* 再次縮小字體 */
-        letter-spacing: 0.6px;
-    }
-    
-    .site-logo {
-        height: 55px; /* LOGO再縮小 */
-    }
-    
-    .logo-fallback {
-        font-size: 1.1rem;
-        line-height: 55px;
-    }
-    
-    .logo-container {
-        margin-left: 2px;
-    }
-}
-
 /* 平板響應式設計 */
 @media (max-width: 768px) {
     header {
@@ -152,6 +131,27 @@ header {
     
     .title-en, .title-zh {
         font-size: 1.6rem;
+    }
+    
+    .logo-container {
+        margin-left: 2px;
+    }
+}
+
+/* 735px斷點 - LOGO和字都再縮小一點 */
+@media (max-width: 735px) {
+    .title-en, .title-zh {
+        font-size: 1.3rem; /* 再次縮小字體 */
+        letter-spacing: 0.6px;
+    }
+    
+    .site-logo {
+        height: 55px; /* LOGO再縮小 */
+    }
+    
+    .logo-fallback {
+        font-size: 1.1rem;
+        line-height: 55px;
     }
     
     .logo-container {
