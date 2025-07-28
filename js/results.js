@@ -1124,9 +1124,48 @@ function generatePDF() {
         
         // 結果解讀說明已移除 - PDF報告不需要顯示結果解讀
         
+        // 添加LINE詢問區域 - 在footer之前
+        const lineInquirySection = document.createElement('div');
+        lineInquirySection.style.cssText = 'margin-top:30px; margin-bottom:20px; padding:20px; background:linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%); border-radius:12px; border:2px solid #28a745; text-align:center;';
+        
+        // LINE詢問標題
+        const inquiryTitle = document.createElement('div');
+        inquiryTitle.innerHTML = '想要更加詳細的個人報告？';
+        inquiryTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#28a745; margin-bottom:10px;';
+        lineInquirySection.appendChild(inquiryTitle);
+        
+        // LINE詢問說明文字
+        const inquiryText = document.createElement('div');
+        inquiryText.innerHTML = '掃描下方QR Code 加LINE詢問，獲得更專業的個人化分析報告';
+        inquiryText.style.cssText = 'font-size:14px; color:#333; margin-bottom:15px; line-height:1.4;';
+        lineInquirySection.appendChild(inquiryText);
+        
+        // QR Code容器
+        const qrContainer = document.createElement('div');
+        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:10px;';
+        
+        // QR Code圖片
+        const qrCode = document.createElement('img');
+        qrCode.src = 'images/QR.png';
+        qrCode.style.cssText = 'width:80px; height:80px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+        qrCode.onerror = function() {
+            // 如果QR code載入失敗，顯示文字提示
+            qrContainer.innerHTML = '<div style="width:80px; height:80px; border:2px dashed #28a745; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#28a745; text-align:center;">QR Code<br/>載入中</div>';
+        };
+        qrContainer.appendChild(qrCode);
+        lineInquirySection.appendChild(qrContainer);
+        
+        // LINE ID提示
+        const lineIdText = document.createElement('div');
+        lineIdText.innerHTML = 'LINE ID: @raehHxl';
+        lineIdText.style.cssText = 'font-size:12px; color:#666; font-style:italic;';
+        lineInquirySection.appendChild(lineIdText);
+        
+        page2Container.appendChild(lineInquirySection);
+        
         // 添加專業頁腳 - 第二頁底部
         const footer = document.createElement('div');
-        footer.style.cssText = 'margin-top:25px; padding-top:20px; border-top:2px solid #4a6fa5; text-align:center; color:#666;';
+        footer.style.cssText = 'margin-top:15px; padding-top:15px; border-top:2px solid #4a6fa5; text-align:center; color:#666;';
         
         const footerContent = document.createElement('div');
         footerContent.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:12px;';
