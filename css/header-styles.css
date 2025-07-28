@@ -84,12 +84,42 @@ header {
 /* 970px斷點 - 標題文字縮小 */
 @media (max-width: 970px) {
     .title-en, .title-zh {
-        font-size: 1.9rem; /* 稍微縮小字體 */
+        font-size: 1.5rem; /* 稍微縮小字體 */
         letter-spacing: 0.8px;
+    }
+    
+    .site-logo {
+        height: 65px; /* LOGO也縮小一點 */
+    }
+    
+    .logo-fallback {
+        font-size: 1.3rem;
+        line-height: 65px;
     }
     
     .logo-container {
         margin-left: 3px; /* 調整LOGO左邊距 */
+    }
+}
+
+/* 735px斷點 - LOGO和字都再縮小一點 */
+@media (max-width: 735px) {
+    .title-en, .title-zh {
+        font-size: 1.3rem; /* 再次縮小字體 */
+        letter-spacing: 0.6px;
+    }
+    
+    .site-logo {
+        height: 55px; /* LOGO再縮小 */
+    }
+    
+    .logo-fallback {
+        font-size: 1.1rem;
+        line-height: 55px;
+    }
+    
+    .logo-container {
+        margin-left: 2px;
     }
 }
 
