@@ -65,7 +65,12 @@ footer p {
 }
 
 /* 專門用於PDF生成的隱藏規則 */
-.action-section,
+@media print {
+    .action-section {
+        display: none !important;
+    }
+}
+
 .pdf-generate footer {
     display: none !important;
 } 
