@@ -1038,7 +1038,7 @@ function generatePDF() {
         
         // 雷達圖容器（增大尺寸）
         const compactRadarContainer = document.createElement('div');
-        compactRadarContainer.style.cssText = 'width:360px; height:360px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:12px; padding:15px; box-sizing:border-box;';
+        compactRadarContainer.style.cssText = 'width:380px; height:380px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:12px; padding:15px; box-sizing:border-box;';
         
         const compactOriginalCanvas = document.getElementById('radar-chart');
         const compactRadarImg = document.createElement('img');
