@@ -1043,7 +1043,7 @@ function generatePDF() {
         const compactOriginalCanvas = document.getElementById('radar-chart');
         const compactRadarImg = document.createElement('img');
         compactRadarImg.src = compactOriginalCanvas.toDataURL('image/png');
-        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:8px;';
+        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:8px; aspect-ratio:1/1;';
         
         compactRadarContainer.appendChild(compactRadarImg);
         compactChartContainer.appendChild(compactRadarContainer);
