@@ -1062,8 +1062,8 @@ function generatePDF() {
             if (text) text.style.cssText = 'font-size:10px; font-weight:500;';
         });
         
-        legendContainer.appendChild(legend);
-        chartContainer.appendChild(legendContainer);
+        compactLegendContainer.appendChild(compactLegend);
+        compactChartContainer.appendChild(compactLegendContainer);
         
         // 右側：LINE區域（縮小版）
         const lineSection = document.createElement('div');
