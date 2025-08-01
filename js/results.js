@@ -1067,49 +1067,36 @@ function generatePDF() {
         
         page1Container.appendChild(compactChartContainer);
         
-        // 創建底部LINE區域（橫向佈局）
+        // 創建底部LINE區域（減少高度）
         const lineSection = document.createElement('div');
-        lineSection.style.cssText = 'margin-top:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5;';
-        
-        // 創建橫向佈局容器
-        const lineHorizontalContainer = document.createElement('div');
-        lineHorizontalContainer.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:20px;';
-        
-        // 左側：標題和QR碼
-        const qrSection = document.createElement('div');
-        qrSection.style.cssText = 'display:flex; flex-direction:column; align-items:center;';
+        lineSection.style.cssText = 'margin-top:10px; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
         
         const compactQrTitle = document.createElement('div');
         compactQrTitle.innerHTML = '加入JCoach官方LINE';
-        compactQrTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:8px; text-align:center;';
-        qrSection.appendChild(compactQrTitle);
+        compactQrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
+        lineSection.appendChild(compactQrTitle);
+        
+        const compactQrContainer = document.createElement('div');
+        compactQrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:8px;';
         
         const compactQrCode = document.createElement('img');
         compactQrCode.src = 'images/QR.png';
         compactQrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);';
         compactQrCode.onerror = function() {
-            compactQrCode.outerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
+            compactQrContainer.innerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
         };
-        qrSection.appendChild(compactQrCode);
-        
-        // 右側：連結和說明文字
-        const linkSection = document.createElement('div');
-        linkSection.style.cssText = 'display:flex; flex-direction:column; align-items:center;';
+        compactQrContainer.appendChild(compactQrCode);
+        lineSection.appendChild(compactQrContainer);
         
         const compactLineLink = document.createElement('div');
         compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
-        compactLineLink.style.cssText = 'font-size:14px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:6px 12px; border-radius:4px; display:inline-block; margin-bottom:8px;';
-        linkSection.appendChild(compactLineLink);
+        compactLineLink.style.cssText = 'font-size:11px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:3px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;';
+        lineSection.appendChild(compactLineLink);
         
         const compactInquiryText = document.createElement('div');
         compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; line-height:1.4; font-weight:500; text-align:center; max-width:200px;';
-        linkSection.appendChild(compactInquiryText);
-        
-        // 將兩個部分添加到橫向容器
-        lineHorizontalContainer.appendChild(qrSection);
-        lineHorizontalContainer.appendChild(linkSection);
-        lineSection.appendChild(lineHorizontalContainer);
+        compactInquiryText.style.cssText = 'font-size:11px; color:#2c3e50; line-height:1.3; font-weight:500;';
+        lineSection.appendChild(compactInquiryText);
         
         page1Container.appendChild(lineSection);
         
