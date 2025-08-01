@@ -621,10 +621,54 @@
              }
          }
 
-         /* 內嵌雷達圖區域樣式 */
-         .chart-section-inline {
-             margin: 25px 0;
-         }
+                 /* 內嵌雷達圖區域樣式 */
+        .chart-section-inline {
+            margin: 25px 0;
+        }
+        
+        /* 保存提示樣式 */
+        .save-tip {
+            margin-top: 20px;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, #f8f9ff 0%, #e8f2ff 100%);
+            border: 1px solid #c3d9ff;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .tip-text {
+            margin: 0;
+            font-size: 14px;
+            color: #2c3e50;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .tip-icon {
+            font-size: 16px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .tip-text {
+                font-size: 13px;
+                flex-direction: column;
+                gap: 4px;
+            }
+            
+            .save-tip {
+                padding: 12px 15px;
+            }
+        }
      </style>
 </head>
 <body>
@@ -754,6 +798,14 @@
                                         <span class="point-marker" style="background-color: white; color: rgba(80, 80, 80, 1); border: 2px solid rgba(80, 80, 80, 1);">T</span>
                                         <span class="legend-text">綜合點位</span>
                                     </div>
+                                </div>
+                                
+                                <!-- 保存提示 -->
+                                <div class="save-tip">
+                                    <p class="tip-text">
+                                        <i class="tip-icon">💡</i>
+                                        <span>可截圖保存此頁面或點擊下方「下載報告 (PDF)」按鈕保存完整結果</span>
+                                    </p>
                                 </div>
                             </div>
                         </section>
