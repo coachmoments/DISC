@@ -1036,14 +1036,14 @@ function generatePDF() {
         compactChartTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 15px 0; font-weight:600;';
         compactChartContainer.appendChild(compactChartTitle);
         
-        // 雷達圖容器（增大尺寸，確保內容區域為正方形）
+        // 雷達圖容器
         const compactRadarContainer = document.createElement('div');
-        compactRadarContainer.style.cssText = 'width:410px; height:410px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:12px; padding:15px; box-sizing:border-box;';
+        compactRadarContainer.style.cssText = 'width:300px; height:300px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:12px; padding:15px; box-sizing:border-box;';
         
         const compactOriginalCanvas = document.getElementById('radar-chart');
         const compactRadarImg = document.createElement('img');
         compactRadarImg.src = compactOriginalCanvas.toDataURL('image/png');
-        compactRadarImg.style.cssText = 'width:380px; height:380px; object-fit:contain; border-radius:8px; aspect-ratio:1/1; display:block; margin:0 auto;';
+        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:8px;';
         
         compactRadarContainer.appendChild(compactRadarImg);
         compactChartContainer.appendChild(compactRadarContainer);
