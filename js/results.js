@@ -658,7 +658,7 @@ function pointToCoordinates(x, y, centerX, centerY, maxRadius) {
 function setupButtonEvents() {
     // 報告分析按鈕
     document.getElementById('analysis-btn').addEventListener('click', () => {
-        window.open('https://lin.ee/RaehHxl', '_blank');
+        window.open('https://lin.ee/weKK5Dl', '_blank');
     });
     
     // 下載報告按鈕
@@ -1089,7 +1089,7 @@ function generatePDF() {
         lineSection.appendChild(compactQrContainer);
         
         const compactLineLink = document.createElement('div');
-        compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        compactLineLink.innerHTML = '@https://lin.ee/weKK5Dl<br/>ID: @619izomi';
         compactLineLink.style.cssText = 'font-size:11px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:3px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;';
         lineSection.appendChild(compactLineLink);
         
@@ -1212,9 +1212,9 @@ function generatePDF() {
         
         // LINE連結
         const lineLink = document.createElement('a');
-        lineLink.href = 'https://lin.ee/RaehHxl';
+        lineLink.href = 'https://lin.ee/weKK5Dl';
         lineLink.target = '_blank';
-        lineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        lineLink.innerHTML = '@https://lin.ee/weKK5Dl<br/>ID: @619izomi';
         lineLink.style.cssText = 'font-size:13px; color:#4a6fa5; text-decoration:underline; font-weight:600; display:inline-block; margin-top:8px; padding:4px 8px; border-radius:4px; background-color:rgba(74, 111, 165, 0.05); transition:background-color 0.2s ease;';
         lineInquirySection.appendChild(lineLink);
         
