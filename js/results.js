@@ -733,33 +733,23 @@ function generatePDF() {
         // 給雷達圖足夠時間渲染
         setTimeout(() => {
             try {
-                    // 創建兩頁PDF容器
-                    const { page1Container, page2Container } = createTwoPagePDFContainers();
+                    // 創建單頁PDF容器
+                    const { page1Container } = createSinglePagePDFContainer();
                 
                 // 將容器添加到DOM中
-                    document.body.appendChild(singlePageContainer);
+                    document.body.appendChild(page1Container);
                     
-                    // 分別捕獲兩頁內容
-                    Promise.all([
-                        html2canvas(page1Container, {
-                            scale: 2,
-                    useCORS: true,
-                    allowTaint: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                        }),
-                        html2canvas(page2Container, {
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: true,
-                            logging: false,
-                            backgroundColor: '#ffffff'
-                        })
-                    ]).then(([canvas1, canvas2]) => {
+                    // 捕獲單頁內容
+                    html2canvas(page1Container, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    }).then((canvas) => {
                     try {
                         // 移除臨時PDF容器
                             document.body.removeChild(page1Container);
-                            document.body.removeChild(page2Container);
                         
                         // 創建PDF文檔
                         const { jsPDF } = window.jspdf;
@@ -772,34 +762,19 @@ function generatePDF() {
                         const contentWidth = pageWidth - (margin * 2);
                             const maxHeight = pageHeight - (margin * 2);
                             
-                            // 添加第一頁
-                            const img1Width = contentWidth;
-                            const img1Height = Math.min((canvas1.height * img1Width) / canvas1.width, maxHeight);
-                            const x1Offset = (pageWidth - img1Width) / 2;
+                            // 添加單頁內容
+                            const imgWidth = contentWidth;
+                            const imgHeight = Math.min((canvas.height * imgWidth) / canvas.width, maxHeight);
+                            const xOffset = (pageWidth - imgWidth) / 2;
                             
                             pdf.addImage(
-                                canvas1.toDataURL('image/jpeg', 1.0),
+                                canvas.toDataURL('image/jpeg', 1.0),
                                 'JPEG',
-                                x1Offset,
+                                xOffset,
                                 margin,
-                                img1Width,
-                                img1Height
+                                imgWidth,
+                                imgHeight
                             );
-                            
-                            // 添加第二頁
-                            pdf.addPage();
-                            const img2Width = contentWidth;
-                            const img2Height = Math.min((canvas2.height * img2Width) / canvas2.width, maxHeight);
-                            const x2Offset = (pageWidth - img2Width) / 2;
-                            
-                        pdf.addImage(
-                                canvas2.toDataURL('image/jpeg', 1.0),
-                            'JPEG',
-                                x2Offset,
-                            margin,
-                                img2Width,
-                                img2Height
-                        );
                         
                         // 保存PDF
                         const userName = getFromLocalStorage('discUserName') || 'User';
@@ -1048,7 +1023,89 @@ function generatePDF() {
         scoreContainer.appendChild(tableClone);
         page1Container.appendChild(scoreContainer);
         
-        // 點位座標欄位已移除 - PDF第一頁表格下方保持空白
+        // 創建並排佈局容器 - 將雷達圖和LINE區域放在一行
+        const bottomSection = document.createElement('div');
+        bottomSection.style.cssText = 'display:flex; gap:15px; margin-top:10px;';
+        
+        // 左側：雷達圖區域（縮小版）
+        const chartContainer = document.createElement('div');
+        chartContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
+        
+        const chartTitle = document.createElement('h4');
+        chartTitle.innerHTML = 'DISC 雷達圖';
+        chartTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600;';
+        chartContainer.appendChild(chartTitle);
+        
+        // 縮小的雷達圖容器
+        const radarContainer = document.createElement('div');
+        radarContainer.style.cssText = 'width:200px; height:200px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
+        
+        const originalCanvas = document.getElementById('radar-chart');
+        const radarImg = document.createElement('img');
+        radarImg.src = originalCanvas.toDataURL('image/png');
+        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:4px;';
+        
+        radarContainer.appendChild(radarImg);
+        chartContainer.appendChild(radarContainer);
+        
+        // 簡化的圖例
+        const legendContainer = document.createElement('div');
+        legendContainer.style.cssText = 'background:#f8f9fa; border-radius:6px; padding:8px; margin-top:8px;';
+        
+        const legend = document.querySelector('.legend').cloneNode(true);
+        legend.style.cssText = 'display:flex; justify-content:center; gap:15px; font-size:10px;';
+        legend.querySelectorAll('.legend-item').forEach(item => {
+            item.style.cssText = 'display:flex; align-items:center; gap:4px;';
+            const marker = item.querySelector('.point-marker');
+            if (marker) marker.style.cssText = marker.style.cssText + '; width:12px; height:12px; font-size:8px;';
+            const text = item.querySelector('.legend-text');
+            if (text) text.style.cssText = 'font-size:10px; font-weight:500;';
+        });
+        
+        legendContainer.appendChild(legend);
+        chartContainer.appendChild(legendContainer);
+        
+        // 右側：LINE區域（縮小版）
+        const lineSection = document.createElement('div');
+        lineSection.style.cssText = 'flex:1; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
+        
+        const inquiryText = document.createElement('div');
+        inquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        inquiryText.style.cssText = 'font-size:12px; color:#2c3e50; margin-bottom:8px; line-height:1.4; font-weight:500;';
+        lineSection.appendChild(inquiryText);
+        
+        const qrTitle = document.createElement('div');
+        qrTitle.innerHTML = '加入JCoach官方LINE';
+        qrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
+        lineSection.appendChild(qrTitle);
+        
+        const qrContainer = document.createElement('div');
+        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:8px;';
+        
+        const qrCode = document.createElement('img');
+        qrCode.src = 'images/QR.png';
+        qrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1);';
+        qrCode.onerror = function() {
+            qrContainer.innerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
+        };
+        qrContainer.appendChild(qrCode);
+        lineSection.appendChild(qrContainer);
+        
+        const lineLink = document.createElement('div');
+        lineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        lineLink.style.cssText = 'font-size:10px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:2px 6px; border-radius:3px; display:inline-block;';
+        lineSection.appendChild(lineLink);
+        
+        // 將兩個區域添加到並排容器
+        bottomSection.appendChild(chartContainer);
+        bottomSection.appendChild(lineSection);
+        page1Container.appendChild(bottomSection);
+        
+        // 添加頁腳（單頁版）
+        const footer = document.createElement('div');
+        footer.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666; font-size:10px;';
+        footer.innerHTML = `&copy; coachmonents DISC人格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
+        page1Container.appendChild(footer);
         
         // 創建第二頁頁眉 (簡化版)
         const page2Header = document.createElement('div');
@@ -1185,6 +1242,6 @@ function generatePDF() {
         
         page2Container.appendChild(footer);
         
-        return { page1Container, page2Container };
+        return { page1Container };
     }
 }
