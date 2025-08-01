@@ -892,13 +892,13 @@ function generatePDF() {
         
         // 主標題
         const mainTitle = document.createElement('div');
-        mainTitle.innerHTML = 'DISCovery';
+        mainTitle.innerHTML = 'DISCovery行為風格';
         mainTitle.style.cssText = 'font-size:28px; font-weight:bold; color:#4a6fa5; margin-bottom:5px; letter-spacing:2px;';
         header.appendChild(mainTitle);
         
         // 副標題
         const subTitle = document.createElement('div');
-        subTitle.innerHTML = '自我發現人格特質 - 測驗報告';
+        subTitle.innerHTML = '測驗報告';
         subTitle.style.cssText = 'font-size:16px; color:#666; margin-bottom:10px;';
         header.appendChild(subTitle);
         
@@ -1056,7 +1056,7 @@ function generatePDF() {
         page2Header.style.cssText = 'text-align:center; margin-bottom:30px; padding-bottom:15px; border-bottom:2px solid #4a6fa5;';
         
         const page2Title = document.createElement('div');
-        page2Title.innerHTML = 'DISCovery 測驗報告 - 第2頁';
+        page2Title.innerHTML = 'DISCovery行為風格 - 第2頁';
         page2Title.style.cssText = 'font-size:20px; font-weight:bold; color:#4a6fa5; letter-spacing:1px;';
         page2Header.appendChild(page2Title);
         
@@ -1128,21 +1128,21 @@ function generatePDF() {
         const lineInquirySection = document.createElement('div');
         lineInquirySection.style.cssText = 'margin-top:30px; margin-bottom:20px; padding:20px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:12px; border:2px solid #4a6fa5; text-align:center;';
         
-        // LINE詢問標題
-        const inquiryTitle = document.createElement('div');
-        inquiryTitle.innerHTML = '想要更加詳細的個人報告？';
-        inquiryTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:10px;';
-        lineInquirySection.appendChild(inquiryTitle);
-        
         // LINE詢問說明文字
         const inquiryText = document.createElement('div');
-        inquiryText.innerHTML = '掃描下方QR Code 加LINE詢問，獲得更專業的個人化分析報告';
-        inquiryText.style.cssText = 'font-size:14px; color:#333; margin-bottom:15px; line-height:1.4;';
+        inquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        inquiryText.style.cssText = 'font-size:15px; color:#2c3e50; margin-bottom:18px; line-height:1.5; font-weight:500;';
         lineInquirySection.appendChild(inquiryText);
+        
+        // QR上方標題
+        const qrTitle = document.createElement('div');
+        qrTitle.innerHTML = '加入JCoach官方LINE';
+        qrTitle.style.cssText = 'font-size:18px; font-weight:bold; color:#4a6fa5; margin-bottom:12px; letter-spacing:0.5px;';
+        lineInquirySection.appendChild(qrTitle);
         
         // QR Code容器
         const qrContainer = document.createElement('div');
-        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:10px;';
+        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:15px;';
         
         // QR Code圖片
         const qrCode = document.createElement('img');
@@ -1155,11 +1155,13 @@ function generatePDF() {
         qrContainer.appendChild(qrCode);
         lineInquirySection.appendChild(qrContainer);
         
-        // LINE ID提示
-        const lineIdText = document.createElement('div');
-        lineIdText.innerHTML = 'LINE ID: @840dltmw';
-        lineIdText.style.cssText = 'font-size:12px; color:#666; font-style:italic;';
-        lineInquirySection.appendChild(lineIdText);
+        // LINE連結
+        const lineLink = document.createElement('a');
+        lineLink.href = 'https://lin.ee/RaehHxl';
+        lineLink.target = '_blank';
+        lineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        lineLink.style.cssText = 'font-size:13px; color:#4a6fa5; text-decoration:underline; font-weight:600; display:inline-block; margin-top:8px; padding:4px 8px; border-radius:4px; background-color:rgba(74, 111, 165, 0.05); transition:background-color 0.2s ease;';
+        lineInquirySection.appendChild(lineLink);
         
         page2Container.appendChild(lineInquirySection);
         
