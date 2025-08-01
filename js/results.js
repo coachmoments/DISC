@@ -996,27 +996,30 @@ function generatePDF() {
         
         dimensions.forEach(dim => {
             const item = document.createElement('div');
-            item.style.cssText = 'display:flex; align-items:center; background:white; padding:8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left:3px solid ' + dim.color + ';';
+            item.style.cssText = 'background:white; padding:8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left:3px solid ' + dim.color + ';';
+            
+            // 第一排：英文字首圖和標題
+            const titleRow = document.createElement('div');
+            titleRow.style.cssText = 'display:flex; align-items:center; margin-bottom:4px;';
             
             const label = document.createElement('div');
             label.innerHTML = dim.label;
-            label.style.cssText = `width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:12px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:8px; flex-shrink:0; background-color:${dim.color};`;
-            item.appendChild(label);
-            
-            const info = document.createElement('div');
-            info.style.cssText = 'flex:1;';
+            label.style.cssText = `width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:6px; flex-shrink:0; background-color:${dim.color};`;
+            titleRow.appendChild(label);
             
             const title = document.createElement('div');
             title.innerHTML = dim.title;
-            title.style.cssText = 'font-weight:bold; font-size:10px; color:#333; margin-bottom:2px;';
-            info.appendChild(title);
+            title.style.cssText = 'font-weight:bold; font-size:9px; color:#333; flex:1;';
+            titleRow.appendChild(title);
             
+            item.appendChild(titleRow);
+            
+            // 第二排：內文說明
             const desc = document.createElement('div');
             desc.innerHTML = dim.desc;
-            desc.style.cssText = 'font-size:8px; color:#666; line-height:1.2;';
-            info.appendChild(desc);
+            desc.style.cssText = 'font-size:7px; color:#666; line-height:1.3; padding-left:26px;';
+            item.appendChild(desc);
             
-            item.appendChild(info);
             explanationGrid.appendChild(item);
         });
         
@@ -1071,11 +1074,6 @@ function generatePDF() {
         const lineSection = document.createElement('div');
         lineSection.style.cssText = 'margin-top:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
         
-        const compactInquiryText = document.createElement('div');
-        compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        compactInquiryText.style.cssText = 'font-size:14px; color:#2c3e50; margin-bottom:10px; line-height:1.4; font-weight:500;';
-        lineSection.appendChild(compactInquiryText);
-        
         const compactQrTitle = document.createElement('div');
         compactQrTitle.innerHTML = '加入JCoach官方LINE';
         compactQrTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:10px;';
@@ -1095,8 +1093,13 @@ function generatePDF() {
         
         const compactLineLink = document.createElement('div');
         compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
-        compactLineLink.style.cssText = 'font-size:12px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:4px 8px; border-radius:4px; display:inline-block;';
+        compactLineLink.style.cssText = 'font-size:12px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:4px 8px; border-radius:4px; display:inline-block; margin-bottom:8px;';
         lineSection.appendChild(compactLineLink);
+        
+        const compactInquiryText = document.createElement('div');
+        compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; line-height:1.4; font-weight:500;';
+        lineSection.appendChild(compactInquiryText);
         
         page1Container.appendChild(lineSection);
         
