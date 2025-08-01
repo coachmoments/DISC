@@ -733,34 +733,23 @@ function generatePDF() {
         // 給雷達圖足夠時間渲染
         setTimeout(() => {
             try {
-                    // 創建兩頁PDF容器
-                    const { page1Container, page2Container } = createTwoPagePDFContainers();
+                    // 創建單頁PDF容器
+                    const { page1Container } = createTwoPagePDFContainers();
                 
                 // 將容器添加到DOM中
                     document.body.appendChild(page1Container);
-                    document.body.appendChild(page2Container);
                     
-                    // 分別捕獲兩頁內容
-                    Promise.all([
-                        html2canvas(page1Container, {
-                            scale: 2,
-                    useCORS: true,
-                    allowTaint: true,
-                    logging: false,
-                    backgroundColor: '#ffffff'
-                        }),
-                        html2canvas(page2Container, {
-                            scale: 2,
-                            useCORS: true,
-                            allowTaint: true,
-                            logging: false,
-                            backgroundColor: '#ffffff'
-                        })
-                    ]).then(([canvas1, canvas2]) => {
+                    // 捕獲單頁內容
+                    html2canvas(page1Container, {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: true,
+                        logging: false,
+                        backgroundColor: '#ffffff'
+                    }).then((canvas1) => {
                     try {
                         // 移除臨時PDF容器
                             document.body.removeChild(page1Container);
-                            document.body.removeChild(page2Container);
                         
                         // 創建PDF文檔
                         const { jsPDF } = window.jspdf;
@@ -787,20 +776,7 @@ function generatePDF() {
                                 img1Height
                             );
                             
-                            // 添加第二頁
-                            pdf.addPage();
-                            const img2Width = contentWidth;
-                            const img2Height = Math.min((canvas2.height * img2Width) / canvas2.width, maxHeight);
-                            const x2Offset = (pageWidth - img2Width) / 2;
-                            
-                        pdf.addImage(
-                                canvas2.toDataURL('image/jpeg', 1.0),
-                            'JPEG',
-                                x2Offset,
-                            margin,
-                                img2Width,
-                                img2Height
-                        );
+                        // 單頁PDF，不需要第二頁
                         
                         // 保存PDF
                         const userName = getFromLocalStorage('discUserName') || 'User';
@@ -815,7 +791,7 @@ function generatePDF() {
                         console.error('PDF生成過程中發生錯誤:', error);
                         handlePDFError(loadingIndicator);
                     }
-                }).catch(error => {
+                        }).catch(error => {
                     console.error('HTML轉Canvas過程中發生錯誤:', error);
                     handlePDFError(loadingIndicator);
                 });
@@ -872,10 +848,7 @@ function generatePDF() {
         page1Container.id = 'pdf-page1-container';
         page1Container.style.cssText = 'position:absolute; left:-9999px; width:780px; height:1120px; background-color:white; padding:15px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.3; color:#333; overflow:visible;';
         
-        // 創建第二頁容器
-        const page2Container = document.createElement('div');
-        page2Container.id = 'pdf-page2-container';
-        page2Container.style.cssText = 'position:absolute; left:-9999px; width:780px; height:1200px; background-color:white; padding:20px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.4; color:#333; overflow:visible;';
+        // 單頁PDF，不需要第二頁容器
         
         // 創建頁眉區域
         const header = document.createElement('div');
@@ -904,35 +877,52 @@ function generatePDF() {
         
         page1Container.appendChild(header);
         
-        // 創建用户信息區（簡化版）
+        // 創建用户信息區（改良版）
         const userInfoContainer = document.createElement('div');
-        userInfoContainer.style.cssText = 'margin-bottom:10px;';
+        userInfoContainer.style.cssText = 'margin-bottom:12px; padding:8px 12px; background:linear-gradient(135deg, #f0f7ff 0%, #e8f2ff 100%); border-radius:8px; border:1px solid #4a6fa5;';
         
         const userInfoTitle = document.createElement('div');
-        userInfoTitle.innerHTML = '測驗資訊：';
-        userInfoTitle.style.cssText = 'color:#4a6fa5; font-size:14px; font-weight:600; display:inline; margin-right:10px;';
+        userInfoTitle.innerHTML = '📋 測驗資訊';
+        userInfoTitle.style.cssText = 'color:#4a6fa5; font-size:13px; font-weight:600; margin-bottom:6px;';
+        userInfoContainer.appendChild(userInfoTitle);
         
         const userInfo = document.querySelector('.user-info').cloneNode(true);
-        userInfo.style.cssText = 'display:inline; font-size:13px; color:#666;';
         
-        // 簡化用戶信息項目樣式
+        // 改良用戶信息項目樣式
         const userInfoItems = userInfo.querySelectorAll('.user-info-item');
-        let infoText = '';
-        userInfoItems.forEach((item, index) => {
+        let infoItems = [];
+        userInfoItems.forEach((item) => {
             const label = item.querySelector('.user-info-label') || item.querySelector('.label');
             const value = item.querySelector('.user-info-value') || item.querySelector('.value');
             if (label && value) {
-                if (index > 0) infoText += ' | ';
-                infoText += `${label.textContent}: ${value.textContent}`;
+                infoItems.push({
+                    label: label.textContent,
+                    value: value.textContent
+                });
             }
         });
         
-        const infoSpan = document.createElement('span');
-        infoSpan.innerHTML = infoText;
-        infoSpan.style.cssText = 'font-size:13px; color:#666;';
+        const infoGrid = document.createElement('div');
+        infoGrid.style.cssText = 'display:grid; grid-template-columns:repeat(3, 1fr); gap:8px;';
         
-        userInfoContainer.appendChild(userInfoTitle);
-        userInfoContainer.appendChild(infoSpan);
+        infoItems.forEach(info => {
+            const infoItem = document.createElement('div');
+            infoItem.style.cssText = 'background:white; padding:4px 8px; border-radius:4px; text-align:center; box-shadow:0 1px 2px rgba(0,0,0,0.1);';
+            
+            const labelDiv = document.createElement('div');
+            labelDiv.innerHTML = info.label;
+            labelDiv.style.cssText = 'font-size:10px; color:#666; margin-bottom:2px;';
+            infoItem.appendChild(labelDiv);
+            
+            const valueDiv = document.createElement('div');
+            valueDiv.innerHTML = info.value;
+            valueDiv.style.cssText = 'font-size:11px; color:#333; font-weight:600;';
+            infoItem.appendChild(valueDiv);
+            
+            infoGrid.appendChild(infoItem);
+        });
+        
+        userInfoContainer.appendChild(infoGrid);
         page1Container.appendChild(userInfoContainer);
 
         // 移除DISC維度說明以節省空間
@@ -941,9 +931,58 @@ function generatePDF() {
         const mainContent = document.createElement('div');
         mainContent.style.cssText = 'display:flex; gap:15px; margin-bottom:10px;';
         
-        // 左欄：分數表格
+        // 左欄：人格特質說明 + 分數表格
         const leftColumn = document.createElement('div');
         leftColumn.style.cssText = 'flex:1; min-width:350px;';
+        
+        // 添加DISC人格特質說明
+        const explanationContainer = document.createElement('div');
+        explanationContainer.style.cssText = 'margin-bottom:10px; padding:8px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:8px; border:1px solid #dee2e6;';
+        
+        const explanationTitle = document.createElement('h3');
+        explanationTitle.innerHTML = 'DISC 人格特質說明';
+        explanationTitle.style.cssText = 'color:#4a6fa5; font-size:13px; margin:0 0 8px 0; font-weight:600; text-align:center;';
+        explanationContainer.appendChild(explanationTitle);
+        
+        const explanationGrid = document.createElement('div');
+        explanationGrid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:6px;';
+        
+        // 創建DISC維度說明項目
+        const dimensions = [
+            { label: 'D', title: '掌控型', desc: '直接、果斷、結果導向', color: '#28a745' },
+            { label: 'I', title: '影響型', desc: '外向、樂觀、善於溝通', color: '#dc3545' },
+            { label: 'C', title: '嚴謹型', desc: '分析、有條理、注重細節', color: '#ffc107' },
+            { label: 'S', title: '沉穩型', desc: '穩重、耐心、合作性強', color: '#007bff' }
+        ];
+        
+        dimensions.forEach(dim => {
+            const item = document.createElement('div');
+            item.style.cssText = 'display:flex; align-items:center; background:white; padding:6px; border-radius:6px; box-shadow:0 1px 3px rgba(0,0,0,0.1); border-left:3px solid ' + dim.color + ';';
+            
+            const label = document.createElement('div');
+            label.innerHTML = dim.label;
+            label.style.cssText = `width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:11px; color:white; margin-right:8px; flex-shrink:0; background-color:${dim.color};`;
+            item.appendChild(label);
+            
+            const info = document.createElement('div');
+            info.style.cssText = 'flex:1;';
+            
+            const title = document.createElement('div');
+            title.innerHTML = dim.title;
+            title.style.cssText = 'font-weight:bold; font-size:10px; color:#333; margin-bottom:2px;';
+            info.appendChild(title);
+            
+            const desc = document.createElement('div');
+            desc.innerHTML = dim.desc;
+            desc.style.cssText = 'font-size:9px; color:#666; line-height:1.2;';
+            info.appendChild(desc);
+            
+            item.appendChild(info);
+            explanationGrid.appendChild(item);
+        });
+        
+        explanationContainer.appendChild(explanationGrid);
+        leftColumn.appendChild(explanationContainer);
         
         const scoreContainer = document.createElement('div');
         scoreContainer.style.cssText = 'margin-bottom:10px; padding:8px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
@@ -1068,19 +1107,6 @@ function generatePDF() {
         mainContent.appendChild(rightColumn);
         page1Container.appendChild(mainContent);
         
-        // 點位座標欄位已移除 - PDF第一頁表格下方保持空白
-        
-        // 創建第二頁頁眉 (簡化版)
-        const page2Header = document.createElement('div');
-        page2Header.style.cssText = 'text-align:center; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid #4a6fa5;';
-        
-        const page2Title = document.createElement('div');
-        page2Title.innerHTML = 'DISCovery行為風格 - 第2頁';
-        page2Title.style.cssText = 'font-size:20px; font-weight:bold; color:#4a6fa5; letter-spacing:1px;';
-        page2Header.appendChild(page2Title);
-        
-        page2Container.appendChild(page2Header);
-        
         // 在第一頁底部添加LINE詢問區域
         const lineSection = document.createElement('div');
         lineSection.style.cssText = 'margin-top:10px; margin-bottom:10px; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
@@ -1122,12 +1148,6 @@ function generatePDF() {
         
         page1Container.appendChild(footerPage1);
         
-        // 第二頁留空或添加簡單說明
-        const page2Note = document.createElement('div');
-        page2Note.innerHTML = '此報告已優化為單頁版本';
-        page2Note.style.cssText = 'text-align:center; color:#666; padding:50px; font-size:14px;';
-        page2Container.appendChild(page2Note);
-        
-        return { page1Container, page2Container };
+        return { page1Container };
     }
 }
