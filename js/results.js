@@ -1048,18 +1048,18 @@ function generatePDF() {
         compactRadarContainer.appendChild(compactRadarImg);
         compactChartContainer.appendChild(compactRadarContainer);
         
-        // 圖例
+        // 圖例（一排顯示）
         const compactLegendContainer = document.createElement('div');
-        compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:8px; padding:12px; margin-top:12px;';
+        compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:8px; padding:8px; margin-top:12px;';
         
         const compactLegend = document.querySelector('.legend').cloneNode(true);
-        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:20px; font-size:12px;';
+        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:15px; font-size:10px;';
         compactLegend.querySelectorAll('.legend-item').forEach(item => {
-            item.style.cssText = 'display:flex; align-items:center; gap:6px;';
+            item.style.cssText = 'display:flex; align-items:center; gap:4px;';
             const marker = item.querySelector('.point-marker');
-            if (marker) marker.style.cssText = marker.style.cssText + '; width:16px; height:16px; font-size:10px;';
+            if (marker) marker.style.cssText = marker.style.cssText + '; width:12px; height:12px; font-size:8px;';
             const text = item.querySelector('.legend-text');
-            if (text) text.style.cssText = 'font-size:12px; font-weight:500;';
+            if (text) text.style.cssText = 'font-size:10px; font-weight:500;';
         });
         
         compactLegendContainer.appendChild(compactLegend);
