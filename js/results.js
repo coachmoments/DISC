@@ -740,12 +740,12 @@ function generatePDF() {
                     document.body.appendChild(page1Container);
                     
                     // 捕獲單頁內容
-                    html2canvas(page1Container, {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: true,
-                        logging: false,
-                        backgroundColor: '#ffffff'
+                        html2canvas(page1Container, {
+                            scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
                     }).then((canvas) => {
                     try {
                         // 移除臨時PDF容器
@@ -774,7 +774,7 @@ function generatePDF() {
                                 margin,
                                 imgWidth,
                                 imgHeight
-                            );
+                        );
                         
                         // 保存PDF
                         const userName = getFromLocalStorage('discUserName') || 'User';
@@ -996,30 +996,27 @@ function generatePDF() {
         
         dimensions.forEach(dim => {
             const item = document.createElement('div');
-            item.style.cssText = 'background:white; padding:8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left:3px solid ' + dim.color + ';';
-            
-            // 第一排：英文字首圖和標題
-            const titleRow = document.createElement('div');
-            titleRow.style.cssText = 'display:flex; align-items:center; margin-bottom:4px;';
+            item.style.cssText = 'display:flex; align-items:center; background:white; padding:8px; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border-left:3px solid ' + dim.color + ';';
             
             const label = document.createElement('div');
             label.innerHTML = dim.label;
-            label.style.cssText = `width:20px; height:20px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:6px; flex-shrink:0; background-color:${dim.color};`;
-            titleRow.appendChild(label);
+            label.style.cssText = `width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:12px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:8px; flex-shrink:0; background-color:${dim.color};`;
+            item.appendChild(label);
+            
+            const info = document.createElement('div');
+            info.style.cssText = 'flex:1;';
             
             const title = document.createElement('div');
             title.innerHTML = dim.title;
-            title.style.cssText = 'font-weight:bold; font-size:9px; color:#333; flex:1;';
-            titleRow.appendChild(title);
+            title.style.cssText = 'font-weight:bold; font-size:10px; color:#333; margin-bottom:2px;';
+            info.appendChild(title);
             
-            item.appendChild(titleRow);
-            
-            // 第二排：內文說明
             const desc = document.createElement('div');
             desc.innerHTML = dim.desc;
-            desc.style.cssText = 'font-size:7px; color:#666; line-height:1.3; padding-left:26px;';
-            item.appendChild(desc);
+            desc.style.cssText = 'font-size:10px; color:#666; line-height:1.3;';
+            info.appendChild(desc);
             
+            item.appendChild(info);
             explanationGrid.appendChild(item);
         });
         
@@ -1070,36 +1067,49 @@ function generatePDF() {
         
         page1Container.appendChild(compactChartContainer);
         
-        // 創建底部LINE區域
+        // 創建底部LINE區域（橫向佈局）
         const lineSection = document.createElement('div');
-        lineSection.style.cssText = 'margin-top:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
+        lineSection.style.cssText = 'margin-top:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5;';
+        
+        // 創建橫向佈局容器
+        const lineHorizontalContainer = document.createElement('div');
+        lineHorizontalContainer.style.cssText = 'display:flex; align-items:center; justify-content:center; gap:20px;';
+        
+        // 左側：標題和QR碼
+        const qrSection = document.createElement('div');
+        qrSection.style.cssText = 'display:flex; flex-direction:column; align-items:center;';
         
         const compactQrTitle = document.createElement('div');
         compactQrTitle.innerHTML = '加入JCoach官方LINE';
-        compactQrTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:10px;';
-        lineSection.appendChild(compactQrTitle);
-        
-        const compactQrContainer = document.createElement('div');
-        compactQrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:10px;';
+        compactQrTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:8px; text-align:center;';
+        qrSection.appendChild(compactQrTitle);
         
         const compactQrCode = document.createElement('img');
         compactQrCode.src = 'images/QR.png';
-        compactQrCode.style.cssText = 'width:70px; height:70px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);';
+        compactQrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);';
         compactQrCode.onerror = function() {
-            compactQrContainer.innerHTML = '<div style="width:70px; height:70px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:#4a6fa5; text-align:center;">QR Code</div>';
+            compactQrCode.outerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
         };
-        compactQrContainer.appendChild(compactQrCode);
-        lineSection.appendChild(compactQrContainer);
+        qrSection.appendChild(compactQrCode);
+        
+        // 右側：連結和說明文字
+        const linkSection = document.createElement('div');
+        linkSection.style.cssText = 'display:flex; flex-direction:column; align-items:center;';
         
         const compactLineLink = document.createElement('div');
         compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
-        compactLineLink.style.cssText = 'font-size:12px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:4px 8px; border-radius:4px; display:inline-block; margin-bottom:8px;';
-        lineSection.appendChild(compactLineLink);
+        compactLineLink.style.cssText = 'font-size:14px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:6px 12px; border-radius:4px; display:inline-block; margin-bottom:8px;';
+        linkSection.appendChild(compactLineLink);
         
         const compactInquiryText = document.createElement('div');
         compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; line-height:1.4; font-weight:500;';
-        lineSection.appendChild(compactInquiryText);
+        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; line-height:1.4; font-weight:500; text-align:center; max-width:200px;';
+        linkSection.appendChild(compactInquiryText);
+        
+        // 將兩個部分添加到橫向容器
+        lineHorizontalContainer.appendChild(qrSection);
+        lineHorizontalContainer.appendChild(linkSection);
+        lineSection.appendChild(lineHorizontalContainer);
         
         page1Container.appendChild(lineSection);
         
