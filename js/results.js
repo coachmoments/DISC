@@ -1040,9 +1040,9 @@ function generatePDF() {
         tableClone.style.cssText = 'width:100%; border-collapse:separate; border-spacing:0; margin:0 auto; font-size:12px; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
         
         // 修改表格標題為橫式
-        const thead = tableClone.querySelector('thead');
-        if (thead) {
-            const headerRow = thead.querySelector('tr');
+        const compactThead = tableClone.querySelector('thead');
+        if (compactThead) {
+            const headerRow = compactThead.querySelector('tr');
             if (headerRow) {
                 const headerCells = headerRow.querySelectorAll('th');
                 headerCells.forEach((th, index) => {
