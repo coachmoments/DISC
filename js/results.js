@@ -1023,70 +1023,80 @@ function generatePDF() {
         scoreContainer.appendChild(tableClone);
         page1Container.appendChild(scoreContainer);
         
-        // 將分數統計表格從上面移除，放到這裡與雷達圖並排
+        // 將分數統計表格從上面移除，重新設計佈局
         scoreContainer.removeChild(tableClone);
         page1Container.removeChild(scoreContainer);
         
-        // 創建雷達圖和分數統計並排佈局容器
-        const chartScoreSection = document.createElement('div');
-        chartScoreSection.style.cssText = 'display:flex; gap:15px; margin-top:10px;';
+        // 創建分數統計區域（橫式標題）
+        const compactScoreSection = document.createElement('div');
+        compactScoreSection.style.cssText = 'margin-top:10px; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
         
-        // 左側：雷達圖區域
+        const compactScoreTitle = document.createElement('h4');
+        compactScoreTitle.innerHTML = 'DISC 分數統計';
+        compactScoreTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 10px 0; font-weight:600; text-align:center;';
+        compactScoreSection.appendChild(compactScoreTitle);
+        
+        // 調整表格為橫式顯示
+        tableClone.style.cssText = 'width:100%; border-collapse:separate; border-spacing:0; margin:0 auto; font-size:12px; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
+        
+        // 修改表格標題為橫式
+        const thead = tableClone.querySelector('thead');
+        if (thead) {
+            const headerRow = thead.querySelector('tr');
+            if (headerRow) {
+                const headerCells = headerRow.querySelectorAll('th');
+                headerCells.forEach((th, index) => {
+                    if (index === 0) {
+                        th.style.cssText = 'background:#4a6fa5; color:white; font-weight:bold; padding:10px 12px; text-align:center; font-size:13px;';
+                    } else {
+                        th.style.cssText = 'background:#4a6fa5; color:white; font-weight:bold; padding:10px 8px; text-align:center; font-size:13px;';
+                    }
+                });
+            }
+        }
+        
+        compactScoreSection.appendChild(tableClone);
+        page1Container.appendChild(compactScoreSection);
+        
+        // 創建雷達圖區域
         const compactChartContainer = document.createElement('div');
-        compactChartContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
+        compactChartContainer.style.cssText = 'margin-top:15px; padding:15px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
         
         const compactChartTitle = document.createElement('h4');
-        compactChartTitle.innerHTML = 'DISC 雷達圖';
-        compactChartTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600;';
+        compactChartTitle.innerHTML = 'DISC 雷達圖分析';
+        compactChartTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 15px 0; font-weight:600;';
         compactChartContainer.appendChild(compactChartTitle);
         
-        // 縮小的雷達圖容器
+        // 雷達圖容器（居中顯示）
         const compactRadarContainer = document.createElement('div');
-        compactRadarContainer.style.cssText = 'width:220px; height:220px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
+        compactRadarContainer.style.cssText = 'width:280px; height:280px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:10px; padding:15px; box-sizing:border-box;';
         
         const compactOriginalCanvas = document.getElementById('radar-chart');
         const compactRadarImg = document.createElement('img');
         compactRadarImg.src = compactOriginalCanvas.toDataURL('image/png');
-        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:4px;';
+        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:6px;';
         
         compactRadarContainer.appendChild(compactRadarImg);
         compactChartContainer.appendChild(compactRadarContainer);
         
-        // 簡化的圖例
+        // 圖例
         const compactLegendContainer = document.createElement('div');
-        compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:6px; padding:8px; margin-top:8px;';
+        compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:8px; padding:10px; margin-top:10px;';
         
         const compactLegend = document.querySelector('.legend').cloneNode(true);
-        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:12px; font-size:10px;';
+        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:20px; font-size:11px;';
         compactLegend.querySelectorAll('.legend-item').forEach(item => {
-            item.style.cssText = 'display:flex; align-items:center; gap:4px;';
+            item.style.cssText = 'display:flex; align-items:center; gap:6px;';
             const marker = item.querySelector('.point-marker');
-            if (marker) marker.style.cssText = marker.style.cssText + '; width:12px; height:12px; font-size:8px;';
+            if (marker) marker.style.cssText = marker.style.cssText + '; width:14px; height:14px; font-size:9px;';
             const text = item.querySelector('.legend-text');
-            if (text) text.style.cssText = 'font-size:10px; font-weight:500;';
+            if (text) text.style.cssText = 'font-size:11px; font-weight:500;';
         });
         
         compactLegendContainer.appendChild(compactLegend);
         compactChartContainer.appendChild(compactLegendContainer);
         
-        // 右側：分數統計表格
-        const compactScoreContainer = document.createElement('div');
-        compactScoreContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
-        
-        const compactScoreTitle = document.createElement('h4');
-        compactScoreTitle.innerHTML = 'DISC 分數統計';
-        compactScoreTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600; text-align:center;';
-        compactScoreContainer.appendChild(compactScoreTitle);
-        
-        // 重新調整表格樣式以適應較小空間
-        tableClone.style.cssText = 'width:100%; border-collapse:separate; border-spacing:0; margin:0 auto; font-size:11px; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
-        
-        compactScoreContainer.appendChild(tableClone);
-        
-        // 將雷達圖和分數統計添加到並排容器
-        chartScoreSection.appendChild(compactChartContainer);
-        chartScoreSection.appendChild(compactScoreContainer);
-        page1Container.appendChild(chartScoreSection);
+        page1Container.appendChild(compactChartContainer);
         
         // 創建底部LINE區域
         const lineSection = document.createElement('div');
