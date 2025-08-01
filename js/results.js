@@ -1028,33 +1028,33 @@ function generatePDF() {
         bottomSection.style.cssText = 'display:flex; gap:15px; margin-top:10px;';
         
         // 左側：雷達圖區域（縮小版）
-        const chartContainer = document.createElement('div');
-        chartContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
+        const compactChartContainer = document.createElement('div');
+        compactChartContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
         
-        const chartTitle = document.createElement('h4');
-        chartTitle.innerHTML = 'DISC 雷達圖';
-        chartTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600;';
-        chartContainer.appendChild(chartTitle);
+        const compactChartTitle = document.createElement('h4');
+        compactChartTitle.innerHTML = 'DISC 雷達圖';
+        compactChartTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600;';
+        compactChartContainer.appendChild(compactChartTitle);
         
         // 縮小的雷達圖容器
-        const radarContainer = document.createElement('div');
-        radarContainer.style.cssText = 'width:200px; height:200px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
+        const compactRadarContainer = document.createElement('div');
+        compactRadarContainer.style.cssText = 'width:200px; height:200px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
         
-        const originalCanvas = document.getElementById('radar-chart');
-        const radarImg = document.createElement('img');
-        radarImg.src = originalCanvas.toDataURL('image/png');
-        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:4px;';
+        const compactOriginalCanvas = document.getElementById('radar-chart');
+        const compactRadarImg = document.createElement('img');
+        compactRadarImg.src = compactOriginalCanvas.toDataURL('image/png');
+        compactRadarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:4px;';
         
-        radarContainer.appendChild(radarImg);
-        chartContainer.appendChild(radarContainer);
+        compactRadarContainer.appendChild(compactRadarImg);
+        compactChartContainer.appendChild(compactRadarContainer);
         
         // 簡化的圖例
-        const legendContainer = document.createElement('div');
-        legendContainer.style.cssText = 'background:#f8f9fa; border-radius:6px; padding:8px; margin-top:8px;';
+        const compactLegendContainer = document.createElement('div');
+        compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:6px; padding:8px; margin-top:8px;';
         
-        const legend = document.querySelector('.legend').cloneNode(true);
-        legend.style.cssText = 'display:flex; justify-content:center; gap:15px; font-size:10px;';
-        legend.querySelectorAll('.legend-item').forEach(item => {
+        const compactLegend = document.querySelector('.legend').cloneNode(true);
+        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:15px; font-size:10px;';
+        compactLegend.querySelectorAll('.legend-item').forEach(item => {
             item.style.cssText = 'display:flex; align-items:center; gap:4px;';
             const marker = item.querySelector('.point-marker');
             if (marker) marker.style.cssText = marker.style.cssText + '; width:12px; height:12px; font-size:8px;';
@@ -1069,43 +1069,43 @@ function generatePDF() {
         const lineSection = document.createElement('div');
         lineSection.style.cssText = 'flex:1; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
         
-        const inquiryText = document.createElement('div');
-        inquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        inquiryText.style.cssText = 'font-size:12px; color:#2c3e50; margin-bottom:8px; line-height:1.4; font-weight:500;';
-        lineSection.appendChild(inquiryText);
+        const compactInquiryText = document.createElement('div');
+        compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; margin-bottom:8px; line-height:1.4; font-weight:500;';
+        lineSection.appendChild(compactInquiryText);
         
-        const qrTitle = document.createElement('div');
-        qrTitle.innerHTML = '加入JCoach官方LINE';
-        qrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
-        lineSection.appendChild(qrTitle);
+        const compactQrTitle = document.createElement('div');
+        compactQrTitle.innerHTML = '加入JCoach官方LINE';
+        compactQrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
+        lineSection.appendChild(compactQrTitle);
         
-        const qrContainer = document.createElement('div');
-        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:8px;';
+        const compactQrContainer = document.createElement('div');
+        compactQrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:8px;';
         
-        const qrCode = document.createElement('img');
-        qrCode.src = 'images/QR.png';
-        qrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1);';
-        qrCode.onerror = function() {
-            qrContainer.innerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
+        const compactQrCode = document.createElement('img');
+        compactQrCode.src = 'images/QR.png';
+        compactQrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1);';
+        compactQrCode.onerror = function() {
+            compactQrContainer.innerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
         };
-        qrContainer.appendChild(qrCode);
-        lineSection.appendChild(qrContainer);
+        compactQrContainer.appendChild(compactQrCode);
+        lineSection.appendChild(compactQrContainer);
         
-        const lineLink = document.createElement('div');
-        lineLink.innerHTML = '@https://lin.ee/RaehHxl';
-        lineLink.style.cssText = 'font-size:10px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:2px 6px; border-radius:3px; display:inline-block;';
-        lineSection.appendChild(lineLink);
+        const compactLineLink = document.createElement('div');
+        compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        compactLineLink.style.cssText = 'font-size:10px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:2px 6px; border-radius:3px; display:inline-block;';
+        lineSection.appendChild(compactLineLink);
         
         // 將兩個區域添加到並排容器
-        bottomSection.appendChild(chartContainer);
+        bottomSection.appendChild(compactChartContainer);
         bottomSection.appendChild(lineSection);
         page1Container.appendChild(bottomSection);
         
         // 添加頁腳（單頁版）
-        const footer = document.createElement('div');
-        footer.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666; font-size:10px;';
-        footer.innerHTML = `&copy; coachmonents DISC人格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
-        page1Container.appendChild(footer);
+        const compactFooter = document.createElement('div');
+        compactFooter.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666; font-size:10px;';
+        compactFooter.innerHTML = `&copy; coachmonents DISC人格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
+        page1Container.appendChild(compactFooter);
         
         // 創建第二頁頁眉 (簡化版)
         const page2Header = document.createElement('div');
@@ -1185,10 +1185,10 @@ function generatePDF() {
         lineInquirySection.style.cssText = 'margin-top:20px; margin-bottom:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:12px; border:2px solid #4a6fa5; text-align:center;';
         
         // LINE詢問說明文字
-        const inquiryText = document.createElement('div');
-        inquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        inquiryText.style.cssText = 'font-size:15px; color:#2c3e50; margin-bottom:18px; line-height:1.5; font-weight:500;';
-        lineInquirySection.appendChild(inquiryText);
+        const page2InquiryText = document.createElement('div');
+        page2InquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        page2InquiryText.style.cssText = 'font-size:15px; color:#2c3e50; margin-bottom:18px; line-height:1.5; font-weight:500;';
+        lineInquirySection.appendChild(page2InquiryText);
         
         // QR上方標題
         const qrTitle = document.createElement('div');
