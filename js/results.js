@@ -128,12 +128,12 @@ function calculateAndDisplayScores() {
         }
     }
     
-    // 計算總和分數
+    // 計算綜合分數（平均值）
     const total = {
-        D: external.D + internal.D,
-        I: external.I + internal.I,
-        S: external.S + internal.S,
-        C: external.C + internal.C
+        D: Math.round((external.D + internal.D) / 2),
+        I: Math.round((external.I + internal.I) / 2),
+        S: Math.round((external.S + internal.S) / 2),
+        C: Math.round((external.C + internal.C) / 2)
     };
     
     // 顯示分數
