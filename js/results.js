@@ -733,23 +733,33 @@ function generatePDF() {
         // 給雷達圖足夠時間渲染
         setTimeout(() => {
             try {
-                    // 創建單頁PDF容器
-                    const { page1Container } = createTwoPagePDFContainers();
+                    // 創建兩頁PDF容器
+                    const { page1Container, page2Container } = createTwoPagePDFContainers();
                 
                 // 將容器添加到DOM中
-                    document.body.appendChild(page1Container);
+                    document.body.appendChild(singlePageContainer);
                     
-                    // 捕獲單頁內容
-                    html2canvas(page1Container, {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: true,
-                        logging: false,
-                        backgroundColor: '#ffffff'
-                    }).then((canvas1) => {
+                    // 分別捕獲兩頁內容
+                    Promise.all([
+                        html2canvas(page1Container, {
+                            scale: 2,
+                    useCORS: true,
+                    allowTaint: true,
+                    logging: false,
+                    backgroundColor: '#ffffff'
+                        }),
+                        html2canvas(page2Container, {
+                            scale: 2,
+                            useCORS: true,
+                            allowTaint: true,
+                            logging: false,
+                            backgroundColor: '#ffffff'
+                        })
+                    ]).then(([canvas1, canvas2]) => {
                     try {
                         // 移除臨時PDF容器
                             document.body.removeChild(page1Container);
+                            document.body.removeChild(page2Container);
                         
                         // 創建PDF文檔
                         const { jsPDF } = window.jspdf;
@@ -776,7 +786,20 @@ function generatePDF() {
                                 img1Height
                             );
                             
-                        // 單頁PDF，不需要第二頁
+                            // 添加第二頁
+                            pdf.addPage();
+                            const img2Width = contentWidth;
+                            const img2Height = Math.min((canvas2.height * img2Width) / canvas2.width, maxHeight);
+                            const x2Offset = (pageWidth - img2Width) / 2;
+                            
+                        pdf.addImage(
+                                canvas2.toDataURL('image/jpeg', 1.0),
+                            'JPEG',
+                                x2Offset,
+                            margin,
+                                img2Width,
+                                img2Height
+                        );
                         
                         // 保存PDF
                         const userName = getFromLocalStorage('discUserName') || 'User';
@@ -791,7 +814,7 @@ function generatePDF() {
                         console.error('PDF生成過程中發生錯誤:', error);
                         handlePDFError(loadingIndicator);
                     }
-                        }).catch(error => {
+                }).catch(error => {
                     console.error('HTML轉Canvas過程中發生錯誤:', error);
                     handlePDFError(loadingIndicator);
                 });
@@ -841,18 +864,21 @@ function generatePDF() {
         }
     }
     
-    // 創建兩頁PDF容器並填充內容
-    function createTwoPagePDFContainers() {
+    // 創建單頁PDF容器並填充內容
+    function createSinglePagePDFContainer() {
         // 創建第一頁容器
         const page1Container = document.createElement('div');
         page1Container.id = 'pdf-page1-container';
-        page1Container.style.cssText = 'position:absolute; left:-9999px; width:780px; height:1100px; background-color:white; padding:12px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.2; color:#333; overflow:visible;';
+        page1Container.style.cssText = 'position:absolute; left:-9999px; width:780px; height:1200px; background-color:white; padding:20px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.4; color:#333; overflow:visible;';
         
-        // 單頁PDF，不需要第二頁容器
+        // 創建第二頁容器
+        const page2Container = document.createElement('div');
+        page2Container.id = 'pdf-page2-container';
+        page2Container.style.cssText = 'position:absolute; left:-9999px; width:780px; height:1200px; background-color:white; padding:20px; font-family:"Microsoft JhengHei", "Noto Sans TC", Arial, sans-serif; line-height:1.4; color:#333; overflow:visible;';
         
         // 創建頁眉區域
         const header = document.createElement('div');
-        header.style.cssText = 'text-align:center; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid #4a6fa5;';
+        header.style.cssText = 'text-align:center; margin-bottom:10px; padding-bottom:8px; border-bottom:3px solid #4a6fa5;';
         
         // 添加LOGO
         const logo = document.createElement('img');
@@ -866,95 +892,101 @@ function generatePDF() {
         // 主標題
         const mainTitle = document.createElement('div');
         mainTitle.innerHTML = 'DISCovery行為風格';
-        mainTitle.style.cssText = 'font-size:24px; font-weight:bold; color:#4a6fa5; margin-bottom:3px; letter-spacing:1px;';
+        mainTitle.style.cssText = 'font-size:28px; font-weight:bold; color:#4a6fa5; margin-bottom:5px; letter-spacing:2px;';
         header.appendChild(mainTitle);
         
         // 副標題
         const subTitle = document.createElement('div');
         subTitle.innerHTML = '測驗報告';
-        subTitle.style.cssText = 'font-size:14px; color:#666; margin-bottom:5px;';
+        subTitle.style.cssText = 'font-size:16px; color:#666; margin-bottom:10px;';
         header.appendChild(subTitle);
         
         page1Container.appendChild(header);
         
-        // 創建用户信息區（簡潔版）
+        // 創建用户信息區
         const userInfoContainer = document.createElement('div');
-        userInfoContainer.style.cssText = 'margin-bottom:10px; text-align:center;';
+        userInfoContainer.style.cssText = 'margin-bottom:10px;';
+        
+        const userInfoTitle = document.createElement('h3');
+        userInfoTitle.innerHTML = '測驗資訊';
+        userInfoTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 8px 0; font-weight:600;';
+        userInfoContainer.appendChild(userInfoTitle);
         
         const userInfo = document.querySelector('.user-info').cloneNode(true);
+        userInfo.style.cssText = 'display:flex; justify-content:space-around; padding:5px 0;';
         
-        // 簡化用戶信息項目樣式
+        // 調整用戶信息項目樣式
         const userInfoItems = userInfo.querySelectorAll('.user-info-item');
-        let infoItems = [];
-        userInfoItems.forEach((item) => {
-            const label = item.querySelector('.user-info-label') || item.querySelector('.label');
-            const value = item.querySelector('.user-info-value') || item.querySelector('.value');
-            if (label && value) {
-                infoItems.push(`${label.textContent}: ${value.textContent}`);
-            }
+        userInfoItems.forEach(item => {
+            item.style.cssText = 'display:flex; align-items:center; font-size:14px;';
+            const label = item.querySelector('.label');
+            const value = item.querySelector('.value');
+            if (label) label.style.cssText = 'font-weight:bold; margin-right:8px; color:#4a6fa5;';
+            if (value) value.style.cssText = 'font-weight:500; color:#333;';
         });
         
-        const infoText = document.createElement('div');
-        infoText.innerHTML = infoItems.join(' • ');
-        infoText.style.cssText = 'color:#666; font-size:12px; font-weight:500; border-bottom:1px solid #e0e0e0; padding-bottom:8px;';
-        
-        userInfoContainer.appendChild(infoText);
+        userInfoContainer.appendChild(userInfo);
         page1Container.appendChild(userInfoContainer);
 
-        // 創建單欄布局
-        
-        // 1. DISC人格特質說明
-        const explanationContainer = document.createElement('div');
-        explanationContainer.style.cssText = 'margin-bottom:8px; padding:6px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:6px; border:1px solid #dee2e6;';
-        
-        const explanationTitle = document.createElement('h3');
-        explanationTitle.innerHTML = 'DISC 人格特質說明';
-        explanationTitle.style.cssText = 'color:#4a6fa5; font-size:12px; margin:0 0 6px 0; font-weight:600; text-align:center;';
-        explanationContainer.appendChild(explanationTitle);
-        
-        const explanationGrid = document.createElement('div');
-        explanationGrid.style.cssText = 'display:grid; grid-template-columns:repeat(4, 1fr); gap:4px;';
-        
-        // 創建DISC維度說明項目
-        const dimensions = [
-            { label: 'D', title: '掌控型', desc: '直接、果斷', color: '#28a745' },
-            { label: 'I', title: '影響型', desc: '外向、樂觀', color: '#dc3545' },
-            { label: 'S', title: '沉穩型', desc: '穩重、耐心', color: '#007bff' },
-            { label: 'C', title: '嚴謹型', desc: '分析、有條理', color: '#ffc107' }
-        ];
-        
-        dimensions.forEach(dim => {
-            const item = document.createElement('div');
-            item.style.cssText = 'display:flex; flex-direction:column; align-items:center; background:white; padding:4px; border-radius:4px; box-shadow:0 1px 2px rgba(0,0,0,0.1); border-top:2px solid ' + dim.color + ';';
+        // 添加DISC維度說明
+        const explanationSection = document.querySelector('.explanation-section');
+        if (explanationSection) {
+            const explanationContainer = document.createElement('div');
+            explanationContainer.style.cssText = 'margin-bottom:15px; padding:10px; background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; border:1px solid #dee2e6;';
             
-            const label = document.createElement('div');
-            label.innerHTML = dim.label;
-            label.style.cssText = `width:16px; height:16px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:10px; color:white; margin-bottom:3px; background-color:${dim.color};`;
-            item.appendChild(label);
+            const explanationTitle = document.createElement('h3');
+            explanationTitle.innerHTML = 'DISC 人格特質說明';
+            explanationTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 20px 0; font-weight:600; text-align:center; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block; width:100%; box-sizing:border-box;';
+            explanationContainer.appendChild(explanationTitle);
             
-            const title = document.createElement('div');
-            title.innerHTML = dim.title;
-            title.style.cssText = 'font-weight:bold; font-size:8px; color:#333; margin-bottom:1px; text-align:center;';
-            item.appendChild(title);
+            const explanationGrid = document.createElement('div');
+            explanationGrid.style.cssText = 'display:grid; grid-template-columns:repeat(2, 1fr); gap:15px;';
             
-            const desc = document.createElement('div');
-            desc.innerHTML = dim.desc;
-            desc.style.cssText = 'font-size:7px; color:#666; line-height:1.1; text-align:center;';
-            item.appendChild(desc);
+            // 手動創建DISC維度說明項目，按照雷達圖視覺位置順序：D(左上)、I(右上)、C(左下)、S(右下)
+            const dimensions = [
+                { label: 'D', title: '掌控型 (Dominance)', desc: '直接、果斷、結果導向、喜歡挑戰', color: '#28a745' },
+                { label: 'I', title: '影響型 (Influence)', desc: '外向、樂觀、善於溝通、注重人際關係', color: '#dc3545' },
+                { label: 'C', title: '嚴謹型 (Conscientiousness)', desc: '善於分析、有條理、注重細節、矜持的', color: '#ffc107' },
+                { label: 'S', title: '沉穩型 (Steadiness)', desc: '穩重、耐心、合作性強、追求和諧', color: '#007bff' }
+            ];
             
-            explanationGrid.appendChild(item);
-        });
+            dimensions.forEach(dim => {
+                const item = document.createElement('div');
+                item.style.cssText = 'display:flex; align-items:center; background:white; padding:15px; border-radius:10px; box-shadow:0 3px 6px rgba(0,0,0,0.1); border-left:4px solid ' + dim.color + ';';
+                
+                const label = document.createElement('div');
+                label.innerHTML = dim.label;
+                label.style.cssText = `width:35px; height:35px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:16px; color:${dim.label === 'C' ? '#333' : 'white'}; margin-right:15px; flex-shrink:0; background-color:${dim.color};`;
+                item.appendChild(label);
+                
+                const info = document.createElement('div');
+                info.style.cssText = 'flex:1;';
+                
+                const title = document.createElement('div');
+                title.innerHTML = dim.title;
+                title.style.cssText = 'font-weight:bold; font-size:13px; color:#333; margin-bottom:5px;';
+                info.appendChild(title);
+                
+                const desc = document.createElement('div');
+                desc.innerHTML = dim.desc;
+                desc.style.cssText = 'font-size:11px; color:#666; line-height:1.4;';
+                info.appendChild(desc);
+                
+                item.appendChild(info);
+                explanationGrid.appendChild(item);
+            });
+            
+            explanationContainer.appendChild(explanationGrid);
+            page1Container.appendChild(explanationContainer);
+        }
         
-        explanationContainer.appendChild(explanationGrid);
-        page1Container.appendChild(explanationContainer);
-        
-        // 2. DISC分數統計
+        // 創建分數表格區域
         const scoreContainer = document.createElement('div');
-        scoreContainer.style.cssText = 'margin-bottom:8px; padding:6px; background:white; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
+        scoreContainer.style.cssText = 'margin-bottom:15px; padding:10px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
         
         const scoreTitle = document.createElement('h3');
         scoreTitle.innerHTML = 'DISC 分數統計';
-        scoreTitle.style.cssText = 'color:#4a6fa5; font-size:12px; margin:0 0 6px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:3px; display:inline-block;';
+        scoreTitle.style.cssText = 'color:#4a6fa5; font-size:16px; margin:0 0 15px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:6px; display:inline-block;';
         scoreContainer.appendChild(scoreTitle);
         
         // 獲取原始表格並重新設計
@@ -983,7 +1015,7 @@ function generatePDF() {
                 const cells = row.querySelectorAll('td');
                 cells.forEach((td, colIndex) => {
                     if (colIndex === 0) {
-                        // 類別單元格 - 橫式顯示
+                        // 類別單元格
                         let bgColor = '#f8f9fa';
                         let textColor = '#333';
                         if (row.classList.contains('external-section')) {
@@ -996,7 +1028,7 @@ function generatePDF() {
                             bgColor = 'rgba(80, 80, 80, 0.1)';
                             textColor = 'rgba(80, 80, 80, 1)';
                         }
-                        td.style.cssText = `background:${bgColor}; color:${textColor}; font-weight:bold; padding:6px 10px; text-align:center; border-right:2px solid #dee2e6; font-size:13px; writing-mode:horizontal-tb;`;
+                        td.style.cssText = `background:${bgColor}; color:${textColor}; font-weight:bold; padding:8px 12px; text-align:center; border-right:2px solid #dee2e6; font-size:14px;`;
                     } else {
                         // 數據單元格
                         let bgColor = 'white';
@@ -1016,96 +1048,143 @@ function generatePDF() {
         scoreContainer.appendChild(tableClone);
         page1Container.appendChild(scoreContainer);
         
-        // 3. DISC雷達圖（放在最下面）
-        const chartContainer = document.createElement('div');
-        chartContainer.style.cssText = 'padding:6px; background:white; border-radius:6px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center; margin-bottom:8px;';
+        // 點位座標欄位已移除 - PDF第一頁表格下方保持空白
         
+        // 創建第二頁頁眉 (簡化版)
+        const page2Header = document.createElement('div');
+        page2Header.style.cssText = 'text-align:center; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid #4a6fa5;';
+        
+        const page2Title = document.createElement('div');
+        page2Title.innerHTML = 'DISCovery行為風格 - 第2頁';
+        page2Title.style.cssText = 'font-size:20px; font-weight:bold; color:#4a6fa5; letter-spacing:1px;';
+        page2Header.appendChild(page2Title);
+        
+        page2Container.appendChild(page2Header);
+        
+        // 創建雷達圖區域 - 第二頁專用，更大尺寸
+        const chartContainer = document.createElement('div');
+        chartContainer.style.cssText = 'margin-bottom:15px; padding:15px; background:white; border-radius:12px; box-shadow:0 4px 8px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
+        
+        // 添加雷達圖標題
         const chartTitle = document.createElement('h3');
-        chartTitle.innerHTML = 'DISC 雷達圖';
-        chartTitle.style.cssText = 'color:#4a6fa5; font-size:12px; margin:0 0 6px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:3px; display:inline-block;';
+        chartTitle.innerHTML = 'DISC 雷達圖分析';
+        chartTitle.style.cssText = 'color:#4a6fa5; font-size:18px; margin:0 0 15px 0; font-weight:600; border-bottom:2px solid #4a6fa5; padding-bottom:8px; display:inline-block;';
         chartContainer.appendChild(chartTitle);
         
-        // 創建雷達圖容器（更小尺寸以節省空間）
+        // 創建雷達圖畫布的容器 - 第二頁更大尺寸
         const radarContainer = document.createElement('div');
-        radarContainer.style.cssText = 'width:220px; height:220px; margin:0 auto 6px auto; position:relative; background:#fafafa; border-radius:6px; padding:8px; box-sizing:border-box;';
+        radarContainer.style.cssText = 'width:500px; height:500px; margin:0 auto 15px auto; position:relative; background:#fafafa; border-radius:15px; padding:15px; box-sizing:border-box;';
         
         // 獲取原始雷達圖的圖像數據
         const originalCanvas = document.getElementById('radar-chart');
         const radarImg = document.createElement('img');
         radarImg.src = originalCanvas.toDataURL('image/png');
-        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:3px;';
+        radarImg.style.cssText = 'width:100%; height:100%; object-fit:contain; border-radius:8px;';
         
         radarContainer.appendChild(radarImg);
         chartContainer.appendChild(radarContainer);
         
-        // 添加簡化的圖例
+        // 添加圖例 - 第二頁專用，更突出的設計
         const legendContainer = document.createElement('div');
-        legendContainer.style.cssText = 'background:#f8f9fa; border-radius:4px; padding:4px; border:1px solid #dee2e6;';
+        legendContainer.style.cssText = 'background:linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius:12px; padding:15px; border:1px solid #dee2e6;';
+        
+        const legendTitle = document.createElement('div');
+        legendTitle.innerHTML = '點位圖例說明';
+        legendTitle.style.cssText = 'font-weight:bold; font-size:14px; color:#4a6fa5; margin-bottom:15px; text-align:center;';
+        legendContainer.appendChild(legendTitle);
         
         const legend = document.querySelector('.legend').cloneNode(true);
-        legend.style.cssText = 'display:flex; justify-content:center; gap:8px; font-size:9px;';
+        legend.style.cssText = 'display:flex; justify-content:center; gap:30px; font-size:13px;';
         
-        // 優化圖例項目樣式
+        // 優化圖例項目樣式 - 第二頁更大更清晰
         const legendItems = legend.querySelectorAll('.legend-item');
         legendItems.forEach(item => {
-            item.style.cssText = 'display:flex; align-items:center; gap:2px; background:white; padding:2px 4px; border-radius:8px; box-shadow:0 1px 2px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
+            item.style.cssText = 'display:flex; align-items:center; gap:8px; background:white; padding:12px 18px; border-radius:25px; box-shadow:0 3px 6px rgba(0,0,0,0.15); border:1px solid #e1e4e8;';
             
             const marker = item.querySelector('.point-marker');
             if (marker) {
-                marker.style.cssText = marker.style.cssText + ' width:12px; height:12px; font-size:8px;';
+                marker.style.cssText = marker.style.cssText + '; width:20px; height:20px; font-size:12px; margin-right:0; font-weight:bold;';
             }
             
-            const text = item.querySelector('.legend-text');
-            if (text) {
-                text.style.cssText = 'font-size:8px; color:#666; font-weight:500;';
+            const legendText = item.querySelector('.legend-text');
+            if (legendText) {
+                legendText.style.cssText = 'font-weight:600; color:#333; font-size:13px;';
+            }
+            
+            const pointsValue = item.querySelector('.points-value');
+            if (pointsValue) {
+                pointsValue.style.cssText = 'color:#666; font-size:12px; font-weight:500; margin-left:auto;';
             }
         });
         
         legendContainer.appendChild(legend);
         chartContainer.appendChild(legendContainer);
-        page1Container.appendChild(chartContainer);
+        page2Container.appendChild(chartContainer);
         
-        // 在第一頁底部添加LINE詢問區域
-        const lineSection = document.createElement('div');
-        lineSection.style.cssText = 'margin-top:10px; margin-bottom:10px; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
+        // 結果解讀說明已移除 - PDF報告不需要顯示結果解讀
+        
+        // 添加LINE詢問區域 - 在footer之前
+        const lineInquirySection = document.createElement('div');
+        lineInquirySection.style.cssText = 'margin-top:20px; margin-bottom:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:12px; border:2px solid #4a6fa5; text-align:center;';
         
         // LINE詢問說明文字
-        const lineText = document.createElement('div');
-        lineText.innerHTML = '🔗 想了解更多DISC資訊？';
-        lineText.style.cssText = 'font-size:12px; color:#2c3e50; margin-bottom:6px; font-weight:500;';
-        lineSection.appendChild(lineText);
+        const inquiryText = document.createElement('div');
+        inquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
+        inquiryText.style.cssText = 'font-size:15px; color:#2c3e50; margin-bottom:18px; line-height:1.5; font-weight:500;';
+        lineInquirySection.appendChild(inquiryText);
+        
+        // QR上方標題
+        const qrTitle = document.createElement('div');
+        qrTitle.innerHTML = '加入JCoach官方LINE';
+        qrTitle.style.cssText = 'font-size:18px; font-weight:bold; color:#4a6fa5; margin-bottom:12px; letter-spacing:0.5px;';
+        lineInquirySection.appendChild(qrTitle);
+        
+        // QR Code容器
+        const qrContainer = document.createElement('div');
+        qrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:15px;';
+        
+        // QR Code圖片
+        const qrCode = document.createElement('img');
+        qrCode.src = 'images/QR.png';
+        qrCode.style.cssText = 'width:80px; height:80px; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);';
+        qrCode.onerror = function() {
+            // 如果QR code載入失敗，顯示文字提示
+            qrContainer.innerHTML = '<div style="width:80px; height:80px; border:2px dashed #4a6fa5; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#4a6fa5; text-align:center;">QR Code<br/>載入中</div>';
+        };
+        qrContainer.appendChild(qrCode);
+        lineInquirySection.appendChild(qrContainer);
         
         // LINE連結
         const lineLink = document.createElement('a');
         lineLink.href = 'https://lin.ee/RaehHxl';
         lineLink.target = '_blank';
-        lineLink.innerHTML = '加入JCoach官方LINE：@https://lin.ee/RaehHxl';
-        lineLink.style.cssText = 'font-size:11px; color:#4a6fa5; text-decoration:underline; font-weight:600;';
-        lineSection.appendChild(lineLink);
+        lineLink.innerHTML = '@https://lin.ee/RaehHxl';
+        lineLink.style.cssText = 'font-size:13px; color:#4a6fa5; text-decoration:underline; font-weight:600; display:inline-block; margin-top:8px; padding:4px 8px; border-radius:4px; background-color:rgba(74, 111, 165, 0.05); transition:background-color 0.2s ease;';
+        lineInquirySection.appendChild(lineLink);
         
-        page1Container.appendChild(lineSection);
+        page2Container.appendChild(lineInquirySection);
         
-        // 添加頁腳到第一頁
-        const footerPage1 = document.createElement('div');
-        footerPage1.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666;';
+        // 添加專業頁腳 - 第二頁底部
+        const footer = document.createElement('div');
+        footer.style.cssText = 'margin-top:10px; padding-top:10px; border-top:2px solid #4a6fa5; text-align:center; color:#666;';
         
-        const footerContentPage1 = document.createElement('div');
-        footerContentPage1.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:10px;';
+        const footerContent = document.createElement('div');
+        footerContent.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:12px;';
         
-        const copyrightPage1 = document.createElement('div');
-        copyrightPage1.innerHTML = '&copy; CoachMoments DISC人格測驗. 保留所有權利。';
-        copyrightPage1.style.cssText = 'font-weight:500;';
+        const copyright = document.createElement('div');
+        copyright.innerHTML = '&copy; coachmonents DISC人格測驗. 保留所有權利。';
+        copyright.style.cssText = 'font-weight:500;';
         
-        const reportInfoPage1 = document.createElement('div');
-        reportInfoPage1.innerHTML = `報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
-        reportInfoPage1.style.cssText = 'font-style:italic; color:#888;';
+        const reportInfo = document.createElement('div');
+        reportInfo.innerHTML = `報告生成日期：${new Date().toLocaleDateString('zh-TW')} | 第2頁，共2頁`;
+        reportInfo.style.cssText = 'font-style:italic; color:#888;';
         
-        footerContentPage1.appendChild(copyrightPage1);
-        footerContentPage1.appendChild(reportInfoPage1);
-        footerPage1.appendChild(footerContentPage1);
+        footerContent.appendChild(copyright);
+        footerContent.appendChild(reportInfo);
+        footer.appendChild(footerContent);
         
-        page1Container.appendChild(footerPage1);
+        page2Container.appendChild(footer);
         
-        return { page1Container };
+        return { page1Container, page2Container };
     }
 }
