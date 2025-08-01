@@ -1023,11 +1023,15 @@ function generatePDF() {
         scoreContainer.appendChild(tableClone);
         page1Container.appendChild(scoreContainer);
         
-        // 創建並排佈局容器 - 將雷達圖和LINE區域放在一行
-        const bottomSection = document.createElement('div');
-        bottomSection.style.cssText = 'display:flex; gap:15px; margin-top:10px;';
+        // 將分數統計表格從上面移除，放到這裡與雷達圖並排
+        scoreContainer.removeChild(tableClone);
+        page1Container.removeChild(scoreContainer);
         
-        // 左側：雷達圖區域（縮小版）
+        // 創建雷達圖和分數統計並排佈局容器
+        const chartScoreSection = document.createElement('div');
+        chartScoreSection.style.cssText = 'display:flex; gap:15px; margin-top:10px;';
+        
+        // 左側：雷達圖區域
         const compactChartContainer = document.createElement('div');
         compactChartContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8; text-align:center;';
         
@@ -1038,7 +1042,7 @@ function generatePDF() {
         
         // 縮小的雷達圖容器
         const compactRadarContainer = document.createElement('div');
-        compactRadarContainer.style.cssText = 'width:200px; height:200px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
+        compactRadarContainer.style.cssText = 'width:220px; height:220px; margin:0 auto 10px auto; position:relative; background:#fafafa; border-radius:8px; padding:10px; box-sizing:border-box;';
         
         const compactOriginalCanvas = document.getElementById('radar-chart');
         const compactRadarImg = document.createElement('img');
@@ -1053,7 +1057,7 @@ function generatePDF() {
         compactLegendContainer.style.cssText = 'background:#f8f9fa; border-radius:6px; padding:8px; margin-top:8px;';
         
         const compactLegend = document.querySelector('.legend').cloneNode(true);
-        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:15px; font-size:10px;';
+        compactLegend.style.cssText = 'display:flex; justify-content:center; gap:12px; font-size:10px;';
         compactLegend.querySelectorAll('.legend-item').forEach(item => {
             item.style.cssText = 'display:flex; align-items:center; gap:4px;';
             const marker = item.querySelector('.point-marker');
@@ -1065,41 +1069,57 @@ function generatePDF() {
         compactLegendContainer.appendChild(compactLegend);
         compactChartContainer.appendChild(compactLegendContainer);
         
-        // 右側：LINE區域（縮小版）
+        // 右側：分數統計表格
+        const compactScoreContainer = document.createElement('div');
+        compactScoreContainer.style.cssText = 'flex:1; padding:10px; background:white; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1); border:1px solid #e1e4e8;';
+        
+        const compactScoreTitle = document.createElement('h4');
+        compactScoreTitle.innerHTML = 'DISC 分數統計';
+        compactScoreTitle.style.cssText = 'color:#4a6fa5; font-size:14px; margin:0 0 10px 0; font-weight:600; text-align:center;';
+        compactScoreContainer.appendChild(compactScoreTitle);
+        
+        // 重新調整表格樣式以適應較小空間
+        tableClone.style.cssText = 'width:100%; border-collapse:separate; border-spacing:0; margin:0 auto; font-size:11px; border-radius:8px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.1);';
+        
+        compactScoreContainer.appendChild(tableClone);
+        
+        // 將雷達圖和分數統計添加到並排容器
+        chartScoreSection.appendChild(compactChartContainer);
+        chartScoreSection.appendChild(compactScoreContainer);
+        page1Container.appendChild(chartScoreSection);
+        
+        // 創建底部LINE區域
         const lineSection = document.createElement('div');
-        lineSection.style.cssText = 'flex:1; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
+        lineSection.style.cssText = 'margin-top:15px; padding:15px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
         
         const compactInquiryText = document.createElement('div');
         compactInquiryText.innerHTML = '請點選連結或掃描QR Code加line,獲得更各種DISC資訊';
-        compactInquiryText.style.cssText = 'font-size:12px; color:#2c3e50; margin-bottom:8px; line-height:1.4; font-weight:500;';
+        compactInquiryText.style.cssText = 'font-size:14px; color:#2c3e50; margin-bottom:10px; line-height:1.4; font-weight:500;';
         lineSection.appendChild(compactInquiryText);
         
         const compactQrTitle = document.createElement('div');
         compactQrTitle.innerHTML = '加入JCoach官方LINE';
-        compactQrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
+        compactQrTitle.style.cssText = 'font-size:16px; font-weight:bold; color:#4a6fa5; margin-bottom:10px;';
         lineSection.appendChild(compactQrTitle);
         
         const compactQrContainer = document.createElement('div');
-        compactQrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:8px;';
+        compactQrContainer.style.cssText = 'display:flex; justify-content:center; align-items:center; margin-bottom:10px;';
         
         const compactQrCode = document.createElement('img');
         compactQrCode.src = 'images/QR.png';
-        compactQrCode.style.cssText = 'width:60px; height:60px; border-radius:6px; box-shadow:0 1px 4px rgba(0,0,0,0.1);';
+        compactQrCode.style.cssText = 'width:70px; height:70px; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.1);';
         compactQrCode.onerror = function() {
-            compactQrContainer.innerHTML = '<div style="width:60px; height:60px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; color:#4a6fa5; text-align:center;">QR Code</div>';
+            compactQrContainer.innerHTML = '<div style="width:70px; height:70px; border:1px dashed #4a6fa5; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:11px; color:#4a6fa5; text-align:center;">QR Code</div>';
         };
         compactQrContainer.appendChild(compactQrCode);
         lineSection.appendChild(compactQrContainer);
         
         const compactLineLink = document.createElement('div');
         compactLineLink.innerHTML = '@https://lin.ee/RaehHxl';
-        compactLineLink.style.cssText = 'font-size:10px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:2px 6px; border-radius:3px; display:inline-block;';
+        compactLineLink.style.cssText = 'font-size:12px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:4px 8px; border-radius:4px; display:inline-block;';
         lineSection.appendChild(compactLineLink);
         
-        // 將兩個區域添加到並排容器
-        bottomSection.appendChild(compactChartContainer);
-        bottomSection.appendChild(lineSection);
-        page1Container.appendChild(bottomSection);
+        page1Container.appendChild(lineSection);
         
         // 添加頁腳（單頁版）
         const compactFooter = document.createElement('div');
