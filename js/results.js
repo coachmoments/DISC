@@ -1103,7 +1103,7 @@ function generatePDF() {
         // 添加頁腳（單頁版）
         const compactFooter = document.createElement('div');
         compactFooter.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666; font-size:10px;';
-        compactFooter.innerHTML = `&copy; 教練時刻 DISC行為風格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
+        compactFooter.innerHTML = `&copy; coachmonents DISC行為風格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
         page1Container.appendChild(compactFooter);
         
         // 創建第二頁頁眉 (簡化版)
@@ -1228,7 +1228,7 @@ function generatePDF() {
         footerContent.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:12px;';
         
         const copyright = document.createElement('div');
-        copyright.innerHTML = '&copy; 教練時刻 DISC行為風格測驗. 保留所有權利。';
+        copyright.innerHTML = '&copy; coachmonents DISC行為風格測驗. 保留所有權利。';
         copyright.style.cssText = 'font-weight:500;';
         
         const reportInfo = document.createElement('div');
