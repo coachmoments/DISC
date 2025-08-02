@@ -1072,7 +1072,7 @@ function generatePDF() {
         lineSection.style.cssText = 'margin-top:10px; padding:10px; background:linear-gradient(135deg, #e8f2ff 0%, #f0f7ff 100%); border-radius:8px; border:1px solid #4a6fa5; text-align:center;';
         
         const compactQrTitle = document.createElement('div');
-        compactQrTitle.innerHTML = '加入JCoach官方LINE';
+        compactQrTitle.innerHTML = '加入教練時刻官方LINE';
         compactQrTitle.style.cssText = 'font-size:14px; font-weight:bold; color:#4a6fa5; margin-bottom:8px;';
         lineSection.appendChild(compactQrTitle);
         
@@ -1089,7 +1089,7 @@ function generatePDF() {
         lineSection.appendChild(compactQrContainer);
         
         const compactLineLink = document.createElement('div');
-        compactLineLink.innerHTML = '@https://lin.ee/weKK5Dl<br/>ID: @619izomi';
+        compactLineLink.innerHTML = 'https://lin.ee/weKK5Dl';
         compactLineLink.style.cssText = 'font-size:11px; color:#4a6fa5; font-weight:600; background-color:rgba(74, 111, 165, 0.1); padding:3px 6px; border-radius:4px; display:inline-block; margin-bottom:6px;';
         lineSection.appendChild(compactLineLink);
         
@@ -1103,7 +1103,7 @@ function generatePDF() {
         // 添加頁腳（單頁版）
         const compactFooter = document.createElement('div');
         compactFooter.style.cssText = 'margin-top:8px; padding-top:8px; border-top:1px solid #4a6fa5; text-align:center; color:#666; font-size:10px;';
-        compactFooter.innerHTML = `&copy; coachmonents DISC行為風格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
+        compactFooter.innerHTML = `&copy; 教練時刻 DISC行為風格測驗. 保留所有權利。 | 報告生成日期：${new Date().toLocaleDateString('zh-TW')}`;
         page1Container.appendChild(compactFooter);
         
         // 創建第二頁頁眉 (簡化版)
@@ -1191,7 +1191,7 @@ function generatePDF() {
         
         // QR上方標題
         const qrTitle = document.createElement('div');
-        qrTitle.innerHTML = '加入JCoach官方LINE';
+        qrTitle.innerHTML = '加入教練時刻官方LINE';
         qrTitle.style.cssText = 'font-size:18px; font-weight:bold; color:#4a6fa5; margin-bottom:12px; letter-spacing:0.5px;';
         lineInquirySection.appendChild(qrTitle);
         
@@ -1214,7 +1214,7 @@ function generatePDF() {
         const lineLink = document.createElement('a');
         lineLink.href = 'https://lin.ee/weKK5Dl';
         lineLink.target = '_blank';
-        lineLink.innerHTML = '@https://lin.ee/weKK5Dl<br/>ID: @619izomi';
+        lineLink.innerHTML = 'https://lin.ee/weKK5Dl';
         lineLink.style.cssText = 'font-size:13px; color:#4a6fa5; text-decoration:underline; font-weight:600; display:inline-block; margin-top:8px; padding:4px 8px; border-radius:4px; background-color:rgba(74, 111, 165, 0.05); transition:background-color 0.2s ease;';
         lineInquirySection.appendChild(lineLink);
         
@@ -1228,7 +1228,7 @@ function generatePDF() {
         footerContent.style.cssText = 'display:flex; justify-content:space-between; align-items:center; font-size:12px;';
         
         const copyright = document.createElement('div');
-        copyright.innerHTML = '&copy; coachmonents DISC行為風格測驗. 保留所有權利。';
+        copyright.innerHTML = '&copy; 教練時刻 DISC行為風格測驗. 保留所有權利。';
         copyright.style.cssText = 'font-weight:500;';
         
         const reportInfo = document.createElement('div');
